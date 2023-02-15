@@ -9,6 +9,7 @@ import static java.lang.System.out;
 //    "YejrgЁ1Ыi7" - "ejrgЁ1"     //
 //    "ЫkegjЫ12Йы" - "kegjЫ12"    //
 //    "ehjrg12" *   9             //
+//    "ehjrg12" *   10             //
 //      "e47и4ergj" / 10          //
 //      "47игrgЫЁё" / 2          //
 
