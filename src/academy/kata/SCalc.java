@@ -15,26 +15,40 @@ import static java.lang.System.out;
 
 
 public class SCalc {
+    static String inputError = "!!!Некорректный ввод!!!";
+
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(in);
-        String announcement = """
+        String expression;
+        String validateInOut;
+        do {
+            Scanner scanner = new Scanner(in);
+            String announcement = """
 
-            Правила ввода:
-                                        
-        Вводите строчные операнды (не более 10 символов каждый). Начинайте ввод строго с двойных кавычек.
-        Первый операнд - всегда строчный, не более 10 символов, например, "jbBЪ5678Ёю".
-        Второй операнд, как первый, но только при сложении и вычитании (+,-), а второй операнд - также в кавычках.
+                        Правила ввода:
+                                                    
+                    Вводите строчные операнды (не более 10 символов каждый). Начинайте ввод строго с двойных кавычек.
+                    Первый операнд - всегда строчный, не более 10 символов, например, "jbBЪ5678Ёю".
+                    Второй операнд, как первый, но только при сложении и вычитании (+,-), а второй операнд - также в кавычках.
 
-        При умножении и делении (*,/) второй операнд - натуральное число <=10 - БЕЗ КАВЫЧЕК!!!:
-            """;
-        out.println(announcement);
-        String expression = scanner.nextLine(); // Сканируем всю строку с выражением целиком в expression
-        String validateInOut = isValidate(expression);
-        out.println("\n\"" + validateInOut + "\"");
+                    При умножении и делении (*,/) второй операнд - натуральное число <=10 - БЕЗ КАВЫЧЕК!!!.
+                    
+                    При ошибке в выражении выполняется повторный цикл ввода!!!:
+                    
+                        """;
+
+            out.println(announcement);
+            expression = scanner.nextLine(); // Сканируем всю строку с выражением целиком в expression
+            validateInOut = isValidate(expression);
+            out.println("\n\"" + validateInOut + "\"");
+            if (validateInOut.equals(inputError)) {
+                out.println("\nПовторите, пожалуйста, ввод:\n");
+            }
+        }
+        while (validateInOut.equals(inputError));
     }
 
     //    Задаем все переменные метода.
-    public static String isValidate  (String expression) {
+    public static String isValidate (String expression) {
         int lengthT;
 
 
@@ -79,33 +93,33 @@ public class SCalc {
 
 //                Отладка: контроль ввода и промежуточных вычислений:
 
-        return "!!!Некорректный ввод!!!";
+        return inputError;
 
     }
 
 //            Методы в 2-х классах
 
-   private static class PM {
+    private static class PM {
         static String sPlus(String a, String b) {        //Сложение
-             return a + b;
+            return a + b;
         }
-    // При Сложении - Конкатенация строк
+        // При Сложении - Конкатенация строк
 
-       static String sCut(String a, String b) {             //Вычитание
+        static String sCut(String a, String b) {             //Вычитание
             var substrBegin = a.indexOf(b);
             return (substrBegin > -1) ? a.substring(0, substrBegin) +
                     a.substring(substrBegin + b.length()) : a;
-       }
-    // При Вычетании - вырезаем найденное слово из строки или возвращаем уменьшаемое обратно
-   }
+        }
+        // При Вычетании - вырезаем найденное слово из строки или возвращаем уменьшаемое обратно
+    }
 
-//          Блок умножения и деления
+    //          Блок умножения и деления
     private static class MD {
-         static String sMultiple(String a, int b) {      //Умножение
+        static String sMultiple(String a, int b) {      //Умножение
             String sMultiple = a.repeat(b);
             return (sMultiple.length() <= 40) ? sMultiple : sMultiple.substring(0, 40) + "...";
-         }
-    // При Умножении - повторяем заданное слово b раз и обрезаем результат после 40-го символа
+        }
+        // При Умножении - повторяем заданное слово b раз и обрезаем результат после 40-го символа
 
         static String sDivision(String a, int b) {       //Деление
             return (a.length() >= b) ? a.substring(0, a.length() / b) : "Делитель больше делимого";
@@ -113,4 +127,3 @@ public class SCalc {
     }
 
 }
-
