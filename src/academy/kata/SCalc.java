@@ -14,7 +14,7 @@ import static java.lang.System.out;
 //      "47игrgЫЁё" / 2          //
 
 
-public class SCalc {
+class SCalc {
     static String inputError = "!!!Некорректный ввод!!!";
 
     public static void main(String[] args) {
