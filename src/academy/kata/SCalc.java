@@ -9,31 +9,46 @@ import static java.lang.System.out;
 //    "YejrgЁ1Ыi7" - "ejrgЁ1"     //
 //    "ЫkegjЫ12Йы" - "kegjЫ12"    //
 //    "ehjrg12" *   9             //
+//    "ehjrg12" *   10             //
 //      "e47и4ergj" / 10          //
 //      "47игrgЫЁё" / 2          //
 
 
 public class SCalc {
+    static String inputError = "!!!Некорректный ввод!!!";
+
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(in);
-        String announcement = """
+        String expression;
+        String validateInOut;
+        do {
+            Scanner scanner = new Scanner(in);
+            String announcement = """
 
-            Правила ввода:
-                                        
-        Вводите строчные операнды (не более 10 символов каждый). Начинайте ввод строго с двойных кавычек.
-        Первый операнд - всегда строчный, не более 10 символов, например, "jbBЪ5678Ёю".
-        Второй операнд, как первый, но только при сложении и вычитании (+,-), а второй операнд - также в кавычках.
+                        Правила ввода:
+                                                    
+                    Вводите строчные операнды (не более 10 символов каждый). Начинайте ввод строго с двойных кавычек.
+                    Первый операнд - всегда строчный, не более 10 символов, например, "jbBЪ5678Ёю".
+                    Второй операнд, как первый, но только при сложении и вычитании (+,-), а второй операнд - также в кавычках.
 
-        При умножении и делении (*,/) второй операнд - натуральное число <=10 - БЕЗ КАВЫЧЕК!!!:
-            """;
-        out.println(announcement);
-        String expression = scanner.nextLine(); // Сканируем всю строку с выражением целиком в expression
-        String validateInOut = isValidate(expression);
-        out.println("\n\"" + validateInOut + "\"");
+                    При умножении и делении (*,/) второй операнд - натуральное число <=10 - БЕЗ КАВЫЧЕК!!!.
+                    
+                    При ошибке в выражении выполняется повторный цикл ввода!!!:
+                    
+                        """;
+
+            out.println(announcement);
+            expression = scanner.nextLine(); // Сканируем всю строку с выражением целиком в expression
+            validateInOut = isValidate(expression);
+            out.println("\n\"" + validateInOut + "\"");
+            if (validateInOut.equals(inputError)) {
+                out.println("\nПовторите, пожалуйста, ввод:\n");
+            }
+        }
+        while (validateInOut.equals(inputError));
     }
 
     //    Задаем все переменные метода.
-    public static String isValidate  (String expression) {
+    public static String isValidate (String expression) {
         int lengthT;
 
 
@@ -78,7 +93,7 @@ public class SCalc {
 
 //                Отладка: контроль ввода и промежуточных вычислений:
 
-        return "!!!Некорректный ввод!!!";
+        return inputError;
 
     }
 
