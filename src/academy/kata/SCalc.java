@@ -32,7 +32,7 @@ public class SCalc {
 
                     При умножении и делении (*,/) второй операнд - натуральное число <=10 - БЕЗ КАВЫЧЕК!!!.
                     
-                    При ошибке в выражении выполняется повторный цикл ввода!!!:
+                    При ошибке в выражении будет выполнен повторный цикл ввода!!!:
                     
                         """;
 
@@ -40,9 +40,7 @@ public class SCalc {
             expression = scanner.nextLine(); // Сканируем всю строку с выражением целиком в expression
             validateInOut = isValidate(expression);
             out.println("\n\"" + validateInOut + "\"");
-            if (validateInOut.equals(inputError)) {
-                out.println("\nПовторите, пожалуйста, ввод:\n");
-            }
+            if (validateInOut.equals(inputError)) {out.println("\nПовторите, пожалуйста, ввод.\n");}
         }
         while (validateInOut.equals(inputError));
     }
