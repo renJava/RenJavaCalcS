@@ -10,7 +10,7 @@ import static java.lang.System.out;
 //    "ЫkegjЫ12Йы" - "kegjЫ12"    //
 //    "ehjrg12" *   9             //
 //    "ehjrg12" *   10             //
-//      "e47и4ergj" / 10          //
+//      "1e47и4ergj" / 10          //
 //      "47игrgЫЁё" / 2          //
 
 
@@ -49,9 +49,6 @@ class SCalc {
 
     //    Задаем все переменные метода.
     public static String isValidate(String expression) {
-        int lengthCt;
-
-        int lengthT;
 
 //                                      Сложение и вычитание
 
@@ -63,15 +60,13 @@ class SCalc {
             var trimExpressionPM = expression.trim();
 
             var cutToFindQuotes = trimExpressionPM.substring(1);
-            lengthCt = cutToFindQuotes.length();
-            var quotePosition0 = cutToFindQuotes.indexOf('\"');
-
-            var aPM = cutToFindQuotes.substring(0, quotePosition0);
+            int lengthCt = cutToFindQuotes.length();
 
             var quotePosition1 = cutToFindQuotes.substring(0, lengthCt-1).lastIndexOf('\"');
             var bPM = cutToFindQuotes.substring(quotePosition1 + 1, lengthCt - 1);
 
-            return (trimExpressionPM.indexOf('+') > -1) ? PM.sPlus(aPM, bPM) : PM.sCut(aPM, bPM);
+            return (trimExpressionPM.indexOf('+') > -1) ? PM.sPlus(operand(expression), bPM) :
+                    PM.sCut(operand(expression), bPM);
         }
 
 //                                      Умножение и деление
@@ -82,16 +77,14 @@ class SCalc {
                 "^ *\"[a-zA-Z_0-9а-яА-ЯёЁ]{1,10}\" *[*,/] *(?:[1-9]|10) *$")) {
 
             var trimExpressionMD = expression.trim();
-            lengthT = trimExpressionMD.length();
 
             var cutToFindOneQuote = trimExpressionMD.substring(1);
-            var quotePosition0 = cutToFindOneQuote.indexOf('\"');
+            var lengthCt = cutToFindOneQuote.length();
 
-            var aMD = cutToFindOneQuote.substring(0, quotePosition0);
+            var bMD = Integer.parseInt(cutToFindOneQuote.substring(lengthCt - 2, lengthCt).trim());
 
-            var bMD = Integer.parseInt(cutToFindOneQuote.substring(lengthT - 3, lengthT - 1).trim());
-
-            return (trimExpressionMD.indexOf('*') > -1) ? MD.sMultiple(aMD, bMD) : MD.sDivision(aMD, bMD);
+            return (trimExpressionMD.indexOf('*') > -1) ? MD.sMultiple(operand(expression), bMD) :
+                    MD.sDivision(operand(expression), bMD);
         }
 
 //                Отладка: контроль ввода и промежуточных вычислений:
@@ -99,6 +92,18 @@ class SCalc {
         return inputError;
 
     }
+
+
+//        Метод возвращает первый операнд
+    public static String operand(String workingExpression) {
+        var trimExpressionPM = workingExpression.trim();
+
+        var cutToFindQuotes = trimExpressionPM.substring(1);
+        var quotePosition0 = cutToFindQuotes.indexOf('\"');
+
+        return cutToFindQuotes.substring(0, quotePosition0);
+    }
+
 
 //            Методы в 2-х классах
 
