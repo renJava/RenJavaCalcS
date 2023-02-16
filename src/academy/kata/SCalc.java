@@ -31,24 +31,27 @@ class SCalc {
                     Второй операнд, как первый, но только при сложении и вычитании (+,-), а второй операнд - также в кавычках.
 
                     При умножении и делении (*,/) второй операнд - натуральное число <=10 - БЕЗ КАВЫЧЕК!!!.
-                    
+                                        
                     При ошибке в выражении будет выполнен повторный цикл ввода!!!:
-                    
+                                        
                         """;
 
             out.println(announcement);
             expression = scanner.nextLine(); // Сканируем всю строку с выражением целиком в expression
             validateInOut = isValidate(expression);
             out.println("\n\"" + validateInOut + "\"");
-            if (validateInOut.equals(inputError)) {out.println("\nПовторите, пожалуйста, ввод.\n");}
+            if (validateInOut.equals(inputError)) {
+                out.println("\nПовторите, пожалуйста, ввод.\n");
+            }
         }
         while (validateInOut.equals(inputError));
     }
 
     //    Задаем все переменные метода.
-    public static String isValidate (String expression) {
-        int lengthT;
+    public static String isValidate(String expression) {
+        int lengthCt;
 
+        int lengthT;
 
 //                                      Сложение и вычитание
 
@@ -58,17 +61,17 @@ class SCalc {
                 "^ *\"[a-zA-Z_0-9а-яА-ЯёЁ]{1,10}\" *[+,-] *\"[a-zA-Z_0-9а-яА-ЯёЁ]{1,10}\" *")) {
 
             var trimExpressionPM = expression.trim();
-            lengthT = trimExpressionPM.length();
 
-            var cutToFindQuotes = trimExpressionPM.substring(1, lengthT -1);
+            var cutToFindQuotes = trimExpressionPM.substring(1);
+            lengthCt = cutToFindQuotes.length();
             var quotePosition0 = cutToFindQuotes.indexOf('\"');
 
             var aPM = cutToFindQuotes.substring(0, quotePosition0);
 
-            var quotePosition1 = cutToFindQuotes.lastIndexOf('\"');
-            var bPM = cutToFindQuotes.substring(quotePosition1 + 1, lengthT - 2);
+            var quotePosition1 = cutToFindQuotes.substring(0, lengthCt-1).lastIndexOf('\"');
+            var bPM = cutToFindQuotes.substring(quotePosition1 + 1, lengthCt - 1);
 
-            return  (trimExpressionPM.indexOf('+') > -1) ? PM.sPlus(aPM, bPM) : PM.sCut(aPM, bPM);
+            return (trimExpressionPM.indexOf('+') > -1) ? PM.sPlus(aPM, bPM) : PM.sCut(aPM, bPM);
         }
 
 //                                      Умножение и деление
@@ -86,9 +89,9 @@ class SCalc {
 
             var aMD = cutToFindOneQuote.substring(0, quotePosition0);
 
-            var bMD = Integer.parseInt(cutToFindOneQuote.substring(lengthT -3, lengthT-1).trim());
+            var bMD = Integer.parseInt(cutToFindOneQuote.substring(lengthT - 3, lengthT - 1).trim());
 
-            return  (trimExpressionMD.indexOf('*') > -1) ? MD.sMultiple(aMD, bMD) : MD.sDivision(aMD, bMD);
+            return (trimExpressionMD.indexOf('*') > -1) ? MD.sMultiple(aMD, bMD) : MD.sDivision(aMD, bMD);
         }
 
 //                Отладка: контроль ввода и промежуточных вычислений:
@@ -99,31 +102,30 @@ class SCalc {
 
 //            Методы в 2-х классах
 
-    private static class PM {
+    private static class PM {                               //Сложение - конкатенация
         static String sPlus(String a, String b) {        //Сложение
             return a + b;
         }
         // При Сложении - Конкатенация строк
 
-        static String sCut(String a, String b) {             //Вычитание
-            var substrBegin = a.indexOf(b);
-            return (substrBegin > -1) ? a.substring(0, substrBegin) +
-                    a.substring(substrBegin + b.length()) : a;
+        static String sCut(String a, String b) {            //Вычитание
+            var substringBegin = a.indexOf(b);
+            return (substringBegin > -1) ? a.substring(0, substringBegin) +
+                    a.substring(substringBegin + b.length()) : a;
         }
         // При Вычетании - вырезаем найденное слово из строки или возвращаем уменьшаемое обратно
     }
 
     //          Блок умножения и деления
     private static class MD {
-        static String sMultiple(String a, int b) {      //Умножение
+        static String sMultiple(String a, int b) {          //Умножение
             String sMultiple = a.repeat(b);
             return (sMultiple.length() <= 40) ? sMultiple : sMultiple.substring(0, 40) + "...";
         }
         // При Умножении - повторяем заданное слово b раз и обрезаем результат после 40-го символа
 
-        static String sDivision(String a, int b) {       //Деление
+        static String sDivision(String a, int b) {          //Деление
             return (a.length() >= b) ? a.substring(0, a.length() / b) : "Делитель больше делимого";
         }
     }
-
 }
