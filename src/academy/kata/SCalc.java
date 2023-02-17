@@ -71,55 +71,50 @@ class SCalc {
             return (expression.indexOf('*') > -1) ? MD.sMultiple(operand(expression, 1), operand(expression, 3)) :
                     MD.sDivision(operand(expression, 1), operand(expression, 3));
         }
-
-//                Отладка: контроль ввода и промежуточных вычислений:
-
         return inputError;
-
     }
 
 
-//        Метод возвращает оба операнда
-        public static String operand(String workingExpression, int choise) {
-            var trimExpressionPM = workingExpression.trim();
+    //        Метод возвращает оба операнда
+    public static String operand(String workingExpression, int choise) {
+        var trimExpressionPM = workingExpression.trim();
 
-            var cutToFindQuote = trimExpressionPM.substring(1);
-            var quotePosition0 = cutToFindQuote.indexOf('\"');
-            int lengthCt = cutToFindQuote.length();
+        var cutToFindQuote = trimExpressionPM.substring(1);
+        var quotePosition0 = cutToFindQuote.indexOf('\"');
+        int lengthCt = cutToFindQuote.length();
 
-            switch (choise) {
-                case 1 -> {return cutToFindQuote.substring(0, quotePosition0);}
-                case 2 -> {
-                    var quotePosition1 = cutToFindQuote.substring(0, lengthCt - 1).lastIndexOf('\"');
-                    return cutToFindQuote.substring(quotePosition1 + 1, lengthCt - 1);
-                }
-                default -> {return cutToFindQuote.substring(lengthCt - 2, lengthCt).trim();}
+        switch (choise) {
+            case 1 -> {return cutToFindQuote.substring(0, quotePosition0);}
+            case 2 -> {
+                var quotePosition1 = cutToFindQuote.substring(0, lengthCt - 1).lastIndexOf('\"');
+                return cutToFindQuote.substring(quotePosition1 + 1, lengthCt - 1);
             }
+            default -> {return cutToFindQuote.substring(lengthCt - 2, lengthCt).trim();}
         }
+    }
 
-//            Методы в 2-х классах
-
+    //            Методы в 2-х классах
+    //          Блок сложения и вычитания
     private static class PM {                               //Сложение - конкатенация
         static String sPlus(String a, String b) {
             return a + b;
         }
-        // При Сложении - Конкатенация строк
 
         static String sCut(String a, String b) {            //Вычитание
+//      При Вычетании - вырезаем найденное слово из строки или возвращаем уменьшаемое обратно
             var substringBegin = a.indexOf(b);
             return (substringBegin > -1) ? a.substring(0, substringBegin) +
                     a.substring(substringBegin + b.length()) : a;
         }
-        // При Вычетании - вырезаем найденное слово из строки или возвращаем уменьшаемое обратно
     }
 
     //          Блок умножения и деления
     private static class MD {
         static String sMultiple(String a, String b) {          //Умножение
+//      При Умножении - повторяем заданное слово b раз и обрезаем результат после 40-го символа
             String sMultiple = a.repeat(Integer.parseInt(b));
             return (sMultiple.length() <= 40) ? sMultiple : sMultiple.substring(0, 40) + "...";
         }
-        // При Умножении - повторяем заданное слово b раз и обрезаем результат после 40-го символа
 
         static String sDivision(String a, String b) {          //Деление
             int d = Integer.parseInt(b);
