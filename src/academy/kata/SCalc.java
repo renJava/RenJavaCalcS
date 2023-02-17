@@ -13,6 +13,7 @@ import static java.lang.System.out;
 //      "1e47и4erg" / 10          //
 //      "47игrgЫЁё" / 2          //
 
+//Правильный push
 
 class SCalc {
     static String inputError = "!!!Некорректный ввод!!!";
