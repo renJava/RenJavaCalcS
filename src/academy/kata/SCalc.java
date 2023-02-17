@@ -19,27 +19,27 @@ class SCalc {
     static String inputError = "!!!Некорректный ввод!!!";
 
     public static void main(String[] args) {
-        String expression;
+        String expn;
         String validateInOut;
         do {
             Scanner scanner = new Scanner(in);
             String announcement = """
 
-                        Правила ввода:
-                                                    
-                    Вводите строчные операнды (не более 10 символов каждый). Начинайте ввод строго с двойных кавычек.
-                    Первый операнд - всегда строчный, не более 10 символов, например, "jbBЪ5678Ёю".
-                    Второй операнд, как первый, но только при сложении и вычитании (+,-), а второй операнд - также в кавычках.
+                Правила ввода:
+                                            
+            Вводите строчные операнды (не более 10 символов каждый). Начинайте ввод строго с двойных кавычек.
+            Первый операнд - всегда строчный, не более 10 символов, например, "jbBЪ5678Ёю".
+            Второй операнд, как первый, но только при сложении и вычитании (+,-), а второй операнд - также в кавычках.
 
-                    При умножении и делении (*,/) второй операнд - натуральное число <=10 - БЕЗ КАВЫЧЕК!!!.
-                                        
-                    При ошибке в выражении будет выполнен повторный цикл ввода!!!:
-                                        
-                        """;
+            При умножении и делении (*,/) второй операнд - натуральное число <=10 - БЕЗ КАВЫЧЕК!!!.
+                                
+            При ошибке в выражении будет выполнен повторный цикл ввода!!!:
+                                
+                    """;
 
             out.println(announcement);
-            expression = scanner.nextLine(); // Сканируем всю строку с выражением целиком в expression
-            validateInOut = isValidate(expression);
+            expn = scanner.nextLine(); // Сканируем всю строку с выражением целиком в expn
+            validateInOut = isValidate(expn);
             out.println("\n\"" + validateInOut + "\"");
             if (validateInOut.equals(inputError)) {
                 out.println("\nПовторите, пожалуйста, ввод.\n");
@@ -49,45 +49,45 @@ class SCalc {
     }
 
     //    Задаем все переменные метода.
-    public static String isValidate(String expression) {
+    public static String isValidate(String exprn) {
 
 //                                      Сложение и вычитание
 
 //     Регулярное выражение для + и - : ^ *\"[a-zA-Z_0-9а-яА-ЯёЁ]{1,10}\" *[+,-] *\"[a-zA-Z_0-9а-яА-ЯёЁ]{1,10}\" *
 
-        if (expression.matches(
+        if (exprn.matches(
                 "^ *\"[a-zA-Z_0-9а-яА-ЯёЁ]{1,10}\" *[+,-] *\"[a-zA-Z_0-9а-яА-ЯёЁ]{1,10}\" *")) {
 
-            return (expression.indexOf('+') > -1) ? PM.sPlus(operand(expression, 1), (operand(expression, 2))) :
-                    PM.sCut(operand(expression, 1), (operand(expression, 2)));
+            return (exprn.indexOf('+') > -1) ? PM.sPlus(operand(exprn, 1), (operand(exprn, 2)))
+                    : PM.sCut(operand(exprn, 1), (operand(exprn, 2)));
         }
 
 //                                      Умножение и деление
 
 //     Регулярное выражение для * и / : ^ *\"[a-zA-Z_0-9а-яА-ЯёЁ]{1,10}\"\s*[*,\/]\s*(?:[1-9]|10) *$
 
-        if (expression.matches(
+        if (exprn.matches(
                 "^ *\"[a-zA-Z_0-9а-яА-ЯёЁ]{1,10}\" *[*,/] *(?:[1-9]|10) *$")) {
 
-            return (expression.indexOf('*') > -1) ? MD.sMultiple(operand(expression, 1), operand(expression, 3)) :
-                    MD.sDivision(operand(expression, 1), operand(expression, 3));
+            return (exprn.indexOf('*') > -1) ? MD.sMultiple(operand(exprn, 1), operand(exprn, 3))
+                    : MD.sDivision(operand(exprn, 1), operand(exprn, 3));
         }
         return inputError;
     }
 
 
     //        Метод возвращает оба операнда
-    public static String operand(String workingExpression, int choise) {
-        var trimExpressionPM = workingExpression.trim();
+    public static String operand(String workingExprn, int choise) {
+        String trimExpressionPM = workingExprn.trim();
 
-        var cutToFindQuote = trimExpressionPM.substring(1);
-        var quotePosition0 = cutToFindQuote.indexOf('\"');
+        String cutToFindQuote = trimExpressionPM.substring(1);
+        int quotePosition0 = cutToFindQuote.indexOf('\"');
         int lengthCt = cutToFindQuote.length();
 
         switch (choise) {
             case 1 -> {return cutToFindQuote.substring(0, quotePosition0);}
             case 2 -> {
-                var quotePosition1 = cutToFindQuote.substring(0, lengthCt - 1).lastIndexOf('\"');
+                int quotePosition1 = cutToFindQuote.substring(0, lengthCt - 1).lastIndexOf('\"');
                 return cutToFindQuote.substring(quotePosition1 + 1, lengthCt - 1);
             }
             default -> {return cutToFindQuote.substring(lengthCt - 2, lengthCt).trim();}
@@ -103,7 +103,7 @@ class SCalc {
 
         static String sCut(String a, String b) {            //Вычитание
 //      При Вычетании - вырезаем найденное слово из строки или возвращаем уменьшаемое обратно
-            var substringBegin = a.indexOf(b);
+            int substringBegin = a.indexOf(b);
             return (substringBegin > -1) ? a.substring(0, substringBegin) +
                     a.substring(substringBegin + b.length()) : a;
         }
