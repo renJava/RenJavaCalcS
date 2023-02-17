@@ -1,7 +1,6 @@
 package academy.kata;
 
 import java.util.Scanner;
-
 import static java.lang.System.in;
 import static java.lang.System.out;
 
@@ -15,8 +14,8 @@ import static java.lang.System.out;
 
 //Правильный push
 
-class SCalc {
-    static String inputError = "!!!Некорректный ввод!!!";
+public class SCalc {
+    public static final String INPUTERROR = "!!!Некорректный ввод!!!";
 
     public static void main(String[] args) {
         String expn;
@@ -35,21 +34,21 @@ class SCalc {
                                 
             При ошибке в выражении будет выполнен повторный цикл ввода!!!:
                                 
-                    """;
+                                  """;
 
             out.println(announcement);
             expn = scanner.nextLine(); // Сканируем всю строку с выражением целиком в expn
             validateInOut = isValidate(expn);
             out.println("\n\"" + validateInOut + "\"");
-            if (validateInOut.equals(inputError)) {
+            if (validateInOut.equals(INPUTERROR)) {
                 out.println("\nПовторите, пожалуйста, ввод.\n");
             }
         }
-        while (validateInOut.equals(inputError));
+        while (validateInOut.equals(INPUTERROR));
     }
 
     //    Задаем все переменные метода.
-    public static String isValidate(String exprn) {
+    static String isValidate(String exprn) {
 
 //                                      Сложение и вычитание
 
@@ -72,13 +71,13 @@ class SCalc {
             return (exprn.indexOf('*') > -1) ? MD.sMultiple(operand(exprn, 1), operand(exprn, 3))
                     : MD.sDivision(operand(exprn, 1), operand(exprn, 3));
         }
-        return inputError;
+        return INPUTERROR;
     }
 
 
     //        Метод возвращает оба операнда
-    public static String operand(String workingExprn, int choise) {
-        String trimExpressionPM = workingExprn.trim();
+    static String operand(String workingExpression, int choise) {
+        String trimExpressionPM = workingExpression.trim();
 
         String cutToFindQuote = trimExpressionPM.substring(1);
         int quotePosition0 = cutToFindQuote.indexOf('\"');
