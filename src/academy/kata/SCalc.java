@@ -94,7 +94,7 @@ public class SCalc {
             }
         }
     }
-    //            Методы в 2-х классах
+    //            В 2-х классах по 2 метода
     //          Блок сложения и вычитания
     private static class PM {                                  //Сложение - конкатенация
         static String sPlus(String a, String b) {
