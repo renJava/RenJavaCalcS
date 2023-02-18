@@ -1,6 +1,7 @@
 package academy.kata;
 
 import java.util.Scanner;
+
 import static java.lang.System.in;
 import static java.lang.System.out;
 
@@ -8,106 +9,105 @@ import static java.lang.System.out;
 //    "YejrgЁ1Ыi7" - "ejrgЁ1"     //
 //    "ЫkegjЫ12Йы" - "kegjЫ12"    //
 //    "ehjrg12" *   9             //
-//    "ehjrg12" *   10             //
+//    "ehjrg12" *   10            //
 //      "1e47и4erg" / 10          //
-//      "47игrgЫЁё" / 2          //
-
-//Правильный push
+//      "47игrgЫЁё" / 2           //
 
 public class SCalc {
-    public static final String INPUTERROR = "!!!Некорректный ввод!!!";
+    public static final String INPUT_ERROR = "!!!Некорректный ввод!!!";
 
     public static void main(String[] args) {
-        String expn;
-        String validateInOut;
+        String expression;
+        String validateIn;
         do {
             Scanner scanner = new Scanner(in);
             String announcement = """
 
-                Правила ввода:
-                                            
-            Вводите строчные операнды (не более 10 символов каждый). Начинайте ввод строго с двойных кавычек.
-            Первый операнд - всегда строчный, не более 10 символов, например, "jbBЪ5678Ёю".
-            Второй операнд, как первый, но только при сложении и вычитании (+,-), а второй операнд - также в кавычках.
+                        Правила ввода:
+                                                    
+                    Вводите строчные операнды (не более 10 символов каждый). Начинайте ввод строго с двойных кавычек.
+                    Первый операнд - всегда строчный, не более 10 символов, например, "jbBЪ5678Ёю".
+                    Второй операнд, как первый, но только при сложении и вычитании (+,-), а второй операнд - также в кавычках.
 
-            При умножении и делении (*,/) второй операнд - натуральное число <=10 - БЕЗ КАВЫЧЕК!!!.
-                                
-            При ошибке в выражении будет выполнен повторный цикл ввода!!!:
-                                
-                                  """;
-
+                    При умножении и делении (*,/) второй операнд - натуральное число <=10 - БЕЗ КАВЫЧЕК!!!.
+                                        
+                    При ошибке в выражении будет выполнен повторный цикл ввода!!!:
+                                        
+                                          """;
             out.println(announcement);
-            expn = scanner.nextLine(); // Сканируем всю строку с выражением целиком в expn
-            validateInOut = isValidate(expn);
-            out.println("\n\"" + validateInOut + "\"");
-            if (validateInOut.equals(INPUTERROR)) {
+            expression = scanner.nextLine();
+            validateIn = isValidate(expression);
+            out.println("\n\"" + validateIn + "\"");
+            if (validateIn.equals(INPUT_ERROR)) {
                 out.println("\nПовторите, пожалуйста, ввод.\n");
             }
         }
-        while (validateInOut.equals(INPUTERROR));
+        while (validateIn.equals(INPUT_ERROR));
     }
 
     //    Задаем все переменные метода.
-    static String isValidate(String exprn) {
+    static String isValidate(String expression) {
 
 //                                      Сложение и вычитание
 
 //     Регулярное выражение для + и - : ^ *\"[a-zA-Z_0-9а-яА-ЯёЁ]{1,10}\" *[+,-] *\"[a-zA-Z_0-9а-яА-ЯёЁ]{1,10}\" *
 
-        if (exprn.matches(
+        if (expression.matches(
                 "^ *\"[a-zA-Z_0-9а-яА-ЯёЁ]{1,10}\" *[+,-] *\"[a-zA-Z_0-9а-яА-ЯёЁ]{1,10}\" *")) {
 
-            return (exprn.indexOf('+') > -1) ? PM.sPlus(operand(exprn, 1), (operand(exprn, 2)))
-                    : PM.sCut(operand(exprn, 1), (operand(exprn, 2)));
+            return (expression.indexOf('+') > -1) ?
+                    PM.sPlus(operand(expression, 1), (operand(expression, 2))) :
+                    PM.sCut(operand(expression, 1), (operand(expression, 2)));
         }
-
 //                                      Умножение и деление
 
 //     Регулярное выражение для * и / : ^ *\"[a-zA-Z_0-9а-яА-ЯёЁ]{1,10}\"\s*[*,\/]\s*(?:[1-9]|10) *$
 
-        if (exprn.matches(
+        if (expression.matches(
                 "^ *\"[a-zA-Z_0-9а-яА-ЯёЁ]{1,10}\" *[*,/] *(?:[1-9]|10) *$")) {
 
-            return (exprn.indexOf('*') > -1) ? MD.sMultiple(operand(exprn, 1), operand(exprn, 3))
-                    : MD.sDivision(operand(exprn, 1), operand(exprn, 3));
+            return (expression.indexOf('*') > -1) ?
+                    MD.sMultiple(operand(expression, 1), operand(expression, 3)) :
+                    MD.sDivision(operand(expression, 1), operand(expression, 3));
         }
-        return INPUTERROR;
+        return INPUT_ERROR;
     }
 
-
-    //        Метод возвращает оба операнда
-    static String operand(String workingExpression, int choise) {
+    //        Метод в case возвращает все операнды классов
+    static String operand(String workingExpression, int pick) {
         String trimExpressionPM = workingExpression.trim();
 
         String cutToFindQuote = trimExpressionPM.substring(1);
         int quotePosition0 = cutToFindQuote.indexOf('\"');
         int lengthCt = cutToFindQuote.length();
 
-        switch (choise) {
-            case 1 -> {return cutToFindQuote.substring(0, quotePosition0);}
+        switch (pick) {
+            case 1 -> {
+                return cutToFindQuote.substring(0, quotePosition0);
+            }
             case 2 -> {
                 int quotePosition1 = cutToFindQuote.substring(0, lengthCt - 1).lastIndexOf('\"');
                 return cutToFindQuote.substring(quotePosition1 + 1, lengthCt - 1);
             }
-            default -> {return cutToFindQuote.substring(lengthCt - 2, lengthCt).trim();}
+            default -> {
+                return cutToFindQuote.substring(lengthCt - 2, lengthCt).trim();
+            }
         }
     }
-
     //            Методы в 2-х классах
     //          Блок сложения и вычитания
-    private static class PM {                               //Сложение - конкатенация
+    private static class PM {                                  //Сложение - конкатенация
         static String sPlus(String a, String b) {
             return a + b;
         }
 
-        static String sCut(String a, String b) {            //Вычитание
+        static String sCut(String a, String b) {               //Вычитание
 //      При Вычетании - вырезаем найденное слово из строки или возвращаем уменьшаемое обратно
             int substringBegin = a.indexOf(b);
             return (substringBegin > -1) ? a.substring(0, substringBegin) +
                     a.substring(substringBegin + b.length()) : a;
         }
     }
-
     //          Блок умножения и деления
     private static class MD {
         static String sMultiple(String a, String b) {          //Умножение
