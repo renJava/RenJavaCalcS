@@ -13,7 +13,6 @@ import static java.lang.System.out;
 //      "47rgЫЁё" / 2           //
 
 public class SCalc {
-    static String inputError = "!!!Некорректный ввод!!!";
 
     public static void main(String[] args) {
         String expression;
@@ -37,12 +36,13 @@ public class SCalc {
             expression = scanner.nextLine();
             validateIn = isValidate(expression);
             out.println("\n\"" + validateIn + "\"");
-            if (validateIn.equals(inputError)) {
+            if (validateIn.equals(INPUT_ERROR)) {
                 out.println("\nПовторите, пожалуйста, ввод.\n");
             }
         }
-        while (validateIn.equals(inputError));
+        while (validateIn.equals(INPUT_ERROR));
     }
+    static final String INPUT_ERROR = "!!!Некорректный ввод!!!";
 
     //    Задаем все переменные метода.
     static String isValidate(String expression) {
@@ -71,7 +71,7 @@ public class SCalc {
                     MD.sMultiple(operand(expression, 1), operand(expression, 3)) :
                     MD.sDivision(operand(expression, 1), operand(expression, 3));
         }
-        return inputError;
+        return INPUT_ERROR;
     }
 
     //        Метод в case возвращает все операнды классов
