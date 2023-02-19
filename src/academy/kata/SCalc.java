@@ -13,7 +13,7 @@ import static java.lang.System.out;
 //      "47rgЫЁё" / 2           //
 
 public class SCalc {
-
+    static final String INPUT_ERROR = "!!!Некорректный ввод!!!";
     public static void main(String[] args) {
         String expression;
         String validateIn;
@@ -44,7 +44,6 @@ public class SCalc {
         }
         while (validateIn.equals(INPUT_ERROR));
     }
-    static final String INPUT_ERROR = "!!!Некорректный ввод!!!";
 
     //    Задаем все переменные метода.
     static String isValidate(String expression) {
