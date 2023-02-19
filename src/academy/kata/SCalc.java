@@ -6,11 +6,11 @@ import static java.lang.System.in;
 import static java.lang.System.out;
 
 //  "654Ъiё~gh" + "e47#@&rgj"     //
-//    "YejrgЁ1Ыi7" - "ejrgЁ1"     //
+//    "$Yj@rgЁ1Ыi" - "^ej%rgЁ1"     //
 //    "Yej!~Ё12Ыы" - "ej!~Ё12"    //
 //    "&(jrg&)" *   9             //
 //         "<Ёёe2^!`~V" / 10      //
-//      "47игrgЫЁё" / 2           //
+//      "47rgЫЁё" / 2           //
 
 public class SCalc {
     static String inputError = "!!!Некорректный ввод!!!";
@@ -53,7 +53,7 @@ public class SCalc {
 //                                      : ^ *"[^"=+-/*]{1,10}" *[+,-] *"[^"=+-/*]{1,10}" *
 
         if (expression.matches(
-                "^ *\"[^\"=+-/*]{1,10}\" *[+,-] *\"[^\"=+-/*]{1,10}\" *")) {
+                "^ *\"[^\"= +-/*]{1,10}\" *[+,-] *\"[^\"= +-/*]{1,10}\" *")) {
 
             return (expression.indexOf('+') > -1) ?
                     PM.sPlus(operand(expression, 1), (operand(expression, 2))) :
@@ -65,7 +65,7 @@ public class SCalc {
 //                                    : ^ *\"[^\"=+-/*]{1,10}\" *[*,/] *(?:[1-9]|10) *$
 
         if (expression.matches(
-                "^ *\"[^\"=+-/*]{1,10}\" *[*,/] *(?:[1-9]|10) *$")) {
+                "^ *\"[^\"= +-/*]{1,10}\" *[*,/] *(?:[1-9]|10) *$")) {
 
             return (expression.indexOf('*') > -1) ?
                     MD.sMultiple(operand(expression, 1), operand(expression, 3)) :
