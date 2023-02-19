@@ -5,12 +5,11 @@ import java.util.Scanner;
 import static java.lang.System.in;
 import static java.lang.System.out;
 
-//  "654Ъiёtgh" + "e47и4ergj"     //
+//  "654Ъiё~gh" + "e47#@&rgj"     //
 //    "YejrgЁ1Ыi7" - "ejrgЁ1"     //
-//    "ЫkegjЫ12Йы" - "kegjЫ12"    //
-//    "ehjrg12" *   9             //
-//    "ehjrg12" *   10            //
-//      "1e47и4erg" / 10          //
+//    "Yej!~Ё12Ыы" - "ej!~Ё12"    //
+//    "&(jrg&)" *   9             //
+//         "<Ёёe2^!`~V" / 10      //
 //      "47игrgЫЁё" / 2           //
 
 public class SCalc {
@@ -51,10 +50,10 @@ public class SCalc {
 //                                      Сложение и вычитание
 
 //     Регулярное выражение для + и - 1 : *\"[a-zA-Z_0-9а-яА-ЯёЁ]{1,10}\" *[+,-] *\"[a-zA-Z_0-9а-яА-ЯёЁ]{1,10}\" *
-//         2 с флагом: *"[a-z_0-9а-яё]{1,10}" *[+,-] *"[a-z_0-9а-яё]{1,10}/i" *
+//                                      : ^ *"[^"=+-/*]{1,10}" *[+,-] *"[^"=+-/*]{1,10}" *
 
         if (expression.matches(
-                " *\"[a-zA-Z_0-9а-яА-ЯёЁ]{1,10}\" *[+,-] *\"[a-zA-Z_0-9а-яА-ЯёЁ]{1,10}\" *")) {
+                "^ *\"[^\"=+-/*]{1,10}\" *[+,-] *\"[^\"=+-/*]{1,10}\" *")) {
 
             return (expression.indexOf('+') > -1) ?
                     PM.sPlus(operand(expression, 1), (operand(expression, 2))) :
@@ -63,9 +62,10 @@ public class SCalc {
 //                                      Умножение и деление
 
 //     Регулярное выражение для * и / : ^ *\"[a-zA-Z_0-9а-яА-ЯёЁ]{1,10}\"\s*[*,\/]\s*(?:[1-9]|10) *$
+//                                    : ^ *\"[^\"=+-/*]{1,10}\" *[*,/] *(?:[1-9]|10) *$
 
         if (expression.matches(
-                " *\"[a-zA-Z_0-9а-яА-ЯёЁ]{1,10}\" *[*,/] *(?:[1-9]|10) *$")) {
+                "^ *\"[^\"=+-/*]{1,10}\" *[*,/] *(?:[1-9]|10) *$")) {
 
             return (expression.indexOf('*') > -1) ?
                     MD.sMultiple(operand(expression, 1), operand(expression, 3)) :
@@ -83,16 +83,12 @@ public class SCalc {
         int lengthCt = cutToFindQuote.length();
 
         switch (pick) {
-            case 1 -> {
-                return cutToFindQuote.substring(0, quotePosition0);
-            }
+            case 1 -> {return cutToFindQuote.substring(0, quotePosition0);}
             case 2 -> {
                 int quotePosition1 = cutToFindQuote.substring(0, lengthCt - 1).lastIndexOf('\"');
                 return cutToFindQuote.substring(quotePosition1 + 1, lengthCt - 1);
             }
-            default -> {
-                return cutToFindQuote.substring(lengthCt - 2, lengthCt).trim();
-            }
+            default -> {return cutToFindQuote.substring(lengthCt - 2, lengthCt).trim();}
         }
     }
     //            В 2-х классах по 2 метода
