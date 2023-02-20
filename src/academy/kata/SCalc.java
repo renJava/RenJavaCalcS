@@ -59,8 +59,8 @@ public class SCalc {
                 "^ *\"[^\"+]{0,10}\" *[+,-] *\"[^\"+]{0,10}\" *")) {
 
             return (expression.indexOf('+') > -1) ?
-                    Pm.sAdd(cutOperand(expression, 1), (cutOperand(expression, 2))) :
-                    Pm.sSubtract(cutOperand(expression, 1), (cutOperand(expression, 2)));
+                    Pm.sAdd(findQuotePosition(expression, 1), (findQuotePosition(expression, 2))) :
+                    Pm.sSubtract(findQuotePosition(expression, 1), (findQuotePosition(expression, 2)));
         }
 //                                      Умножение и деление
 
@@ -71,24 +71,24 @@ public class SCalc {
                 "^ *\"[^\"*]{0,10}\" *[*,/] *(?:[1-9]|10) *$")) {
 
             return (expression.indexOf('*') > -1) ?
-                    Md.sMultiply(cutOperand(expression, 1), cutOperand(expression, 3)) :
-                    Md.sDivide(cutOperand(expression, 1), cutOperand(expression, 3));
+                    Md.sMultiply(findQuotePosition(expression, 1), findQuotePosition(expression, 3)) :
+                    Md.sDivide(findQuotePosition(expression, 1), findQuotePosition(expression, 3));
         }
         return INPUT_ERROR;
     }
 
     //        Метод в case возвращает все операнды классов
-    static String cutOperand(String workingExpression, int pick) {
+    static String findQuotePosition(String workingExpression, int pick) {
         String trimExpressionPM = workingExpression.trim();
 
         String cutToFindQuote = trimExpressionPM.substring(1);
         int quotePosition0 = cutToFindQuote.indexOf('\"');
         int lengthCt = cutToFindQuote.length();
+        int quotePosition1 = cutToFindQuote.substring(0, lengthCt - 1).lastIndexOf('\"');
 
         switch (pick) {
             case 1 -> {return cutToFindQuote.substring(0, quotePosition0);}                 // Первый операнд
             case 2 -> {                                                                     // Второй операнд
-                int quotePosition1 = cutToFindQuote.substring(0, lengthCt - 1).lastIndexOf('\"');
                 return cutToFindQuote.substring(quotePosition1 + 1, lengthCt - 1);
             }
             default -> {return cutToFindQuote.substring(lengthCt - 2, lengthCt).trim();}    // Числовой операнд
