@@ -57,16 +57,18 @@ public class SCalc {
 
         if (expression.matches(
                 "^ *\"[^\"+]{0,10}\" *[+,-] *\"[^\"+]{0,10}\" *")) {
-            int[] controlCharsPositions = new int[3];
-            controlCharsPositions = findControlCharsPositions(expression, '+');
+            int[] controlCharsPositions = findControlCharsPositions(expression, '+');
             int operator = controlCharsPositions[1];
-            String operand1 = expression.substring(0, controlCharsPositions[0]);
-            String operand2 = expression.substring(controlCharsPositions[0]);
+            String fullTrimS = fullTrim(expression);
+            int lengthCt = fullTrimS.length();
+            String operand1 = fullTrimS.substring(0, controlCharsPositions[0]);
+            String operand2 = fullTrimS.substring(controlCharsPositions[2]+1, lengthCt);
 
             return (operator > 0) ?
-                    Pm.sAdd(cutOperators(expression, 1), (cutOperators(expression, 2))) :
-                    Pm.sSubtract(cutOperators(expression, 1), (cutOperators(expression, 2)));
+                    Pm.sAdd(operand1, operand2) :
+                    Pm.sSubtract(operand1, operand2);
         }
+
 //                                      Умножение и деление
 
 //     Регулярное выражение для * и / : ^ *\"[a-zA-Z_0-9а-яА-ЯёЁ]{0,10}\"\s*[*,\/]\s*(?:[1-9]|10) *$
@@ -75,35 +77,50 @@ public class SCalc {
         if (expression.matches(
                 "^ *\"[^\"*]{0,10}\" *[*,/] *(?:[1-9]|10) *$")) {
 
-            return (expression.indexOf('*') > -1) ?
-                    Md.sMultiply(cutOperators(expression, 1), cutOperators(expression, 3)) :
-                    Md.sDivide(cutOperators(expression, 1), cutOperators(expression, 3));
+            int[] controlCharsPositions = findControlCharsPositions(expression, '*');
+            int operator = controlCharsPositions[1];
+            String fullTrimS = fullTrim(expression);
+            int lengthCt = fullTrimS.length();
+            String operand1 = fullTrimS.substring(0, controlCharsPositions[0]);
+            String operand2 = fullTrimS.substring(lengthCt - 2, lengthCt).trim();
+
+            return (operator > 0) ?
+                    Md.sMultiply(operand1, operand2) :
+                    Md.sDivide(operand1, operand2);
         }
         return INPUT_ERROR;
     }
 
-    //        Метод в case возвращает все операнды классов
+    //        Метод возвращает все операнды классов
     static int[] findControlCharsPositions(String workingExpression, char controlChar) {
-        String trimExpression = workingExpression.trim().substring(1);
-        int lengthCt = trimExpression.length();
-        String cutToQuote = trimExpression.substring(0, lengthCt-1);
+        String cutToQuote = fullTrim(workingExpression);
+        int lengthCt = cutToQuote.length();
         int [] controlCharPosition = new int[3];
         controlCharPosition[0] = cutToQuote.indexOf('\"');
         controlCharPosition[1] = cutToQuote.substring(controlCharPosition[0]).indexOf(controlChar);
         controlCharPosition[2] = cutToQuote.substring(0, lengthCt - 1).lastIndexOf('\"');
         return controlCharPosition;
     }
-
-
-    static String cutOperators(String workingExpression, int pick) {
-        switch (pick) {
-            case 1 -> {return cutToFindQuote.substring(0, quotePosition0);}                 // Первый операнд
-            case 2 -> {                                                                     // Второй операнд
-                return cutToFindQuote.substring(quotePosition1 + 1, lengthCt - 1);
-            }
-            default -> {return cutToFindQuote.substring(lengthCt - 2, lengthCt).trim();}    // Числовой операнд
-        }
+    static String fullTrim (String workingExpression) {
+        String trimExpression = workingExpression.trim().substring(1);
+        int lengthCt = trimExpression.length();
+        return trimExpression.substring(0, lengthCt);
     }
+
+
+//    public static String cutOperators(String workingExpression, int control, int pick) {
+//        String fullTrimS = fullTrim(workingExpression);
+//        int lengthCt = fullTrimS.length();
+//
+//        switch (pick) {
+//            case 1 -> {return fullTrimS.substring(0, control);}                 // Первый операнд
+//            case 2 -> {                                                                     // Второй операнд
+//                return fullTrimS.substring(control + 1, lengthCt - 1);
+//            }
+//            default -> {return fullTrimS.substring(lengthCt - 2, lengthCt).trim();}    // Числовой операнд
+//        }
+//    }
+
     //            В 2-х классах по 2 метода
     //          Блок сложения и вычитания
     private static class Pm {                                  //Сложение - конкатенация
