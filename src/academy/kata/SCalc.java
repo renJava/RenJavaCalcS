@@ -57,10 +57,15 @@ public class SCalc {
 
         if (expression.matches(
                 "^ *\"[^\"+]{0,10}\" *[+,-] *\"[^\"+]{0,10}\" *")) {
+            int[] controlCharsPositions = new int[3];
+            controlCharsPositions = findControlCharsPositions(expression, '+');
+            int operator = controlCharsPositions[1];
+            String operand1 = expression.substring(0, controlCharsPositions[0]);
+            String operand2 = expression.substring(controlCharsPositions[0]);
 
-            return (expression.indexOf('+') > -1) ?
-                    Pm.sAdd(findQuotePosition(expression, 1), (findQuotePosition(expression, 2))) :
-                    Pm.sSubtract(findQuotePosition(expression, 1), (findQuotePosition(expression, 2)));
+            return (operator > 0) ?
+                    Pm.sAdd(cutOperators(expression, 1), (cutOperators(expression, 2))) :
+                    Pm.sSubtract(cutOperators(expression, 1), (cutOperators(expression, 2)));
         }
 //                                      Умножение и деление
 
@@ -71,21 +76,26 @@ public class SCalc {
                 "^ *\"[^\"*]{0,10}\" *[*,/] *(?:[1-9]|10) *$")) {
 
             return (expression.indexOf('*') > -1) ?
-                    Md.sMultiply(findQuotePosition(expression, 1), findQuotePosition(expression, 3)) :
-                    Md.sDivide(findQuotePosition(expression, 1), findQuotePosition(expression, 3));
+                    Md.sMultiply(cutOperators(expression, 1), cutOperators(expression, 3)) :
+                    Md.sDivide(cutOperators(expression, 1), cutOperators(expression, 3));
         }
         return INPUT_ERROR;
     }
 
     //        Метод в case возвращает все операнды классов
-    static String findQuotePosition(String workingExpression, int pick) {
-        String trimExpressionPM = workingExpression.trim();
+    static int[] findControlCharsPositions(String workingExpression, char controlChar) {
+        String trimExpression = workingExpression.trim().substring(1);
+        int lengthCt = trimExpression.length();
+        String cutToQuote = trimExpression.substring(0, lengthCt-1);
+        int [] controlCharPosition = new int[3];
+        controlCharPosition[0] = cutToQuote.indexOf('\"');
+        controlCharPosition[1] = cutToQuote.substring(controlCharPosition[0]).indexOf(controlChar);
+        controlCharPosition[2] = cutToQuote.substring(0, lengthCt - 1).lastIndexOf('\"');
+        return controlCharPosition;
+    }
 
-        String cutToFindQuote = trimExpressionPM.substring(1);
-        int quotePosition0 = cutToFindQuote.indexOf('\"');
-        int lengthCt = cutToFindQuote.length();
-        int quotePosition1 = cutToFindQuote.substring(0, lengthCt - 1).lastIndexOf('\"');
 
+    static String cutOperators(String workingExpression, int pick) {
         switch (pick) {
             case 1 -> {return cutToFindQuote.substring(0, quotePosition0);}                 // Первый операнд
             case 2 -> {                                                                     // Второй операнд
