@@ -28,7 +28,7 @@ public class SCalc {
                     1-й операнд - всегда строчный - любая последовательность символов, c пробелами, но только без
                     трех управляющих символов:  " + *  и не более 10 символов между кавычками. Например: "e47#@&rgj~"
                     
-                    2-й операнд, как первый, но только при сложении и вычитании (+,-) и также в кавычках,
+                    2-й операнд, как первый, но только при сложении и вычитании (+,-) и также обернут в кавычки,
                     например: "$Yj@rgЁ1Ыi"
 
                     При умножении и делении (*,/) второй операнд - натуральное число <=10 - БЕЗ КАВЫЧЕК!!!.
@@ -59,8 +59,8 @@ public class SCalc {
                 "^ *\"[^\"+]{0,10}\" *[+,-] *\"[^\"+]{0,10}\" *")) {
 
             return (expression.indexOf('+') > -1) ?
-                    PM.sPlus(operand(expression, 1), (operand(expression, 2))) :
-                    PM.sCut(operand(expression, 1), (operand(expression, 2)));
+                    Pm.sAdd(cutOperand(expression, 1), (cutOperand(expression, 2))) :
+                    Pm.sSubtract(cutOperand(expression, 1), (cutOperand(expression, 2)));
         }
 //                                      Умножение и деление
 
@@ -71,14 +71,14 @@ public class SCalc {
                 "^ *\"[^\"*]{0,10}\" *[*,/] *(?:[1-9]|10) *$")) {
 
             return (expression.indexOf('*') > -1) ?
-                    MD.sMultiple(operand(expression, 1), operand(expression, 3)) :
-                    MD.sDivision(operand(expression, 1), operand(expression, 3));
+                    Md.sMultiply(cutOperand(expression, 1), cutOperand(expression, 3)) :
+                    Md.sDivide(cutOperand(expression, 1), cutOperand(expression, 3));
         }
         return INPUT_ERROR;
     }
 
     //        Метод в case возвращает все операнды классов
-    static String operand(String workingExpression, int pick) {
+    static String cutOperand(String workingExpression, int pick) {
         String trimExpressionPM = workingExpression.trim();
 
         String cutToFindQuote = trimExpressionPM.substring(1);
@@ -86,22 +86,22 @@ public class SCalc {
         int lengthCt = cutToFindQuote.length();
 
         switch (pick) {
-            case 1 -> {return cutToFindQuote.substring(0, quotePosition0);}
-            case 2 -> {
+            case 1 -> {return cutToFindQuote.substring(0, quotePosition0);}                 // Первый операнд
+            case 2 -> {                                                                     // Второй операнд
                 int quotePosition1 = cutToFindQuote.substring(0, lengthCt - 1).lastIndexOf('\"');
                 return cutToFindQuote.substring(quotePosition1 + 1, lengthCt - 1);
             }
-            default -> {return cutToFindQuote.substring(lengthCt - 2, lengthCt).trim();}
+            default -> {return cutToFindQuote.substring(lengthCt - 2, lengthCt).trim();}    // Числовой операнд
         }
     }
     //            В 2-х классах по 2 метода
     //          Блок сложения и вычитания
-    private static class PM {                                  //Сложение - конкатенация
-        static String sPlus(String a, String b) {
+    private static class Pm {                                  //Сложение - конкатенация
+        static String sAdd(String a, String b) {
             return a + b;
         }
 
-        static String sCut(String a, String b) {               //Вычитание
+        static String sSubtract(String a, String b) {               //Вычитание
 //      При Вычетании - вырезаем найденное слово из строки или возвращаем уменьшаемое обратно
             int substringBegin = a.indexOf(b);
             return (substringBegin > -1) ? a.substring(0, substringBegin) +
@@ -109,14 +109,14 @@ public class SCalc {
         }
     }
     //          Блок умножения и деления
-    private static class MD {
-        static String sMultiple(String a, String b) {          //Умножение
+    private static class Md {
+        static String sMultiply(String a, String b) {          //Умножение
 //      При Умножении - повторяем заданное слово b раз и обрезаем результат после 40-го символа
             String sMultiple = a.repeat(Integer.parseInt(b));
             return (sMultiple.length() <= 40) ? sMultiple : sMultiple.substring(0, 40) + "...";
         }
 
-        static String sDivision(String a, String b) {          //Деление
+        static String sDivide(String a, String b) {          //Деление
             int d = Integer.parseInt(b);
             return (a.length() >= d) ? a.substring(0, a.length() / d) : "Делитель больше делимого";
         }
