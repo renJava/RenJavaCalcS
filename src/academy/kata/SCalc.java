@@ -26,10 +26,10 @@ public class SCalc {
                     Вводите строчные операнды (не более 10 символов каждый). Начинайте ввод операнда строго с двойных
                     кавычек. Количество пробелов до, после, между, внутри операндов и операторов не лимитруется.
                     1-й операнд - всегда строчный - любая последовательность символов, c пробелами, но только без
-                    трех управляющих символов:  " + *  и не более 10 символов между кавычками. Например: "e47#@&rgj~"
-                    
-                    2-й операнд, как первый, но только при сложении и вычитании (+,-) и также обернут в кавычки,
-                    например: "$Yj@rgЁ1Ыi"
+                    одного управляющего символа см. в скобкых: (") и не более 10 символов между кавычками.
+                    Например: "e47#@&rgj~"
+                    2-й операнд, как первый, но только при сложении и вычитании (+,-) и также обернут в кавычки.
+                    Например: "$Yj@rgЁ1Ыi"
 
                     При умножении и делении (*,/) второй операнд - натуральное число <=10 - БЕЗ КАВЫЧЕК!!!.
                                         
@@ -56,19 +56,16 @@ public class SCalc {
 //                                      :^ *\"[^\"-+/*]{0,10}\" *[+,-] *\"[^\"-+/*]{0,10}" *
 
         if (expression.matches(
-                "^ *\"[^\"]{0,10}\" *[+,-] *\"[^\"+]{0,10}\" *")) {
+                "^ *\"[^\"]{0,10}\" *[+,-] *\"[^\"]{0,10}\" *")) {
 
-//      Принимаем из метода позиции внутренних кавычек, оператора и вырезаем операнды
+//      Принимаем из метода выражение без боковых пробелов и кавычек
             String fullTrimS = fullTrim(expression);
-            int[] controlCharsPositions = findControlCharsPositions(expression, '+');
-            int operator = controlCharsPositions[1];
-            int lengthCt = controlCharsPositions[3];
-            String operand1 = fullTrimS.substring(0, controlCharsPositions[0]);
-            String operand2 = fullTrimS.substring(controlCharsPositions[2]+1, lengthCt-1);
+            String[] operand = extract(fullTrimS, '+');
+            int operator = Integer.parseInt(operand[0]);
 
             return (operator > 0) ?
-                    Pm.sAdd(operand1, operand2) :
-                    Pm.sSubtract(operand1, operand2);
+                    Pm.sAdd(operand[1], operand[2]) :
+                    Pm.sSubtract(operand[1], operand[2]);
         }
 
 //                                      Умножение и деление
@@ -80,32 +77,34 @@ public class SCalc {
                 "^ *\"[^\"]{0,10}\" *[*,/] *(?:[1-9]|10) *$")) {
 
             String fullTrimS = fullTrim(expression);
-            int[] controlCharsPositions = findControlCharsPositions(expression, '*');
-            int operator = controlCharsPositions[1];
-            int lengthCt = controlCharsPositions[3];
-            String operand1 = fullTrimS.substring(0, controlCharsPositions[0]);
-            String operand2 = fullTrimS.substring(lengthCt - 2, lengthCt).trim();
+            String[] operand = extract(fullTrimS, '*');
+            int operator = Integer.parseInt(operand[0]);
 
             return (operator > 0) ?
-                    Md.sMultiply(operand1, operand2) :
-                    Md.sDivide(operand1, operand2);
+                    Md.sMultiply(operand[1], operand[2]) :
+                    Md.sDivide(operand[1], operand[2]);
         }
         return INPUT_ERROR;
     }
 
 //        Метод возвращает контрольные символы в массив: внутренние кавычки (1!2), оператор и длинну выражения
-    static int[] findControlCharsPositions(String workingExpression, char controlChar) {
-        String cutToQuote = fullTrim(workingExpression); //Принимаем тело выражения
-        int lengthCt = cutToQuote.length();
-        int [] controlCharPosition = new int[4];
-        controlCharPosition[0] = cutToQuote.indexOf('\"');
-        controlCharPosition[1] = cutToQuote.substring(controlCharPosition[0]).indexOf(controlChar);
-        controlCharPosition[2] = cutToQuote.substring(0, lengthCt - 1).lastIndexOf('\"');
-        controlCharPosition[3] = lengthCt;
-        return controlCharPosition;
+    static String[] extract (String workingExpression, char controlChar) {
+//        String cutToQuote = fullTrim(workingExpression); //Принимаем тело выражения
+        int lengthCt = workingExpression.length();
+        String[] operand = new String[3];
+        int quotePos0 = workingExpression.indexOf('\"');
+        operand[0] = String.valueOf(workingExpression.substring(quotePos0).indexOf(controlChar));
+        int quotePos1 = workingExpression.substring(0, lengthCt - 1).lastIndexOf('\"');
+        operand[1] = workingExpression.substring(0, quotePos0);
+
+        switch (controlChar){
+            case '+' -> operand[2] = workingExpression.substring(quotePos1+1, lengthCt-1);
+            default  -> operand[2] = workingExpression.substring(lengthCt - 2, lengthCt).trim();
+        }
+        return operand;
     }
 
-//    Метод вырезает и возвращает тело выражения
+//    Вырезает и возвращает тело выражения
     static String fullTrim (String workingExpression) {
       String trimExpression = workingExpression.trim().substring(1); //Отбрасываем боковые пробелы начальную "
       int lengthCt = trimExpression.length();
