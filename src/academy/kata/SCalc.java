@@ -56,13 +56,13 @@ public class SCalc {
 //                                      :^ *\"[^\"-+/*]{0,10}\" *[+,-] *\"[^\"-+/*]{0,10}" *
 
         if (expression.matches(
-                "^ *\"[^\"+]{0,10}\" *[+,-] *\"[^\"+]{0,10}\" *")) {
+                "^ *\"[^\"]{0,10}\" *[+,-] *\"[^\"+]{0,10}\" *")) {
             int[] controlCharsPositions = findControlCharsPositions(expression, '+');
             int operator = controlCharsPositions[1];
             String fullTrimS = fullTrim(expression);
             int lengthCt = fullTrimS.length();
             String operand1 = fullTrimS.substring(0, controlCharsPositions[0]);
-            String operand2 = fullTrimS.substring(controlCharsPositions[2]+1, lengthCt);
+            String operand2 = fullTrimS.substring(controlCharsPositions[2]+1, lengthCt-1);
 
             return (operator > 0) ?
                     Pm.sAdd(operand1, operand2) :
@@ -75,7 +75,7 @@ public class SCalc {
 //                                    : ^ *\"[^\"]{0,10}\" *[*,/] *(?:[1-9]|10) *$
 
         if (expression.matches(
-                "^ *\"[^\"*]{0,10}\" *[*,/] *(?:[1-9]|10) *$")) {
+                "^ *\"[^\"]{0,10}\" *[*,/] *(?:[1-9]|10) *$")) {
 
             int[] controlCharsPositions = findControlCharsPositions(expression, '*');
             int operator = controlCharsPositions[1];
@@ -106,20 +106,6 @@ public class SCalc {
         int lengthCt = trimExpression.length();
         return trimExpression.substring(0, lengthCt);
     }
-
-
-//    public static String cutOperators(String workingExpression, int control, int pick) {
-//        String fullTrimS = fullTrim(workingExpression);
-//        int lengthCt = fullTrimS.length();
-//
-//        switch (pick) {
-//            case 1 -> {return fullTrimS.substring(0, control);}                 // Первый операнд
-//            case 2 -> {                                                                     // Второй операнд
-//                return fullTrimS.substring(control + 1, lengthCt - 1);
-//            }
-//            default -> {return fullTrimS.substring(lengthCt - 2, lengthCt).trim();}    // Числовой операнд
-//        }
-//    }
 
     //            В 2-х классах по 2 метода
     //          Блок сложения и вычитания
