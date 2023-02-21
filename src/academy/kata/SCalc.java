@@ -57,10 +57,11 @@ public class SCalc {
 
         if (expression.matches(
                 "^ *\"[^\"]{0,10}\" *[+,-] *\"[^\"+]{0,10}\" *")) {
+
+            String fullTrimS = fullTrim(expression);
             int[] controlCharsPositions = findControlCharsPositions(expression, '+');
             int operator = controlCharsPositions[1];
-            String fullTrimS = fullTrim(expression);
-            int lengthCt = fullTrimS.length();
+            int lengthCt = controlCharsPositions[3];
             String operand1 = fullTrimS.substring(0, controlCharsPositions[0]);
             String operand2 = fullTrimS.substring(controlCharsPositions[2]+1, lengthCt-1);
 
@@ -77,10 +78,10 @@ public class SCalc {
         if (expression.matches(
                 "^ *\"[^\"]{0,10}\" *[*,/] *(?:[1-9]|10) *$")) {
 
+            String fullTrimS = fullTrim(expression);
             int[] controlCharsPositions = findControlCharsPositions(expression, '*');
             int operator = controlCharsPositions[1];
-            String fullTrimS = fullTrim(expression);
-            int lengthCt = fullTrimS.length();
+            int lengthCt = controlCharsPositions[3];
             String operand1 = fullTrimS.substring(0, controlCharsPositions[0]);
             String operand2 = fullTrimS.substring(lengthCt - 2, lengthCt).trim();
 
@@ -95,10 +96,11 @@ public class SCalc {
     static int[] findControlCharsPositions(String workingExpression, char controlChar) {
         String cutToQuote = fullTrim(workingExpression);
         int lengthCt = cutToQuote.length();
-        int [] controlCharPosition = new int[3];
+        int [] controlCharPosition = new int[4];
         controlCharPosition[0] = cutToQuote.indexOf('\"');
         controlCharPosition[1] = cutToQuote.substring(controlCharPosition[0]).indexOf(controlChar);
         controlCharPosition[2] = cutToQuote.substring(0, lengthCt - 1).lastIndexOf('\"');
+        controlCharPosition[3] = lengthCt;
         return controlCharPosition;
     }
     static String fullTrim (String workingExpression) {
