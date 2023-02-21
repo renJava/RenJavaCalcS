@@ -58,6 +58,7 @@ public class SCalc {
         if (expression.matches(
                 "^ *\"[^\"]{0,10}\" *[+,-] *\"[^\"+]{0,10}\" *")) {
 
+//      Принимаем из метода позиции внутренних кавычек, оператора и вырезаем операнды
             String fullTrimS = fullTrim(expression);
             int[] controlCharsPositions = findControlCharsPositions(expression, '+');
             int operator = controlCharsPositions[1];
@@ -92,9 +93,9 @@ public class SCalc {
         return INPUT_ERROR;
     }
 
-    //        Метод возвращает все операнды классов
+//        Метод возвращает контрольные символы в массив: внутренние кавычки (1!2), оператор и длинну выражения
     static int[] findControlCharsPositions(String workingExpression, char controlChar) {
-        String cutToQuote = fullTrim(workingExpression);
+        String cutToQuote = fullTrim(workingExpression); //Принимаем тело выражения
         int lengthCt = cutToQuote.length();
         int [] controlCharPosition = new int[4];
         controlCharPosition[0] = cutToQuote.indexOf('\"');
@@ -103,10 +104,12 @@ public class SCalc {
         controlCharPosition[3] = lengthCt;
         return controlCharPosition;
     }
+
+//    Метод вырезает и возвращает тело выражения
     static String fullTrim (String workingExpression) {
-        String trimExpression = workingExpression.trim().substring(1);
-        int lengthCt = trimExpression.length();
-        return trimExpression.substring(0, lengthCt);
+      String trimExpression = workingExpression.trim().substring(1); //Отбрасываем боковые пробелы начальную "
+      int lengthCt = trimExpression.length();
+      return trimExpression.substring(0, lengthCt);
     }
 
     //            В 2-х классах по 2 метода
