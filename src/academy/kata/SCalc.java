@@ -24,7 +24,7 @@ public class SCalc {
                         Правила ввода:
                                                     
                     Вводите строчные операнды (не более 10 символов каждый). Начинайте ввод операнда строго с двойных
-                    кавычек. Количество пробелов до, после, между, внутри операндов и операторов не лимитруется.
+                    кавычек. Количество пробелов до, после, между, внутри операндов и операторов не лимитируется.
                     1-й операнд - всегда строчный - любая последовательность символов, c пробелами, но только без
                     трех управляющих символов:  " + *  и не более 10 символов между кавычками. Например: "e47#@&rgj~"
                     
@@ -79,19 +79,18 @@ public class SCalc {
 
     //        Метод в case возвращает все операнды классов
     static String findQuotePosition(String workingExpression, int pick) {
-        String trimExpressionPM = workingExpression.trim();
+        String trimExpression = workingExpression.trim();
 
-        String cutToFindQuote = trimExpressionPM.substring(1);
-        int quotePosition0 = cutToFindQuote.indexOf('\"');
-        int lengthCt = cutToFindQuote.length();
-        int quotePosition1 = cutToFindQuote.substring(0, lengthCt - 1).lastIndexOf('\"');
+        int quotePosition0 = trimExpression.substring(1).indexOf('\"', 1);
+        int lengthT = trimExpression.length();
+        int quotePosition1 = trimExpression.substring(1, lengthT - 1).lastIndexOf('\"');
 
         switch (pick) {
-            case 1 -> {return cutToFindQuote.substring(0, quotePosition0);}                 // Первый операнд
-            case 2 -> {                                                                     // Второй операнд
-                return cutToFindQuote.substring(quotePosition1 + 1, lengthCt - 1);
+            case 1 -> {return trimExpression.substring(1, quotePosition0+1);}             // Первый строковый операнд
+            case 2 -> {
+                return trimExpression.substring(quotePosition1 + 2, lengthT - 1);           // Второй строковый операнд
             }
-            default -> {return cutToFindQuote.substring(lengthCt - 2, lengthCt).trim();}    // Числовой операнд
+            default -> {return trimExpression.substring(lengthT - 3, lengthT).trim();}   // Числовой операнд
         }
     }
     //            В 2-х классах по 2 метода
