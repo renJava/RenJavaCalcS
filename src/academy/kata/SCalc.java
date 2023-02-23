@@ -59,8 +59,8 @@ public class SCalc {
                 "^ *\"[^\"+]{0,10}\" *[+,-] *\"[^\"+]{0,10}\" *")) {
 
             return (expression.indexOf('+') > -1) ?
-                    Pm.sAdd(findQuotePosition(expression, 1), (findQuotePosition(expression, 2))) :
-                    Pm.sSubtract(findQuotePosition(expression, 1), (findQuotePosition(expression, 2)));
+                    Pm.sAdd(findSpSimbolPos(expression, 1), (findSpSimbolPos(expression, 2))) :
+                    Pm.sSubtract(findSpSimbolPos(expression, 1), (findSpSimbolPos(expression, 2)));
         }
 //                                      Умножение и деление
 
@@ -71,14 +71,14 @@ public class SCalc {
                 "^ *\"[^\"*]{0,10}\" *[*,/] *(?:[1-9]|10) *$")) {
 
             return (expression.indexOf('*') > -1) ?
-                    Md.sMultiply(findQuotePosition(expression, 1), findQuotePosition(expression, 3)) :
-                    Md.sDivide(findQuotePosition(expression, 1), findQuotePosition(expression, 3));
+                    Md.sMultiply(findSpSimbolPos(expression, 1), findSpSimbolPos(expression, 3)) :
+                    Md.sDivide(findSpSimbolPos(expression, 1), findSpSimbolPos(expression, 3));
         }
         return INPUT_ERROR;
     }
 
     //        Метод в case возвращает все операнды классов
-    static String findQuotePosition(String workingExpression, int pick) {
+    static String findSpSimbolPos(String workingExpression, int pick) {
         String trimExpression = workingExpression.trim();
 
         int quotePosition0 = trimExpression.substring(1).indexOf('\"', 1);
@@ -90,7 +90,7 @@ public class SCalc {
             case 2 -> {
                 return trimExpression.substring(quotePosition1 + 2, lengthT - 1);           // Второй строковый операнд
             }
-            default -> {return trimExpression.substring(lengthT - 3, lengthT).trim();}   // Числовой операнд
+            default -> {return trimExpression.substring(lengthT - 2, lengthT).trim();}   // Числовой операнд
         }
     }
     //            В 2-х классах по 2 метода
