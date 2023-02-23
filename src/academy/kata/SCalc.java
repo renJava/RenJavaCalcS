@@ -5,12 +5,12 @@ import java.util.Scanner;
 import static java.lang.System.in;
 import static java.lang.System.out;
 
-//  "654Ъiё~gh" + "e47#@&rgj"     //            //   "5/*ё~gh" + "/*"     //
-//    "$Yj@rgЁ1Ыi" - "^ej%rgЁ1"     //          //    "" - "^ej%rgЁ1"     //
+//  "654Ъiё~+h" + "e47#@&+gj"     //             //   "5/*ё~gh" + "/*"     //
+//    "$Yj@rgЁ1Ыi" - "^ej%rgЁ1"   //             //    "" - "^ej%rgЁ1"     //
 //    "Yej!~Ё 2Ыы" - "ej!~Ё 2"    //
-//    "&(jrg&)" *   10             //            //    ""    *   9         //
-//         "<Ёёe2^!`~V" / 10      //            //         "<Ёёe2^+-Vы" / 10      //
-//      "47rgЫЁё" /      2           //         //      "00" /      2           //
+//    "&(jrg&)" *   10            //             //    ""    *   9         //
+//         "<Ёёe2^!`~V" /   10    //             //         "<Ёёe2^+-Vы" / 10      //
+//      "47rgЫЁё" /      2        //             //      "00" /      2           //
 
 public class SCalc {
     static final String INPUT_ERROR = "!!!Некорректный ввод!!!";
@@ -24,9 +24,9 @@ public class SCalc {
                         Правила ввода:
                                                     
                     Вводите строчные операнды (не более 10 символов каждый). Начинайте ввод операнда строго с двойных
-                    кавычек. Количество пробелов до, после, между, внутри операндов и операторов не лимитруется.
+                    кавычек. Количество пробелов до, после, между, внутри операндов и операторов не лимитируется.
                     1-й операнд - всегда строчный - любая последовательность символов, c пробелами, но только без
-                    одного управляющего символа см. в скобкых: (") и не более 10 символов между кавычками.
+                    одного управляющего символа см. в скобках: (") и не более 10 символов между кавычками.
                     Например: "e47#@&rgj~"
                     2-й операнд, как первый, но только при сложении и вычитании (+,-) и также обернут в кавычки.
                     Например: "$Yj@rgЁ1Ыi"
@@ -97,10 +97,15 @@ public class SCalc {
         int quotePos1 = workingExpression.substring(0, lengthCt - 1).lastIndexOf('\"');
         operand[1] = workingExpression.substring(0, quotePos0);
 
-        switch (controlChar){
-            case '+' -> operand[2] = workingExpression.substring(quotePos1+1, lengthCt-1);
-            default  -> operand[2] = workingExpression.substring(lengthCt - 2, lengthCt).trim();
-        }
+        if (controlChar == '+') {operand[2] = workingExpression.substring(quotePos1 + 1, lengthCt - 1);}
+        else {operand[2] = workingExpression.substring(lengthCt - 2, lengthCt).trim();}
+
+//        switch (controlChar){
+//            case '+' -> operand[2] = workingExpression.substring(quotePos1+1, lengthCt-1);
+//            default  -> operand[2] = workingExpression.substring(lengthCt - 2, lengthCt).trim();
+//        }
+
+
         return operand;
     }
 
