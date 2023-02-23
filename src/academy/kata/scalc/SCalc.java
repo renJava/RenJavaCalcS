@@ -1,4 +1,4 @@
-package academy.kata;
+package academy.kata.scalc;
 
 import java.util.Scanner;
 
@@ -93,7 +93,7 @@ public class SCalc {
         int lengthCt = workingExpression.length();
         String[] operand = new String[3];
         int quotePos0 = workingExpression.indexOf('\"');
-        operand[0] = String.valueOf(workingExpression.substring(quotePos0).indexOf(controlChar));
+        operand[0] = String.valueOf(workingExpression.indexOf(controlChar, quotePos0));
         int quotePos1 = workingExpression.substring(0, lengthCt - 1).lastIndexOf('\"');
         operand[1] = workingExpression.substring(0, quotePos0);
 

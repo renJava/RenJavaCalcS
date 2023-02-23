@@ -1,4 +1,4 @@
-package academy.kata.test;
+package academy.kata.examtest;
 
 import java.util.Scanner;
 
