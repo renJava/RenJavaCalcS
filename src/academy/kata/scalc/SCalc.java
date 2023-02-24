@@ -29,7 +29,7 @@ public class SCalc {
                     одного управляющего символа см. в скобках: (") и не более 10 символов между кавычками.
                     Например: "e47#@&rgj~"
                     2-й операнд, как первый, но только при сложении и вычитании (+,-) и также обернут в кавычки.
-                    Например: "$Yj@rgЁ1Ыi"
+                    Например: "$Yj@rgЁ1Ыi". Причем 2-й операнд должен быть отделен от оператора хотя бы одним пробелом.
 
                     При умножении и делении (*,/) второй операнд - натуральное число <=10 - БЕЗ КАВЫЧЕК!!!.
                                         
@@ -74,7 +74,7 @@ public class SCalc {
 //                                    : ^ *\"[^\"]{0,10}\" *[*,/] *(?:[1-9]|10) *$
 
         if (expression.matches(
-                "^ *\"[^\"]{0,10}\" *[*,/] *(?:[1-9]|10) *$")) {
+                "^ *\"[^\"]{0,10}\" *[*,/] +(?:[1-9]|10) *$")) {
 
             String fullTrimS = fullTrim(expression);
             String[] operand = extract(fullTrimS, '*');
@@ -90,21 +90,16 @@ public class SCalc {
 //        Метод возвращает контрольные символы в массив: внутренние кавычки (1!2), оператор и длинну выражения
     static String[] extract (String workingExpression, char controlChar) {
 //        String cutToQuote = fullTrim(workingExpression); //Принимаем тело выражения
-        int lengthCt = workingExpression.length();
+        int lengthT = workingExpression.length();
         String[] operand = new String[3];
         int quotePos0 = workingExpression.indexOf('\"');
-        operand[0] = String.valueOf(workingExpression.indexOf(controlChar, quotePos0));
-        int quotePos1 = workingExpression.substring(0, lengthCt - 1).lastIndexOf('\"');
+        int operator = workingExpression.indexOf(controlChar, quotePos0);
+        operand[0] = String.valueOf(operator);
+        int quotePos1 = workingExpression.substring(0, lengthT - 1).lastIndexOf('\"');
         operand[1] = workingExpression.substring(0, quotePos0);
 
-        if (controlChar == '+') {operand[2] = workingExpression.substring(quotePos1 + 1, lengthCt - 1);}
-        else {operand[2] = workingExpression.substring(lengthCt - 2, lengthCt).trim();}
-
-//        switch (controlChar){
-//            case '+' -> operand[2] = workingExpression.substring(quotePos1+1, lengthCt-1);
-//            default  -> operand[2] = workingExpression.substring(lengthCt - 2, lengthCt).trim();
-//        }
-
+        if (controlChar == '+') {operand[2] = workingExpression.substring(quotePos1 + 1, lengthT - 1);}
+        else {operand[2] = workingExpression.substring(lengthT - 2, lengthT).trim();}
 
         return operand;
     }
