@@ -48,6 +48,7 @@ public class SCalc {
 
 //     Регулярное выражение для + и - 1 : *\"[a-zA-Z_0-9а-яА-ЯёЁ]{0,10}\" *[+,-] *\"[a-zA-Z_0-9а-яА-ЯёЁ]{0,10}\" *
 //                                      :^ *\"[^\"-+/*]{0,10}\" *[+,-] *\"[^\"-+/*]{0,10}" *
+//                                      :^ *\"[^\"]{0,10}\" *[+,-] *\"[^\"]{0,10}\" *"
         String[] cutEx = fullTrim(expression);
         String operator = cutEx[3];
 
@@ -56,6 +57,9 @@ public class SCalc {
 
             return operator.equals("+") ? Pm.sAdd(cutEx[1], cutEx[2]) : Pm.sSubtract(cutEx[1], cutEx[2]);
         }
+//     Регулярное выражение для * и / : ^ *\"[a-zA-Z_0-9а-яА-ЯёЁ]{0,10}\"\s*[*,\/]\s*(?:[1-9]|10) *$
+//                                    : ^ *\"[^\"]{0,10}\" *[*,/] *(?:[1-9]|10) *$
+//                                    : ^ *"[^"]{0,10}" *[*,/] *(?:[1-9]|10) *$
         if (expression.matches(
                 "^ *\"[^\"]{0,10}\" *[*,/] *(?:[1-9]|10) *$")) {
 
@@ -67,7 +71,7 @@ public class SCalc {
     //    Вырезать и вернуть операнды и оператор
     private static String[] fullTrim(String workExpression) {
         String[] trimEx = new String[4];
-        trimEx[0] = workExpression.trim().substring(1);             //Отбрасываем боковые пробелы и первую (")
+        trimEx[0] = workExpression.trim().substring(1);         //Отбрасываем боковые пробелы и первую кавычку
         int lengthT = trimEx[0].length();
         int quote1 = trimEx[0].indexOf("\"");
         trimEx[1] = trimEx[0].substring(0, quote1);                                      //Первый операнд
