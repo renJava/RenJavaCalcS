@@ -1,4 +1,4 @@
-package academy.kata;
+package academy.kata.scalc;
 
 import java.util.Scanner;
 
@@ -6,11 +6,11 @@ import static java.lang.System.in;
 import static java.lang.System.out;
 
 //  "654Ъiё~gh" + "e47#@&rgj"     //            //   "5/*ё~gh" + "/*"     //
-//    "$Yj@rgЁ1Ыi" - "^ej%rgЁ1"     //          //    "" - "^ej%rgЁ1"     //
+//    "$Yj@rgЁ1Ыi" - "^ej%rgЁ1"   //            //    "" - "^ej%rgЁ1"     //
 //    "Yej!~Ё 2Ыы" - "ej!~Ё 2"    //
-//    "&(jrg&)" *   10             //            //    ""    *   9         //
+//    "&(jrg&)" *   10            //            //    ""    *   9         //
 //         "<Ёёe2^!`~V" / 10      //            //         "<Ёёe2^+-Vы" / 10      //
-//      "47rgЫЁё" /      2           //         //      "00" /      2           //
+//      "47rgЫЁё" /      2        //            //      "00" /      2           //
 
 public class SCalc {
     static final String INPUT_ERROR = "!!!Некорректный ввод!!!";
@@ -29,7 +29,7 @@ public class SCalc {
                     трех управляющих символов:  " + *  и не более 10 символов между кавычками. Например: "e47#@&rgj~"
                     
                     2-й операнд, как первый, но только при сложении и вычитании (+,-) и также обернут в кавычки,
-                    например: "$Yj@rgЁ1Ыi"
+                    например: "$Yj@rgЁ1Ыi". После оператора должен быть отступ хотя бы в пробел.
 
                     При умножении и делении (*,/) второй операнд - натуральное число <=10 - БЕЗ КАВЫЧЕК!!!.
                                         
@@ -68,7 +68,7 @@ public class SCalc {
 //                                    : ^ *\"[^\"]{0,10}\" *[*,/] *(?:[1-9]|10) *$
 
         if (expression.matches(
-                "^ *\"[^\"*]{0,10}\" *[*,/] *(?:[1-9]|10) *$")) {
+                "^ *\"[^\"*]{0,10}\" *[*,/] +(?:[1-9]|10) *$")) {
 
             return (expression.indexOf('*') > -1) ?
                     Md.sMultiply(findSpSimbolPos(expression, 1), findSpSimbolPos(expression, 3)) :
@@ -88,9 +88,9 @@ public class SCalc {
         switch (pick) {
             case 1 -> {return trimExpression.substring(1, quotePosition0+1);}             // Первый строковый операнд
             case 2 -> {
-                return trimExpression.substring(quotePosition1 + 2, lengthT - 1);           // Второй строковый операнд
+                return trimExpression.substring(quotePosition1 + 2, lengthT - 1);         // Второй строковый операнд
             }
-            default -> {return trimExpression.substring(lengthT - 2, lengthT).trim();}   // Числовой операнд
+            default -> {return trimExpression.substring(lengthT - 2, lengthT).trim();}    // Числовой операнд
         }
     }
     //            В 2-х классах по 2 метода
