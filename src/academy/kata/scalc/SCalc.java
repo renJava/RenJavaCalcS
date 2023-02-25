@@ -20,8 +20,9 @@ public class SCalc {
 
                         Правила ввода:
                                                     
-                    Вводите строчные операнды (не более 10 символов каждый). Начинайте ввод операнда строго с двойных
-                    кавычек. Количество пробелов до, после, между, внутри операндов и операторов не лимитируется.
+                    Вводите строчные операнды (не более 10 символов каждый). После пробелов и табуляций начинайте ввод
+                    операнда строго с двойных кавычек. Количество пробелов и табуляций до, после, между, внутри
+                    операндов и операторов не лимитируется.
                     1-й операнд - всегда строчный - любая последовательность символов, c пробелами, кроме управляющего
                     символа см. в скобках: (") и не более 10 символов между кавычками.
                     Например: "e47#@+*/-~"
@@ -38,41 +39,34 @@ public class SCalc {
             validateIn = isValidate(expression);
             out.println("\n\"" + validateIn + "\"");
             if (validateIn.equals(INPUT_ERROR)) {
-                out.println("\nПовторите, пожалуйста, ввод.\n");
+                out.println("\nПовторите, пожалуйста, ввод.");
             }
         }
         while (validateIn.equals(INPUT_ERROR));
     }
 
     static String isValidate(String expression) {          //Проверка корректности ввода
-
 //     Регулярное выражение для + и -   : *\"[a-zA-Z_0-9а-яА-ЯёЁ]{0,10}\" *[+,-] *\"[a-zA-Z_0-9а-яА-ЯёЁ]{0,10}\" *
 //   :^ *\"[^\"]{0,10}\" *[+,-] *\"[^\"]{0,10}\" *"    :^[ \t]*"[^"]{0,10}"[ \t]*[+,-][ \t]*"[^"]{0,10}"[ \t]*
-
 //     Регулярное выражение для * и / : ^ *\"[a-zA-Z_0-9а-яА-ЯёЁ]{0,10}\"\s*[*,\/]\s*(?:[1-9]|10) *$
 //    : ^ *"[^"]{0,10}" *[*,/] *(?:[1-9]|10) *$    : ^[ \t]*\"[^\"]{0,10}\"[ |\t]*[*,/][ \т](?:[1-9]|10)[ \t]*$"
 
         String regexPm = "^[ \t]*\"[^\"]{0,10}\"[ \t]*[+,-][ \t]*\"[^\"]{0,10}\"[ \t]*"; //Регулярка +- в "" <= 10 симв.
         String regexMd = "^[ \t]*\"[^\"]{0,10}\"[ \t]*[*,/][ \t]*(?:[1-9]|10)[ \t]*$";   //Регулярка */ в "" <= 10 симв.
 
-        if (expression.matches(regexPm)) {
+        if (expression.matches(regexPm) || (expression.matches(regexMd))) {
 
             String[] cutEx = fullTrim(expression);
             String operator = cutEx[3];
 
-            return operator.equals("+") ? Pm.sAdd(cutEx[1], cutEx[2]) : Pm.sSubtract(cutEx[1], cutEx[2]);
-        }
-
-        if (expression.matches(regexMd)) {
-
-            String[] cutEx = fullTrim(expression);
-            String operator = cutEx[3];
-
-            return operator.equals("*") ? Md.sMultiply(cutEx[1], cutEx[2]) : Md.sDivide(cutEx[1], cutEx[2]);
+            return switch (operator) {
+                case "+" -> Pm.sAdd(cutEx[1], cutEx[2]);                case "-" -> Pm.sSubtract(cutEx[1], cutEx[2]);
+                case "*" -> Md.sMultiply(cutEx[1], cutEx[2]);           default -> Md.sDivide(cutEx[1], cutEx[2]);
+            };
         }
         return INPUT_ERROR;
-
     }
+
     //    Вырезать и вернуть операнды и оператор
     private static String[] fullTrim(String workExpression) {
         String[] trimEx = new String[4];
@@ -119,6 +113,5 @@ public class SCalc {
             int d = Integer.parseInt(b);
             return (a.length() >= d) ? a.substring(0, a.length() / d) : "Делитель больше делимого";
         }
-
     }
 }
