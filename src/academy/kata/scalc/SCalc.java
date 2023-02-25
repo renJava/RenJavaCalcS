@@ -81,7 +81,7 @@ public class SCalc {
             trimEx[3] = trimEx[0].substring(quote1+1, quote2-1).trim();                  //Оператор
         } else {
             String operatorAndInt = trimEx[0].substring(quote1+1, lengthT).trim();       //Поле оператора с числом/
-            trimEx[3] = String.valueOf(operatorAndInt.charAt(0));                        //Чистый оператор * или /
+            trimEx[3] = String.valueOf(operatorAndInt.charAt(0));                        //Чистый оператор
             trimEx[2] = operatorAndInt.substring(1).trim();                     //Числовой оператор
         }
         return trimEx;
