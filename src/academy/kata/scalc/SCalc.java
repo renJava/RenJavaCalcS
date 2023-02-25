@@ -49,11 +49,10 @@ public class SCalc {
 //     Регулярное выражение для + и - 1 : *\"[a-zA-Z_0-9а-яА-ЯёЁ]{0,10}\" *[+,-] *\"[a-zA-Z_0-9а-яА-ЯёЁ]{0,10}\" *
 //                                      :^ *\"[^\"-+/*]{0,10}\" *[+,-] *\"[^\"-+/*]{0,10}" *
 //                                      :^ *\"[^\"]{0,10}\" *[+,-] *\"[^\"]{0,10}\" *"
-        String[] cutEx = fullTrim(expression);
-        String operator = cutEx[3];
-
         if (expression.matches(
-                "^ *\"[^\"]{0,10}\" *[+,-] *\"[^\"]{0,10}\" *")) {
+                "^( |\t)*\"[^\"]{0,10}\"( |\t)*[+,-]( |\t)*\"[^\"]{0,10}\"( |\t)*")) {
+            String[] cutEx = fullTrim(expression);
+            String operator = cutEx[3];
 
             return operator.equals("+") ? Pm.sAdd(cutEx[1], cutEx[2]) : Pm.sSubtract(cutEx[1], cutEx[2]);
         }
@@ -61,7 +60,9 @@ public class SCalc {
 //                                    : ^ *\"[^\"]{0,10}\" *[*,/] *(?:[1-9]|10) *$
 //                                    : ^ *"[^"]{0,10}" *[*,/] *(?:[1-9]|10) *$
         if (expression.matches(
-                "^ *\"[^\"]{0,10}\" *[*,/] *(?:[1-9]|10) *$")) {
+                "^( |\t)*\"[^\"]{0,10}\"( |\t)*[*,/]( |\t)*(?:[1-9]|10)( |\t)*$")) {
+            String[] cutEx = fullTrim(expression);
+            String operator = cutEx[3];
 
             return operator.equals("*") ? Md.sMultiply(cutEx[1], cutEx[2]) : Md.sDivide(cutEx[1], cutEx[2]);
         }
