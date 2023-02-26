@@ -20,9 +20,10 @@ public class SCalc {
 
                         Правила ввода:
                                                     
-                    Вводите строчные операнды (не более 10 символов каждый). После пробелов и табуляций начинайте ввод
-                    операнда строго с двойных кавычек. Количество пробелов и табуляций до, после, между, внутри
-                    операндов и операторов не лимитируется.
+                    Вводите строчные операнды (не более 10 символов каждый). После начальных пробелов и табуляций
+                    начинайте ввод операнда строго с двойных кавычек. Количество пробелов и табуляций до, после, между,
+                    внутри операндов и операторов не лимитируется.
+                    
                     1-й операнд - всегда строчный - любая последовательность символов, c пробелами, кроме управляющего
                     символа см. в скобках: (") и не более 10 символов между кавычками.
                     Например: "e47#@+*/-~"
@@ -46,18 +47,19 @@ public class SCalc {
     }
 
     static String isValidate(String expression) {          //Проверка корректности ввода
-//     Регулярное выражение для + и -   : *\"[a-zA-Z_0-9а-яА-ЯёЁ]{0,10}\" *[+,-] *\"[a-zA-Z_0-9а-яА-ЯёЁ]{0,10}\" *
-//   :^ *\"[^\"]{0,10}\" *[+,-] *\"[^\"]{0,10}\" *"    :^[ \t]*"[^"]{0,10}"[ \t]*[+,-][ \t]*"[^"]{0,10}"[ \t]*
-//     Регулярное выражение для * и / : ^ *\"[a-zA-Z_0-9а-яА-ЯёЁ]{0,10}\"\s*[*,\/]\s*(?:[1-9]|10) *$
-//    : ^ *"[^"]{0,10}" *[*,/] *(?:[1-9]|10) *$    : ^[ \t]*\"[^\"]{0,10}\"[ |\t]*[*,/][ \т](?:[1-9]|10)[ \t]*$"
 
-        String regexPm = "^[ \t]*\"[^\"]{0,10}\"[ \t]*[+,-][ \t]*\"[^\"]{0,10}\"[ \t]*"; //Регулярка +- в "" <= 10 симв.
-        String regexMd = "^[ \t]*\"[^\"]{0,10}\"[ \t]*[*,/][ \t]*(?:[1-9]|10)[ \t]*$";   //Регулярка */ в "" <= 10 симв.
+        String reOperandS = "[ \t]*\"[^\"]{0,10}\"[ \t]*"; //Любой набор до 10-ти символов в "", а вокруг пробелы и Tabs
+        String reOperatorGroup1 = "[+-]";
+        String reOperatorGroup2 = "[*/]";
+        String reOperandInt = "[ \t]*(?:[1-9]|10)[ \t]*$"; //Цифра [1-10] вокруг пробелы и Tabs
 
-        if (expression.matches(regexPm) || (expression.matches(regexMd))) {
+        String regexCompositePm = reOperandS + reOperatorGroup1 + reOperandS;     //Регулярка +- в "" <= 10 симв.
+        String regexCompositeMd = reOperandS + reOperatorGroup2 + reOperandInt;   //Регулярка */ в "" <= 10 симв.
+
+        if (expression.matches(regexCompositePm) || (expression.matches(regexCompositeMd))) {
 
             String[] cutEx = fullTrim(expression);
-            String operator = cutEx[3];
+            String operator = cutEx[0];
 
             return switch (operator) {
                 case "+" -> Pm.sAdd(cutEx[1], cutEx[2]);                case "-" -> Pm.sSubtract(cutEx[1], cutEx[2]);
@@ -69,19 +71,19 @@ public class SCalc {
 
     //    Вырезать и вернуть операнды и оператор
     private static String[] fullTrim(String workExpression) {
-        String[] trimEx = new String[4];
-        trimEx[0] = workExpression.trim().substring(1);         //Отбрасываем боковые пробелы и первую кавычку
-        int lengthT = trimEx[0].length();
-        int quote1 = trimEx[0].indexOf("\"");
-        trimEx[1] = trimEx[0].substring(0, quote1);                                      //Первый операнд
-        int quoteLast = trimEx[0].lastIndexOf("\"");
-        int quote2 = trimEx[0].indexOf("\"", quote1+1);
+        String[] trimEx = new String[3];
+        String workingTrim = workExpression.trim().substring(1);         //Отбрасываем боковые пробелы и первую кавычку
+        int lengthT = workingTrim.length();
+        int quote1 = workingTrim.indexOf("\"");
+        trimEx[1] = workingTrim.substring(0, quote1);                                    //Первый операнд
+        int quoteLast = workingTrim.lastIndexOf("\"");
+        int quote2 = workingTrim.indexOf("\"", quote1+1);
         if (quote1 != quoteLast) {
-            trimEx[2] = trimEx[0].substring(quote2+1, lengthT-1);                        //Второй операнд
-            trimEx[3] = trimEx[0].substring(quote1+1, quote2-1).trim();                  //Оператор
+            trimEx[2] = workingTrim.substring(quote2+1, lengthT-1);                      //Второй операнд
+            trimEx[0] = workingTrim.substring(quote1+1, quote2-1).trim();                //Оператор
         } else {
-            String operatorAndInt = trimEx[0].substring(quote1+1, lengthT).trim();       //Поле оператора с числом/
-            trimEx[3] = String.valueOf(operatorAndInt.charAt(0));                        //Чистый оператор
+            String operatorAndInt = workingTrim.substring(quote1+1, lengthT).trim();     //Поле оператора с числом/
+            trimEx[0] = String.valueOf(operatorAndInt.charAt(0));                        //Чистый оператор
             trimEx[2] = operatorAndInt.substring(1).trim();                     //Числовой оператор
         }
         return trimEx;
