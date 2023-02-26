@@ -11,6 +11,7 @@ import static java.lang.System.out;
 //    "&(jrg&)" *   10            //             //    ""    *   9         //
 public class SCalc {
     static final String INPUT_ERROR = "!!!Некорректный ввод!!!";
+
     public static void main(String[] args) {
         String expression;
         String validateIn;
@@ -19,21 +20,19 @@ public class SCalc {
             String announcement = """
 
                         Правила ввода:
-                                                    
                     Вводите строчные операнды (не более 10 символов каждый). После начальных пробелов и табуляций
                     начинайте ввод операнда строго с двойных кавычек. Количество пробелов и табуляций до, после, между,
                     внутри операндов и операторов не лимитируется.
-                    
+                                        
                     1-й операнд - всегда строчный - любая последовательность символов, c пробелами, кроме управляющего
                     символа см. в скобках: (") и не более 10 символов между кавычками.
                     Например: "e47#@+*/-~"
+                    
                     2-й операнд, как первый, но только при сложении и вычитании (+,-) и также обернут в кавычки.
                     Например: "$Yj@rgЁ1Ыi".
-
-                    При умножении и делении (*,/) второй операнд - натуральное число <=10 - БЕЗ КАВЫЧЕК!!!.
+                    При умножении и делении (*,/) 2-й операнд - натуральное число <=10 - БЕЗ КАВЫЧЕК!!!.
                                         
                     При ошибке в выражении будет выполнен повторный цикл ввода!!!:
-                                        
                                           """;
             out.println(announcement);
             expression = scanner.nextLine();
@@ -62,8 +61,10 @@ public class SCalc {
             String operator = cutEx[0];
 
             return switch (operator) {
-                case "+" -> Pm.sAdd(cutEx[1], cutEx[2]);                case "-" -> Pm.sSubtract(cutEx[1], cutEx[2]);
-                case "*" -> Md.sMultiply(cutEx[1], cutEx[2]);           default -> Md.sDivide(cutEx[1], cutEx[2]);
+                case "+" -> Pm.sAdd(cutEx[1], cutEx[2]);
+                case "-" -> Pm.sSubtract(cutEx[1], cutEx[2]);
+                case "*" -> Md.sMultiply(cutEx[1], cutEx[2]);
+                default -> Md.sDivide(cutEx[1], cutEx[2]);
             };
         }
         return INPUT_ERROR;
@@ -103,6 +104,7 @@ public class SCalc {
                     a.substring(substringBeginIn + b.length()) : a;
         }
     }
+
     //          Блок умножения и деления
     private static class Md {
         static String sMultiply(String a, String b) {         //Умножение
