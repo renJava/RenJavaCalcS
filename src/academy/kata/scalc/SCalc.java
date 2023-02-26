@@ -72,19 +72,19 @@ public class SCalc {
     //    Вырезать и вернуть операнды и оператор
     private static String[] fullTrim(String workExpression) {
         String[] trimEx = new String[3];
-        String workingTrim = workExpression.trim().substring(1);         //Отбрасываем боковые пробелы и первую кавычку
-        int lengthT = workingTrim.length();
-        int quote1 = workingTrim.indexOf("\"");
-        trimEx[1] = workingTrim.substring(0, quote1);                                    //Первый операнд
-        int quoteLast = workingTrim.lastIndexOf("\"");
-        int quote2 = workingTrim.indexOf("\"", quote1+1);
+        String localTrim = workExpression.trim().substring(1);   //Отбрасываем боковые пробелы и первую кавычку
+        int lengthT = localTrim.length();
+        int quote1 = localTrim.indexOf("\"");
+        trimEx[1] = localTrim.substring(0, quote1);                                    //Первый операнд
+        int quoteLast = localTrim.lastIndexOf("\"");
+        int quote2 = localTrim.indexOf("\"", quote1+1);
         if (quote1 != quoteLast) {
-            trimEx[2] = workingTrim.substring(quote2+1, lengthT-1);                      //Второй операнд
-            trimEx[0] = workingTrim.substring(quote1+1, quote2-1).trim();                //Оператор
+            trimEx[2] = localTrim.substring(quote2+1, lengthT-1);                      //Второй операнд
+            trimEx[0] = localTrim.substring(quote1+1, quote2-1).trim();                //Оператор
         } else {
-            String operatorAndInt = workingTrim.substring(quote1+1, lengthT).trim();     //Поле оператора с числом/
-            trimEx[0] = String.valueOf(operatorAndInt.charAt(0));                        //Чистый оператор
-            trimEx[2] = operatorAndInt.substring(1).trim();                     //Числовой оператор
+            String operatorAndIntS = localTrim.substring(quote1+1, lengthT).trim();     //Поле оператора с числом/
+            trimEx[0] = String.valueOf(operatorAndIntS.charAt(0));                     //Чистый оператор
+            trimEx[2] = operatorAndIntS.substring(1).trim();                 //Числовой оператор
         }
         return trimEx;
     }
@@ -98,9 +98,9 @@ public class SCalc {
 
         static String sSubtract(String a, String b) {         //Вычитание
 //      При Вычетании - вырезаем найденное слово из строки или возвращаем уменьшаемое обратно
-            int substringBegin = a.indexOf(b);
-            return (substringBegin > -1) ? a.substring(0, substringBegin) +
-                    a.substring(substringBegin + b.length()) : a;
+            int substringBeginIn = a.indexOf(b);
+            return (substringBeginIn > -1) ? a.substring(0, substringBeginIn) +
+                    a.substring(substringBeginIn + b.length()) : a;
         }
     }
     //          Блок умножения и деления
