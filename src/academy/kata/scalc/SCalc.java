@@ -72,19 +72,19 @@ public class SCalc {
     //    Вырезать и вернуть операнды и оператор
     private static String[] fullTrim(String workExpression) {
         String[] trimEx = new String[3];
-        String localTrim = workExpression.trim().substring(1);   //Отбрасываем боковые пробелы и первую кавычку
+        String localTrim = workExpression.trim().substring(1);  //Отбрасываем боковые пробелы и первую кавычку
         int lengthT = localTrim.length();
-        int quote1 = localTrim.indexOf("\"");
-        trimEx[1] = localTrim.substring(0, quote1);                                    //Первый операнд
+        int quote2 = localTrim.indexOf("\"");
+        trimEx[1] = localTrim.substring(0, quote2);                                     //Первый операнд
         int quoteLast = localTrim.lastIndexOf("\"");
-        int quote2 = localTrim.indexOf("\"", quote1+1);
-        if (quote1 != quoteLast) {
-            trimEx[2] = localTrim.substring(quote2+1, lengthT-1);                      //Второй операнд
-            trimEx[0] = localTrim.substring(quote1+1, quote2-1).trim();                //Оператор
+        int quote3 = localTrim.indexOf("\"", quote2 + 1);
+        if (quote2 != quoteLast) {
+            trimEx[2] = localTrim.substring(quote3 + 1, lengthT - 1);                   //Второй операнд
+            trimEx[0] = localTrim.substring(quote2 + 1, quote3 - 1).trim();             //Оператор
         } else {
-            String operatorAndIntS = localTrim.substring(quote1+1, lengthT).trim();     //Поле оператора с числом/
-            trimEx[0] = String.valueOf(operatorAndIntS.charAt(0));                     //Чистый оператор
-            trimEx[2] = operatorAndIntS.substring(1).trim();                 //Числовой оператор
+            String operatorWithIntS = localTrim.substring(quote2 + 1, lengthT).trim();  //Поле оператора с числом/
+            trimEx[0] = String.valueOf(operatorWithIntS.charAt(0));                     //Чистый оператор
+            trimEx[2] = operatorWithIntS.substring(1).trim();                  //Числовой оператор
         }
         return trimEx;
     }
