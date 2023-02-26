@@ -76,16 +76,16 @@ public class SCalc {
         String localTrim = workExpression.trim().substring(1);  //Отбрасываем боковые пробелы и первую кавычку
         int lengthT = localTrim.length();
         int quote2 = localTrim.indexOf("\"");
-        trimEx[1] = localTrim.substring(0, quote2);                                     //Первый операнд
+        trimEx[1] = localTrim.substring(0, quote2);                                   //1-й строковый операнд
         int quoteLast = localTrim.lastIndexOf("\"");
         int quote3 = localTrim.indexOf("\"", quote2 + 1);
         if (quote2 != quoteLast) {
-            trimEx[2] = localTrim.substring(quote3 + 1, lengthT - 1);                   //Второй операнд
-            trimEx[0] = localTrim.substring(quote2 + 1, quote3 - 1).trim();             //Оператор
+            trimEx[2] = localTrim.substring(quote3 + 1, lengthT - 1);                 //2-й строковый операнд
+            trimEx[0] = localTrim.substring(quote2 + 1, quote3 - 1).trim();           //Чистый оператор
         } else {
-            String operatorWithIntS = localTrim.substring(quote2 + 1, lengthT).trim();  //Поле оператора с числом/
-            trimEx[0] = String.valueOf(operatorWithIntS.charAt(0));                     //Чистый оператор
-            trimEx[2] = operatorWithIntS.substring(1).trim();                  //Числовой оператор
+            String operatorWithIntS = localTrim.substring(quote2 + 1, lengthT).trim();//Поле оператора с числовым операндом/
+            trimEx[0] = String.valueOf(operatorWithIntS.charAt(0));                   //Чистый оператор
+            trimEx[2] = operatorWithIntS.substring(1).trim();                //2-й строковый операнд с числом
         }
         return trimEx;
     }
