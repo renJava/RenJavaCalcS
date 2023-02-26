@@ -47,13 +47,13 @@ public class SCalc {
 
     static String isValidate(String expression) {          //Проверка корректности ввода
 
-        String reOperandS = "[ \t]*\"[^\"]{0,10}\"[ \t]*"; //Любой набор до 10-ти символов в "", а вокруг пробелы и Tabs
-        String reOperatorGroup1 = "[+-]";
-        String reOperatorGroup2 = "[*/]";
-        String reOperandInt = "[ \t]*(?:[1-9]|10)[ \t]*$"; //Цифра [1-10] вокруг пробелы и Tabs
+        final String reOperandS = "[ \t]*\"[^\"]{0,10}\"[ \t]*"; //Любой набор до 10-ти сим. в "", в пробелах и Tab
+        final String reOperatorGroupPm = "[+-]";
+        final String reOperatorGroupMd = "[*/]";
+        final String reOperandInt = "[ \t]*(?:[1-9]|10)[ \t]*$"; //Цифра [1-10] вокруг пробелы и Tabs
 
-        String regexCompositePm = reOperandS + reOperatorGroup1 + reOperandS;     //Регулярка +- в "" <= 10 симв.
-        String regexCompositeMd = reOperandS + reOperatorGroup2 + reOperandInt;   //Регулярка */ в "" <= 10 симв.
+        final String regexCompositePm = reOperandS + reOperatorGroupPm + reOperandS;     //Регулярка +- в "" <= 10 симв.
+        final String regexCompositeMd = reOperandS + reOperatorGroupMd + reOperandInt;   //Регулярка */ в "" <= 10 симв.
 
         if (expression.matches(regexCompositePm) || (expression.matches(regexCompositeMd))) {
 
