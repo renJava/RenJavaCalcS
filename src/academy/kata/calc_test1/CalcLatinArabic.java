@@ -1,13 +1,11 @@
-package academy.kata.calcLatinArabic;
-
-import academy.kata.scalc.SCalc;
+package academy.kata.calc_test1;
 
 import java.util.Scanner;
 
 import static java.lang.System.in;
 import static java.lang.System.out;
 
-public class calcLAndAr {
+public class CalcLatinArabic {
     static final String INPUT_ERROR = "!!!Некорректный ввод!!!";
 
     public static void main(String[] args) {
@@ -28,7 +26,7 @@ public class calcLAndAr {
             out.println(announcement);
             expression = scanner.nextLine();
             validateIn = isValidate(expression);
-            out.println("\n\"" + validateIn + "\"");
+            out.println("\nРезультат: " + validateIn);
             if (validateIn.equals(INPUT_ERROR)) {
                 out.println("\nПовторите, пожалуйста, ввод.");
             }
@@ -38,76 +36,50 @@ public class calcLAndAr {
 
     static String isValidate(String expression) {          //Проверка корректности ввода
 
-        final String reOperandAr = "^[ \t]*(?:[1-9]|10)[ \t]*$"; //Цифра [1-10] вокруг пробелы и Tabs
-        final String reOperandL = "^[ \t]*[IVX]{1,8}[ \t]*$"; //Любой набор до 10-ти сим. в "", в пробелах и Tab
+        final String beginer = "^";
+        final String reOperandAr = "[ \t]*(?:[1-9]|10)[ \t]*"; //Цифра [1-10] вокруг пробелы и Tabs
+        final String reOperandL = "[ \t]*[IVX]{1,4}[ \t]*"; //Любой набор до 10-ти сим. в "", в пробелах и Tab
         final String reOperators = "[-+*/]";
 
-        final String regexCompositeAr = reOperandAr + reOperators + reOperandL;     //Регулярка +- в "" <= 10 симв.
+        final String regexCompositeAr = beginer + reOperandAr + reOperators + reOperandAr;     //Регулярка +- в "" <= 10 симв.
         final String regexCompositeL = reOperandL + reOperators + reOperandL;   //Регулярка */ в "" <= 10 симв.
 
 
-        if (expression.matches(regexCompositeAr)) {//|| (expression.matches(regexCompositeL))) {
-
-            String[] cutEx = fullTrim(expression);
-            String operator = cutEx[0];
-
-            return switch (operator) {
-                case "+" -> SCalc.Pm.sAdd(cutEx[1], cutEx[2]);
-                case "-" -> SCalc.Pm.sSubtract(cutEx[1], cutEx[2]);
-                case "*" -> SCalc.Md.sMultiply(cutEx[1], cutEx[2]);
-                default -> SCalc.Md.sDivide(cutEx[1], cutEx[2]);
-            };
+        if (expression.matches(regexCompositeAr)) {
+            return fullTrim(expression);
         }
-
-
+            else if (expression.matches(regexCompositeL)) {
+        }
         return INPUT_ERROR;
     }
 
-    //    Вырезать и вернуть операнды и оператор
-    private static String[] fullTrim(String workExpression) {
+    //    Порезать выражение и вернуть результат
+    private static String fullTrim(String workExpression) {
         String[] trimEx = new String[3];
-        String localTrim = workExpression.trim();                                   //Отбрасываем боковые пробелы
-        int lengthT = localTrim.length();
-        int quote2 = localTrim.indexOf("[+-*/]");
-        trimEx[1] = localTrim.substring(0, quote2);                                   //1-й строковый операнд
-        int quoteLast = localTrim.lastIndexOf("\"");
-        int quote3 = localTrim.indexOf("\"", quote2 + 1);
-        if (quote2 != quoteLast) {
-            trimEx[2] = localTrim.substring(quote3 + 1, lengthT - 1);                 //2-й строковый операнд
-            trimEx[0] = localTrim.substring(quote2 + 1, quote3 - 1).trim();           //Чистый оператор
-        } else {
-            String operatorWithIntS = localTrim.substring(quote2 + 1, lengthT).trim();//Поле оператора с числовым операндом/
-            trimEx[0] = String.valueOf(operatorWithIntS.charAt(0));                   //Чистый оператор
-            trimEx[2] = operatorWithIntS.substring(1).trim();                //2-й строковый операнд с числом
-        }
-        return trimEx;
+        String trimS = workExpression.trim();                         //Отбрасываем боковые пробелы и Tabs
+        int lengthT = trimS.length();
+        String operator = detectOperator(trimS);
+        int operatorPos = trimS.indexOf(operator);
+        operator = trimS.substring(operatorPos, operatorPos+1);               //Чистый оператор внутри
+        trimEx[1] = trimS.substring(0, operatorPos).trim();                      //1-й строковый операнд
+        trimEx[2] = trimS.substring(operatorPos+1, lengthT).trim();                 //2-й строковый операнд
+
+        return switch (operator) {
+            case "+" -> Operations.sAdd(trimEx[1], trimEx[2]);
+            case "-" -> Operations.sSubtract(trimEx[1], trimEx[2]);
+            case "*" -> Operations.sMultiply(trimEx[1], trimEx[2]);
+            default -> Operations.sDivide(trimEx[1], trimEx[2]);
+        };
     }
 
-    //            В 2-х классах по 2 метода
-    //          Блок сложения и вычитания
-    private static class Pm {                                 //Сложение - конкатенация
-        static String sAdd(String a, String b) {
-            return String.valueOf(Integer.parseInt(a) + Integer.parseInt(b));
-        }
-
-        static String sSubtract(String a, String b) {         //Вычитание
-//      При Вычетании - вырезаем найденное слово из строки или возвращаем уменьшаемое обратно
-                return Integer.parseInt(a) - Integer.parseInt(b);
-        }
+    private static String detectOperator(String isOperator) {
+        if (isOperator.contains("+")) return "+";
+        else if (isOperator.contains("-")) return "-";
+        else if (isOperator.contains("*")) return "*";
+        else return "/";
     }
-
-    //          Блок умножения и деления
-    private static class Md {
-        static String sMultiply(String a, String b) {         //Умножение
-//      При Умножении - повторяем заданное слово b раз и обрезаем результат после 40-го символа
-            String sMultiple = a.repeat(Integer.parseInt(b));
-            return (sMultiple.length() <= 40) ? sMultiple : sMultiple.substring(0, 40) + "...";
-        }
-
-        static String sDivide(String a, String b) {           //Деление
-            int d = Integer.parseInt(b);
-            return (a.length() >= d) ? a.substring(0, a.length() / d) : "Делитель больше делимого";
-        }
-    }
-
 }
+
+
+
+
