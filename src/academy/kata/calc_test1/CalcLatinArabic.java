@@ -1,15 +1,13 @@
-package academy.kata.scalc;
+package academy.kata.calcLatinArabic;
+
+import academy.kata.scalc.SCalc;
 
 import java.util.Scanner;
 
 import static java.lang.System.in;
 import static java.lang.System.out;
 
-//  "654Ъiё~+h" + "e47#@&+gj"     //             //   "5/*ё~gh" + "/*"     //
-//    "$Yj@rgЁ1Ыi" - "^ej%rgЁ1"   //             //    "" - "^ej%rgЁ1"     //
-//    "Yej!~Ё 2Ыы" - "ej!~Ё 2"    //
-//    "&(jrg&)" *   10            //             //    ""    *   9         //
-public class SCalc {
+public class calcLAndAr {
     static final String INPUT_ERROR = "!!!Некорректный ввод!!!";
 
     public static void main(String[] args) {
@@ -20,19 +18,12 @@ public class SCalc {
             String announcement = """
 
                             Правила ввода:
-                    Вводите строчные операнды (не более 10 символов каждый). После начальных пробелов и табуляций
-                    начинайте ввод операнда строго с двойных кавычек. Количество пробелов и табуляций до, после, между,
-                    внутри операндов и операторов не лимитируется.
+                    Введите выражение с целыми латинскими или арабскими числами >0, на <=10.
                                         
-                    1-й операнд - всегда строчный - любая последовательность символов, c пробелами, кроме управляющего
-                    символа см. в скобках: (") и не более 10 символов между кавычками.
-                    Например: "e47#@+*/-~"
-                    
-                    2-й операнд, как первый, но только при сложении и вычитании (+,-) и также обернут в кавычки.
-                    Например: "$Yj@rgЁ1Ыi".
-                    При умножении и делении (*,/) 2-й операнд - натуральное число <=10 - БЕЗ КАВЫЧЕК!!!.
+                    В одной строке одновременно допускаются либо арабские, либо латинские цифры.
                                         
                     При ошибке в выражении будет выполнен повторный цикл ввода!!!:
+                                        
                                           """;
             out.println(announcement);
             expression = scanner.nextLine();
@@ -47,41 +38,43 @@ public class SCalc {
 
     static String isValidate(String expression) {          //Проверка корректности ввода
 
-        final String reOperandS = "[ \t]*\"[^\"]{0,10}\"[ \t]*"; //Любой набор до 10-ти сим. в "", в пробелах и Tab
-        final String reOperatorGroupPm = "[+-]";
-        final String reOperatorGroupMd = "[*/]";
-        final String reOperandInt = "[ \t]*(?:[1-9]|10)[ \t]*$"; //Цифра [1-10] вокруг пробелы и Tabs
+        final String reOperandAr = "^[ \t]*(?:[1-9]|10)[ \t]*$"; //Цифра [1-10] вокруг пробелы и Tabs
+        final String reOperandL = "^[ \t]*[IVX]{1,8}[ \t]*$"; //Любой набор до 10-ти сим. в "", в пробелах и Tab
+        final String reOperators = "[-+*/]";
 
-        final String regexCompositePm = reOperandS + reOperatorGroupPm + reOperandS;     //Регулярка +- в "" <= 10 симв.
-        final String regexCompositeMd = reOperandS + reOperatorGroupMd + reOperandInt;   //Регулярка */ в "" <= 10 симв.
+        final String regexCompositeAr = reOperandAr + reOperators + reOperandL;     //Регулярка +- в "" <= 10 симв.
+        final String regexCompositeL = reOperandL + reOperators + reOperandL;   //Регулярка */ в "" <= 10 симв.
 
-        if (expression.matches(regexCompositePm) || (expression.matches(regexCompositeMd))) {
+
+        if (expression.matches(regexCompositeAr)) {//|| (expression.matches(regexCompositeL))) {
 
             String[] cutEx = fullTrim(expression);
             String operator = cutEx[0];
 
             return switch (operator) {
-                case "+" -> Pm.sAdd(cutEx[1], cutEx[2]);
-                case "-" -> Pm.sSubtract(cutEx[1], cutEx[2]);
-                case "*" -> Md.sMultiply(cutEx[1], cutEx[2]);
-                default -> Md.sDivide(cutEx[1], cutEx[2]);
+                case "+" -> SCalc.Pm.sAdd(cutEx[1], cutEx[2]);
+                case "-" -> SCalc.Pm.sSubtract(cutEx[1], cutEx[2]);
+                case "*" -> SCalc.Md.sMultiply(cutEx[1], cutEx[2]);
+                default -> SCalc.Md.sDivide(cutEx[1], cutEx[2]);
             };
         }
+
+
         return INPUT_ERROR;
     }
 
     //    Вырезать и вернуть операнды и оператор
     private static String[] fullTrim(String workExpression) {
         String[] trimEx = new String[3];
-        String localTrim = workExpression.trim().substring(1);  //Отбрасываем боковые пробелы и первую кавычку
+        String localTrim = workExpression.trim();                                   //Отбрасываем боковые пробелы
         int lengthT = localTrim.length();
-        int quote2 = localTrim.indexOf("\"");
+        int quote2 = localTrim.indexOf("[+-*/]");
         trimEx[1] = localTrim.substring(0, quote2);                                   //1-й строковый операнд
         int quoteLast = localTrim.lastIndexOf("\"");
         int quote3 = localTrim.indexOf("\"", quote2 + 1);
         if (quote2 != quoteLast) {
             trimEx[2] = localTrim.substring(quote3 + 1, lengthT - 1);                 //2-й строковый операнд
-            trimEx[0] = localTrim.substring(quote2 + 1, quote3).trim();           //Чистый оператор
+            trimEx[0] = localTrim.substring(quote2 + 1, quote3 - 1).trim();           //Чистый оператор
         } else {
             String operatorWithIntS = localTrim.substring(quote2 + 1, lengthT).trim();//Поле оператора с числовым операндом/
             trimEx[0] = String.valueOf(operatorWithIntS.charAt(0));                   //Чистый оператор
@@ -94,14 +87,12 @@ public class SCalc {
     //          Блок сложения и вычитания
     private static class Pm {                                 //Сложение - конкатенация
         static String sAdd(String a, String b) {
-            return a + b;
+            return String.valueOf(Integer.parseInt(a) + Integer.parseInt(b));
         }
 
         static String sSubtract(String a, String b) {         //Вычитание
 //      При Вычетании - вырезаем найденное слово из строки или возвращаем уменьшаемое обратно
-            int substringBeginIn = a.indexOf(b);
-            return (substringBeginIn > -1) ? a.substring(0, substringBeginIn) +
-                    a.substring(substringBeginIn + b.length()) : a;
+                return Integer.parseInt(a) - Integer.parseInt(b);
         }
     }
 
@@ -118,4 +109,5 @@ public class SCalc {
             return (a.length() >= d) ? a.substring(0, a.length() / d) : "Делитель больше делимого";
         }
     }
+
 }
