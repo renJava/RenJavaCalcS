@@ -46,37 +46,48 @@ public class CalcLatinArabic {
 
 
         if (expression.matches(regexCompositeAr)) {
-            return fullTrim(expression);
+            boolean isLatin = false;
+            return fullTrim(expression, isLatin);
         }
-            else if (expression.matches(regexCompositeL)) {
-        }
+//            else if (expression.matches(regexCompositeL)) {
+//        }
         return INPUT_ERROR;
     }
 
     //    Порезать выражение и вернуть результат
-    private static String fullTrim(String workExpression) {
+    private static String fullTrim(String workExpression, boolean ifLatin) {
         String[] trimEx = new String[3];
         String trimS = workExpression.trim();                         //Отбрасываем боковые пробелы и Tabs
         int lengthT = trimS.length();
         String operator = detectOperator(trimS);
         int operatorPos = trimS.indexOf(operator);
-        operator = trimS.substring(operatorPos, operatorPos+1);               //Чистый оператор внутри
-        trimEx[1] = trimS.substring(0, operatorPos).trim();                      //1-й строковый операнд
-        trimEx[2] = trimS.substring(operatorPos+1, lengthT).trim();                 //2-й строковый операнд
-
-        return switch (operator) {
-            case "+" -> Operations.sAdd(trimEx[1], trimEx[2]);
-            case "-" -> Operations.sSubtract(trimEx[1], trimEx[2]);
-            case "*" -> Operations.sMultiply(trimEx[1], trimEx[2]);
-            default -> Operations.sDivide(trimEx[1], trimEx[2]);
-        };
+        operator = trimS.substring(operatorPos, operatorPos+1);       //Чистый оператор внутри
+        trimEx[0] = operator;
+        trimEx[1] = trimS.substring(0, operatorPos).trim();           //1-й строковый операнд
+        trimEx[2] = trimS.substring(operatorPos+1, lengthT).trim();   //2-й строковый операнд
+        return calculator(trimEx);                                 //(!ifLatin)? calculator(trimEx) : toArabic(trimEx);
     }
+
+//    private static String[] toArabic(String[] trimEx) {
+//    return calculator();
+//    }
 
     private static String detectOperator(String isOperator) {
         if (isOperator.contains("+")) return "+";
         else if (isOperator.contains("-")) return "-";
         else if (isOperator.contains("*")) return "*";
         else return "/";
+    }
+
+
+    private static String calculator (String[] toSwitch){
+        String locOperator = toSwitch[0];
+        return switch (locOperator) {
+            case "+" -> Operations.sAdd(toSwitch[1], toSwitch[2]);
+            case "-" -> Operations.sSubtract(toSwitch[1], toSwitch[2]);
+            case "*" -> Operations.sMultiply(toSwitch[1], toSwitch[2]);
+            default -> Operations.sDivide(toSwitch[1], toSwitch[2]);
+        };
     }
 }
 
