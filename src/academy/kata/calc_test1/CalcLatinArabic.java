@@ -78,10 +78,13 @@ public class CalcLatinArabic {
                 out.println("Числа нет в латинском: " + convert[i] + " !!!");
             }
             hasConverted[i] = String.valueOf(LatinEnum.valueOf(convert[i]).ordinal() + 1);
+
             if (Integer.parseInt(hasConverted[i]) > 10) {
-                throw new Exception("Вводимые операнды должны быть <=10");
+                throw new Exception("\n\n\n!!! " +
+                    "Внимание вводимые операнды должны быть <= 10. А латинская " + convert[i] + " больше 10 !!!\n\n");
             }
         }
+
         return hasConverted;
     }
 
