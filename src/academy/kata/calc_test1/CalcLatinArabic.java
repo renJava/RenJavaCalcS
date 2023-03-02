@@ -2,7 +2,8 @@ package academy.kata.calc_test1;
 
 import java.util.Scanner;
 
-import static java.lang.System.*;
+import static java.lang.System.in;
+import static java.lang.System.out;
 
 public class CalcLatinArabic {
     static final String INPUT_ERROR = "!!!Некорректный ввод!!!";
@@ -15,7 +16,7 @@ public class CalcLatinArabic {
             String announcement = """
 
                             Правила ввода:
-                    Введите выражение с целыми латинскими или арабскими числами >0, на <=10.
+                    Введите выражение с целыми латинскими или арабскими числами >0, но <=10.
                                         
                     В одной строке одновременно допускаются либо арабские, либо латинские цифры.
                                         
@@ -34,25 +35,24 @@ public class CalcLatinArabic {
         while (validateIn.equals(INPUT_ERROR));
     }
 
-    static String isValidate(String expression) {          //Проверка корректности ввода
+    static String isValidate(String expression) {            //Проверка корректности ввода
 
-        final String startRegex = "^";
-        final String reOperandAr = "[ \t]*(?:[1-9]|10)[ \t]*"; //Цифра [1-10] вокруг пробелы и Tabs
-        final String reOperandL = "[ \t]*[IVX]{1,4}[ \t]*"; //Любой набор до 10-ти сим. в "", в пробелах и Tab
-        final String reOperators = "[-+*/]";
+      final String startRegex = "^";
+      final String reOperandAr = "[ \t]*(?:[1-9]|10)[ \t]*"; //Цифра [1-10], а вокруг пробелы и Tabs
+      final String reOperandL = "[ \t]*[IVX]{1,4}[ \t]*";    //Набор для латыни <=10, в пробелах и Tabs
+      final String reOperators = "[-+*/]";
 
-        final String regexCompositeAr = startRegex + reOperandAr + reOperators + reOperandAr;//Регулярка +- в " <= 10 симв
-        final String regexCompositeL = startRegex + reOperandL + reOperators + reOperandL;   //Регулярка */ в " <= 10 симв
+      final String regexCompositeAr = startRegex + reOperandAr + reOperators + reOperandAr;//Регулярка араб. <= 10 симв
+      final String regexCompositeL = startRegex + reOperandL + reOperators + reOperandL;   //Регулярка лат. <= 10 симв
 
 
-        if (expression.matches(regexCompositeAr)) {
-            return fullTrim(expression, false);
-        }
-        else if (expression.matches(regexCompositeL)) {
-            return resultToLatin(fullTrim(expression, true));
+      if (expression.matches(regexCompositeAr)) {
+          return fullTrim(expression, false);
+      } else if (expression.matches(regexCompositeL)) {
+          return resultToLatin(fullTrim(expression, true));
 
-        }
-    return INPUT_ERROR;
+      }
+      return INPUT_ERROR;
     }
 
     //    Порезать выражение и вернуть результат
@@ -62,11 +62,11 @@ public class CalcLatinArabic {
         int lengthT = trimS.length();
         String operator = detectOperator(trimS);
         int operatorPos = trimS.indexOf(operator);
-        operator = trimS.substring(operatorPos, operatorPos+1);       //Чистый оператор внутри
-        trimEx[0] = operator;
+        operator = trimS.substring(operatorPos, operatorPos + 1);     //Чистый оператор внутри выражения
+        trimEx[0] = operator;                                         //Чистый оператор на экспорт
         trimEx[1] = trimS.substring(0, operatorPos).trim();           //1-й строковый операнд
-        trimEx[2] = trimS.substring(operatorPos+1, lengthT).trim();   //2-й строковый операнд
-        return (!ifLatin)? calculator(trimEx) : calculator(latinToArabic(trimEx));
+        trimEx[2] = trimS.substring(operatorPos + 1, lengthT).trim(); //2-й строковый операнд
+        return (!ifLatin) ? calculator(trimEx) : calculator(latinToArabic(trimEx));
     }
 
     private static String[] latinToArabic(String[] convert) {
@@ -82,44 +82,40 @@ public class CalcLatinArabic {
 
             if (Integer.parseInt(convertedToArabic[i]) > 10) {
                 throw new RuntimeException("\n\n\n!!! " +
-                    "Внимание вводимые операнды должны быть <= 10. А латинская " + convert[i] + " больше 10 !!!\n\n");
+                    "Внимание, вводимые операнды должны быть <= 10. А латинская " + convert[i] + " больше 10 !!!\n\n");
             }
         }
         return convertedToArabic;
     }
 
-    private static String resultToLatin(String toArabicString){
-        int latinToArabicInt = Integer.parseInt(toArabicString);
-            if (latinToArabicInt < 1) {
-                try {
-                    throw new RuntimeException();
-                } catch (RuntimeException e) {
-                    out.println("\n\n\n!!! Результат операций с латиницей не может быть меньше 1 !!!\n\n");
-                }
+    private static String resultToLatin(String arabicResultForLatinString) {
+        int arabicResultForLatinInt = Integer.parseInt(arabicResultForLatinString);
+        if (arabicResultForLatinInt < 1) {
+            try {
+                throw new RuntimeException();
+            } catch (RuntimeException e) {
+                out.println("\n\n\n!!! Результат операций с латиницей не может быть меньше 1 !!!\n\n");
             }
+        }
         LatinEnum[] arrayLatinFromEnum = LatinEnum.values();
-        return String.valueOf(arrayLatinFromEnum[latinToArabicInt -1]);
+        return String.valueOf(arrayLatinFromEnum[arabicResultForLatinInt - 1]);
     }
 
-    private static String detectOperator(String isOperator) {
-        if (isOperator.contains("+")) return "+";
-        else if (isOperator.contains("-")) return "-";
-        else if (isOperator.contains("*")) return "*";
+    private static String detectOperator(String operator) {
+        if (operator.contains("+")) return "+";
+        else if (operator.contains("-")) return "-";
+        else if (operator.contains("*")) return "*";
         else return "/";
     }
 
 
-    private static String calculator (String[] toSwitch){
-        String locOperator = toSwitch[0];
+    private static String calculator(String[] operandsToCalc) {
+        String locOperator = operandsToCalc[0];
         return switch (locOperator) {
-            case "+" -> Operations.sAdd(toSwitch[1], toSwitch[2]);
-            case "-" -> Operations.sSubtract(toSwitch[1], toSwitch[2]);
-            case "*" -> Operations.sMultiply(toSwitch[1], toSwitch[2]);
-            default -> Operations.sDivide(toSwitch[1], toSwitch[2]);
+            case "+" -> Operations.sAdd(operandsToCalc[1], operandsToCalc[2]);
+            case "-" -> Operations.sSubtract(operandsToCalc[1], operandsToCalc[2]);
+            case "*" -> Operations.sMultiply(operandsToCalc[1], operandsToCalc[2]);
+            default -> Operations.sDivide(operandsToCalc[1], operandsToCalc[2]);
         };
     }
 }
-
-
-
-
