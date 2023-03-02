@@ -88,13 +88,17 @@ public class CalcLatinArabic {
         return convertedToArabic;
     }
 
-    private static String resultToLatin(String inArabicString){
-        int inArabicInt = Integer.parseInt(inArabicString);
-            if (inArabicInt < 1) {
-                throw new RuntimeException("\n\n\n!!! Результат операций с латиницей не может быть меньше 1 !!!\n\n");
+    private static String resultToLatin(String toArabicString){
+        int latinToArabicInt = Integer.parseInt(toArabicString);
+            if (latinToArabicInt < 1) {
+                try {
+                    throw new RuntimeException();
+                } catch (RuntimeException e) {
+                    out.println("\n\n\n!!! Результат операций с латиницей не может быть меньше 1 !!!\n\n");
+                }
             }
-        LatinEnum[] arrayLatin = LatinEnum.values();
-        return String.valueOf(arrayLatin[inArabicInt-1]);
+        LatinEnum[] arrayLatinFromEnum = LatinEnum.values();
+        return String.valueOf(arrayLatinFromEnum[latinToArabicInt -1]);
     }
 
     private static String detectOperator(String isOperator) {
