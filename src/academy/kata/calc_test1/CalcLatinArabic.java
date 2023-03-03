@@ -42,13 +42,13 @@ public class CalcLatinArabic {
       final String reOperandL = "[ \t]*[IVX]{1,4}[ \t]*";    //Набор для латыни <=10, в пробелах и Tabs
       final String reOperators = "[-+*/]";
 
-      final String regexCompositeForAr = startRegex + reOperandAr + reOperators + reOperandAr;  //Регулярка араб.<= 10
-      final String regexCompositeForLatin = startRegex + reOperandL + reOperators + reOperandL; //Регулярка лат.<= 4 зн.
+      final String regexCompositeArabic = startRegex + reOperandAr + reOperators + reOperandAr; //Регулярка араб.<= 10
+      final String regexCompositeLatin = startRegex + reOperandL + reOperators + reOperandL;    //Регулярка лат.<= 4 зн.
 
-      if (expression.matches(regexCompositeForAr)) {
+      if (expression.matches(regexCompositeArabic)) {
           return fullTrim(expression, false);
-      } else if (expression.matches(regexCompositeForLatin)) {
-          return resultToLatin(fullTrim(expression, true));
+      } else if (expression.matches(regexCompositeLatin)) {
+          return toLatinResult(fullTrim(expression, true));
 
       }
       return INPUT_ERROR;
@@ -60,11 +60,11 @@ public class CalcLatinArabic {
         String trimS = workExpression.trim();                         //Отбрасываем боковые пробелы и Tabs
         int lengthT = trimS.length();
         String operator = detectOperator(trimS);
-        int operatorPos = trimS.indexOf(operator);
-        operator = trimS.substring(operatorPos, operatorPos + 1);     //Чистый оператор внутри выражения
+        int locOperator = trimS.indexOf(operator);                    //Вырезаем поле с пробелами и оператором
+        operator = trimS.substring(locOperator, locOperator + 1);     //Чистый оператор внутри поля
         trimEx[0] = operator;                                         //Чистый оператор на экспорт
-        trimEx[1] = trimS.substring(0, operatorPos).trim();           //1-й строковый операнд
-        trimEx[2] = trimS.substring(operatorPos + 1, lengthT).trim(); //2-й строковый операнд
+        trimEx[1] = trimS.substring(0, locOperator).trim();           //1-й строковый операнд
+        trimEx[2] = trimS.substring(locOperator + 1, lengthT).trim(); //2-й строковый операнд
         return (!ifLatin) ? calculator(trimEx) : calculator(latinToArabic(trimEx));
     }
 
@@ -75,19 +75,19 @@ public class CalcLatinArabic {
         else return "/";
     }
 
-    private static String calculator(String[] operandsToCalc) {
-        String locOperator = operandsToCalc[0];
-        return switch (locOperator) {
-            case "+" -> Operations.sAdd(operandsToCalc[1], operandsToCalc[2]);
-            case "-" -> Operations.sSubtract(operandsToCalc[1], operandsToCalc[2]);
-            case "*" -> Operations.sMultiply(operandsToCalc[1], operandsToCalc[2]);
-            default -> Operations.sDivide(operandsToCalc[1], operandsToCalc[2]);
+    private static String calculator(String[] operandToCalc) {
+        String operator = operandToCalc[0];
+        return switch (operator) {
+            case "+" -> Operations.sAdd(operandToCalc[1], operandToCalc[2]);
+            case "-" -> Operations.sSubtract(operandToCalc[1], operandToCalc[2]);
+            case "*" -> Operations.sMultiply(operandToCalc[1], operandToCalc[2]);
+            default -> Operations.sDivide(operandToCalc[1], operandToCalc[2]);
         };
     }
 
     private static String[] latinToArabic(String[] convert) {
-        String[] convertedToArabic = new String[3];
-        convertedToArabic[0] = convert[0];
+        String[] latinToArab = new String[3];
+        latinToArab[0] = convert[0];
         for (int i = 1; i <= 2; i++) {
             try {
                 LatinEnum.valueOf(convert[i]);
@@ -95,24 +95,24 @@ public class CalcLatinArabic {
                 err.println("!!! Ошибка ввода или латинской цифры нет в заданном диапазоне: " + convert[i] + " !!!\n");
                 exit(0);
             }
-            convertedToArabic[i] = String.valueOf(LatinEnum.valueOf(convert[i]).ordinal() + 1);
+            latinToArab[i] = String.valueOf(LatinEnum.valueOf(convert[i]).ordinal() + 1);
 
-            if (Integer.parseInt(convertedToArabic[i]) > 10) {
+            if (Integer.parseInt(latinToArab[i]) > 10) {
                 err.println("\n!!! Ошибка, вводимые операнды должны быть <= 10. " +
                         "А латинская: " + convert[i] + " больше 10 !!!\n");
                 exit(0);
             }
         }
-        return convertedToArabic;
+        return latinToArab;
     }
 
-    private static String resultToLatin(String arabicResultForLatinString) {
-        int arabicResultToLatinInt = Integer.parseInt(arabicResultForLatinString);
-        if (arabicResultToLatinInt < 1) {
+    private static String toLatinResult(String resultInLatinS) {
+        int latinResultInt = Integer.parseInt(resultInLatinS);
+        if (latinResultInt < 1) {
                 err.println("\n!!! Результат операций с латиницей не может быть меньше 1 !!!\n");
                 exit(0);
         }
         LatinEnum[] arrayLatinFromEnum = LatinEnum.values();
-        return String.valueOf(arrayLatinFromEnum[arabicResultToLatinInt - 1]);
+        return String.valueOf(arrayLatinFromEnum[latinResultInt - 1]);
     }
 }
