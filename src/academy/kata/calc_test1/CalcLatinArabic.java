@@ -2,8 +2,7 @@ package academy.kata.calc_test1;
 
 import java.util.Scanner;
 
-import static java.lang.System.in;
-import static java.lang.System.out;
+import static java.lang.System.*;
 
 public class CalcLatinArabic {
     static final String INPUT_ERROR = "!!!Некорректный ввод!!!";
@@ -69,38 +68,6 @@ public class CalcLatinArabic {
         return (!ifLatin) ? calculator(trimEx) : calculator(latinToArabic(trimEx));
     }
 
-    private static String[] latinToArabic(String[] convert) {
-        String[] convertedToArabic = new String[3];
-        convertedToArabic[0] = convert[0];
-        for (int i = 1; i <= 2; i++) {
-            try {
-                LatinEnum.valueOf(convert[i]);
-            } catch (IllegalArgumentException e) {
-                out.println("!!! Такого числа нет в латинском: " + convert[i] + " !!!\n");
-            }
-            convertedToArabic[i] = String.valueOf(LatinEnum.valueOf(convert[i]).ordinal() + 1);
-
-            if (Integer.parseInt(convertedToArabic[i]) > 10) {
-                throw new RuntimeException("\n\n\n!!! " +
-                    "Внимание, вводимые операнды должны быть <= 10. А латинская: " + convert[i] + " больше 10 !!!\n\n");
-            }
-        }
-        return convertedToArabic;
-    }
-
-    private static String resultToLatin(String arabicResultForLatinString) {
-        int arabicResultToLatinInt = Integer.parseInt(arabicResultForLatinString);
-        if (arabicResultToLatinInt < 1) {
-            try {
-                throw new RuntimeException();
-            } catch (RuntimeException e) {
-                out.println("\n\n\n!!! Результат операций с латиницей не может быть меньше 1 !!!\n\n");
-            }
-        }
-        LatinEnum[] arrayLatinFromEnum = LatinEnum.values();
-        return String.valueOf(arrayLatinFromEnum[arabicResultToLatinInt - 1]);
-    }
-
     private static String detectOperator(String operator) {
         if (operator.contains("+")) return "+";
         else if (operator.contains("-")) return "-";
@@ -116,5 +83,36 @@ public class CalcLatinArabic {
             case "*" -> Operations.sMultiply(operandsToCalc[1], operandsToCalc[2]);
             default -> Operations.sDivide(operandsToCalc[1], operandsToCalc[2]);
         };
+    }
+
+    private static String[] latinToArabic(String[] convert) {
+        String[] convertedToArabic = new String[3];
+        convertedToArabic[0] = convert[0];
+        for (int i = 1; i <= 2; i++) {
+            try {
+                LatinEnum.valueOf(convert[i]);
+            } catch (IllegalArgumentException e) {
+                err.println("!!! Ошибка!!! Такого числа нет в рабочем диапазоне чисел: " + convert[i] + " !!!\n");
+                exit(0);
+            }
+            convertedToArabic[i] = String.valueOf(LatinEnum.valueOf(convert[i]).ordinal() + 1);
+
+            if (Integer.parseInt(convertedToArabic[i]) > 10) {
+                err.println("\n\n\n!!! Ошибка!!! , вводимые операнды должны быть <= 10. " +
+                        "А латинская: " + convert[i] + " больше 10 !!!\n\n");
+                exit(0);
+            }
+        }
+        return convertedToArabic;
+    }
+
+    private static String resultToLatin(String arabicResultForLatinString) {
+        int arabicResultToLatinInt = Integer.parseInt(arabicResultForLatinString);
+        if (arabicResultToLatinInt < 1) {
+                err.println("\n\n\n!!! Результат операций с латиницей не может быть меньше 1 !!!\n\n");
+                exit(0);
+        }
+        LatinEnum[] arrayLatinFromEnum = LatinEnum.values();
+        return String.valueOf(arrayLatinFromEnum[arabicResultToLatinInt - 1]);
     }
 }

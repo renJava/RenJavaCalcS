@@ -2,8 +2,7 @@ package academy.kata.scalc;
 
 import java.util.Scanner;
 
-import static java.lang.System.in;
-import static java.lang.System.out;
+import static java.lang.System.*;
 
 //  "654Ъiё~+h" + "e47#@&+gj"     //             //   "5/*ё~gh" + "/*"     //
 //    "$Yj@rgЁ1Ыi" - "^ej%rgЁ1"   //             //    "" - "^ej%rgЁ1"     //
