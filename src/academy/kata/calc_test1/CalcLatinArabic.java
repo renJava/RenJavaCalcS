@@ -78,28 +78,29 @@ public class CalcLatinArabic {
     private static String calculator(String[] operandToCalc) {
         String operator = operandToCalc[0];
         return switch (operator) {
-            case "+" -> Operations.sAdd(operandToCalc[1], operandToCalc[2]);
-            case "-" -> Operations.sSubtract(operandToCalc[1], operandToCalc[2]);
-            case "*" -> Operations.sMultiply(operandToCalc[1], operandToCalc[2]);
-            default -> Operations.sDivide(operandToCalc[1], operandToCalc[2]);
+            case "+" -> Arithmetic.sAdd(operandToCalc[1], operandToCalc[2]);
+            case "-" -> Arithmetic.sSubtract(operandToCalc[1], operandToCalc[2]);
+            case "*" -> Arithmetic.sMultiply(operandToCalc[1], operandToCalc[2]);
+            default -> Arithmetic.sDivide(operandToCalc[1], operandToCalc[2]);
         };
     }
 
-    private static String[] latinToArabic(String[] convert) {
+    private static String[] latinToArabic(String[] latinOperandS) {
         String[] latinToArab = new String[3];
-        latinToArab[0] = convert[0];
+        latinToArab[0] = latinOperandS[0];
         for (int i = 1; i <= 2; i++) {
             try {
-                LatinEnum.valueOf(convert[i]);
+                LatinEnum.valueOf(latinOperandS[i]);
             } catch (IllegalArgumentException e) {
-                err.println("!!! Ошибка ввода или латинской цифры нет в заданном диапазоне: " + convert[i] + " !!!\n");
+                err.println("!!! Ошибка ввода или латинской цифры нет в заданном диапазоне: " +
+                    latinOperandS[i] + " !!!\n");
                 exit(0);
             }
-            latinToArab[i] = String.valueOf(LatinEnum.valueOf(convert[i]).ordinal() + 1);
+            latinToArab[i] = String.valueOf(LatinEnum.valueOf(latinOperandS[i]).ordinal() + 1);
 
             if (Integer.parseInt(latinToArab[i]) > 10) {
                 err.println("\n!!! Ошибка, вводимые операнды должны быть <= 10. " +
-                        "А латинская: " + convert[i] + " больше 10 !!!\n");
+                        "А латинская: " + latinOperandS[i] + " больше 10 !!!\n");
                 exit(0);
             }
         }
