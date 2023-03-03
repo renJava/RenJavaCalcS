@@ -11,6 +11,7 @@ public class CalcLatinArabic {
     public static void main(String[] args) {
         String expression;
         String validateIn;
+        boolean isValidateInput;
         do {
             Scanner scanner = new Scanner(in);
             String announcement = """
@@ -28,11 +29,12 @@ public class CalcLatinArabic {
             out.println();
             validateIn = isValidate(expression);
             out.println("\nРезультат: " + validateIn);
-            if (validateIn.equals(INPUT_ERROR)) {
+            isValidateInput = validateIn.equals(INPUT_ERROR);
+            if (isValidateInput) {
                 out.println("\nПовторите, пожалуйста, ввод.");
             }
         }
-        while (validateIn.equals(INPUT_ERROR));
+        while (isValidateInput);
     }
 
     static String isValidate(String expression) {            //Проверка корректности ввода
@@ -42,13 +44,13 @@ public class CalcLatinArabic {
       final String reOperandL = "[ \t]*[IVX]{1,4}[ \t]*";    //Набор для латыни <=10, в пробелах и Tabs
       final String reOperators = "[-+*/]";
 
-      final String regexCompositeAr = startRegex + reOperandAr + reOperators + reOperandAr;//Регулярка араб. <= 10 симв
-      final String regexCompositeL = startRegex + reOperandL + reOperators + reOperandL;   //Регулярка лат. <= 10 симв
+      final String regexCompositeForAr = startRegex + reOperandAr + reOperators + reOperandAr;  //Регулярка араб.<= 10
+      final String regexCompositeForLatin = startRegex + reOperandL + reOperators + reOperandL; //Регулярка лат.<= 4 зн.
 
 
-      if (expression.matches(regexCompositeAr)) {
+      if (expression.matches(regexCompositeForAr)) {
           return fullTrim(expression, false);
-      } else if (expression.matches(regexCompositeL)) {
+      } else if (expression.matches(regexCompositeForLatin)) {
           return resultToLatin(fullTrim(expression, true));
 
       }
@@ -82,15 +84,15 @@ public class CalcLatinArabic {
 
             if (Integer.parseInt(convertedToArabic[i]) > 10) {
                 throw new RuntimeException("\n\n\n!!! " +
-                    "Внимание, вводимые операнды должны быть <= 10. А латинская " + convert[i] + " больше 10 !!!\n\n");
+                    "Внимание, вводимые операнды должны быть <= 10. А латинская: " + convert[i] + " больше 10 !!!\n\n");
             }
         }
         return convertedToArabic;
     }
 
     private static String resultToLatin(String arabicResultForLatinString) {
-        int arabicResultForLatinInt = Integer.parseInt(arabicResultForLatinString);
-        if (arabicResultForLatinInt < 1) {
+        int arabicResultToLatinInt = Integer.parseInt(arabicResultForLatinString);
+        if (arabicResultToLatinInt < 1) {
             try {
                 throw new RuntimeException();
             } catch (RuntimeException e) {
@@ -98,7 +100,7 @@ public class CalcLatinArabic {
             }
         }
         LatinEnum[] arrayLatinFromEnum = LatinEnum.values();
-        return String.valueOf(arrayLatinFromEnum[arabicResultForLatinInt - 1]);
+        return String.valueOf(arrayLatinFromEnum[arabicResultToLatinInt - 1]);
     }
 
     private static String detectOperator(String operator) {
