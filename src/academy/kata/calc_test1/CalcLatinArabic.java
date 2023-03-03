@@ -17,9 +17,8 @@ public class CalcLatinArabic {
             String announcement = """
 
                             Правила ввода:
-                    Введите выражение с целыми латинскими или арабскими числами >0, но <=10.
-                                        
-                    В одной строке одновременно допускаются либо арабские, либо латинские цифры.
+                    Введите выражение или только с латинскими или только с целыми арабскими числами >0, но <=10.
+                    В одной строке одновременно допускаются либо только арабские, либо только латинские цифры.
                                         
                     При ошибке в выражении будет выполнен повторный цикл ввода!!!:
                                         
@@ -46,7 +45,6 @@ public class CalcLatinArabic {
 
       final String regexCompositeForAr = startRegex + reOperandAr + reOperators + reOperandAr;  //Регулярка араб.<= 10
       final String regexCompositeForLatin = startRegex + reOperandL + reOperators + reOperandL; //Регулярка лат.<= 4 зн.
-
 
       if (expression.matches(regexCompositeForAr)) {
           return fullTrim(expression, false);
@@ -109,7 +107,6 @@ public class CalcLatinArabic {
         else if (operator.contains("*")) return "*";
         else return "/";
     }
-
 
     private static String calculator(String[] operandsToCalc) {
         String locOperator = operandsToCalc[0];
