@@ -35,6 +35,7 @@ public class CalcLatinArabic {
         while (isValidateInput);
     }
 
+            //Входная проверка выражения и подготовка к распределению на арабскую и латинскую ветки вычислений
     static String isValidate(String expression) {            //Проверка корректности ввода
 
       final String startRegex = "^";
@@ -54,7 +55,7 @@ public class CalcLatinArabic {
       return INPUT_ERROR;
     }
 
-    //    Порезать выражение и вернуть результат
+    //    Порезать выражение и распределить на арабскую и латинскую ветки вычислений
     private static String fullTrim(String workExpression, boolean ifLatin) {
         String[] trimEx = new String[3];
         String trimS = workExpression.trim();                         //Отбрасываем боковые пробелы и Tabs

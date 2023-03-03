@@ -1,6 +1,6 @@
 package academy.kata.calc_test1;
 
-public class Arithmetic {
+public class Arithmetic {                                     //Сложение
         static String sAdd(String a, String b) {              //Сложение
             return String.valueOf(Integer.parseInt(a) + Integer.parseInt(b));
         }
