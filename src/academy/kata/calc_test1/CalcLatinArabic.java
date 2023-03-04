@@ -49,7 +49,7 @@ public class CalcLatinArabic {
       if (expression.matches(regexCompositeArabic)) {
           return fullTrim(expression, false);
       } else if (expression.matches(regexCompositeLatin)) {
-          return toLatinResult(fullTrim(expression, true));
+          return resultToLatin(fullTrim(expression, true));
 
       }
       return INPUT_ERROR;
@@ -108,7 +108,7 @@ public class CalcLatinArabic {
         return latinToArab;
     }
 
-    private static String toLatinResult(String resultInLatinS) {
+    private static String resultToLatin(String resultInLatinS) {
         int latinResultInt = Integer.parseInt(resultInLatinS);
         if (latinResultInt < 1) {
                 err.println("\n!!! Результат операций с латиницей не может быть меньше 1 !!!\n");
