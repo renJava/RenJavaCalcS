@@ -51,30 +51,30 @@ public class CalcLatinArabic {
       final String regexCompositeLatin = startRegex + reOperandL + reOperators + reOperandL;    //Регулярка лат.<= 4 зн.
 
       if (expression.matches(regexCompositeArabic)) {
-          return fullTrim(expression, false);
+          return fullTrimS(expression, false);
 
       } else if (expression.matches(regexCompositeLatin)) {
-          return resultToLatin(fullTrim(expression, true));
+          return resultToLatinS(fullTrimS(expression, true));
 
       }
       return INPUT_ERROR;
     }
 
     //    Порезать выражение и распределить на арабскую и латинскую ветки вычислений
-    private static String fullTrim(String workExpression, boolean ifLatin) {
-        String[] trimEx = new String[3];
+    private static String fullTrimS(String workExpression, boolean ifLatin) {
+        String[] trimExpS = new String[3];
         String trimS = workExpression.trim();                         //Отбросить боковые пробелы и Tabs
         int lengthT = trimS.length();
-        String operator = detectOperator(trimS);
-        int locOperator = trimS.indexOf(operator);                    //Вырезать поле с пробелами и оператором
-        operator = trimS.substring(locOperator, locOperator + 1);     //Чистый оператор внутри поля
-        trimEx[0] = operator;                                         //Чистый оператор на экспорт
-        trimEx[1] = trimS.substring(0, locOperator).trim();           //1-й строковый операнд
-        trimEx[2] = trimS.substring(locOperator + 1, lengthT).trim(); //2-й строковый операнд
-        return (!ifLatin) ? String.valueOf(calculator(trimEx)) : String.valueOf(calculator(latinToArabicS(trimEx)));
+        String operatorS = detectOperatorS(trimS);
+        int intOperatorPos = trimS.indexOf(operatorS);                       //Вырезать поле с пробелами и оператором
+        operatorS = trimS.substring(intOperatorPos, intOperatorPos + 1);     //Чистый оператор внутри поля
+        trimExpS[0] = operatorS;                                             //Чистый оператор на экспорт
+        trimExpS[1] = trimS.substring(0, intOperatorPos).trim();            //1-й строковый операнд
+        trimExpS[2] = trimS.substring(intOperatorPos + 1, lengthT).trim();  //2-й строковый операнд
+        return (!ifLatin) ? String.valueOf(calculator(trimExpS)) : String.valueOf(calculator(latinToArabicS(trimExpS)));
     }
 
-    private static String detectOperator(String operator) {
+    private static String detectOperatorS(String operator) {
         if (operator.contains("+")) return "+";
         else if (operator.contains("-")) return "-";
         else if (operator.contains("*")) return "*";
@@ -114,13 +114,13 @@ public class CalcLatinArabic {
         return latinToArabS;
     }
 
-    private static String resultToLatin(String resultInArabicS) {
+    private static String resultToLatinS(String resultInArabicS) {
         int resultInArabicInt = Integer.parseInt(resultInArabicS);
         if (resultInArabicInt < 1) {
                 err.println("\n!!! Результат операций с латиницей не может быть меньше 1 !!!\n");
                 exit(0);
         }
         LatinEnum[] arrayLatinFromEnum = LatinEnum.values();
-        return String.valueOf(arrayLatinFromEnum[resultInArabicInt - 1]);   //Конвертировать в латиницу
+        return String.valueOf(arrayLatinFromEnum[resultInArabicInt - 1]);  //Конвертировать в латиницу и в строковый вид
     }
 }
