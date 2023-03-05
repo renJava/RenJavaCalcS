@@ -1,7 +1,7 @@
 package academy.kata.calc_test1;
 
 /**
-*                                 Калькулятор (+-/*) целых арабских  и латинский чисел <= 10
+*                                 Калькулятор (+-/*) целых арабских  и латинских чисел <= 10
 */
 
 
@@ -52,17 +52,17 @@ public class CalcLatinArabic {
       final String regexCompositeLatin = startRegex + reOperandL + reOperators + reOperandL;    //Регулярка лат.<= 4 зн.
 
       if (expression.matches(regexCompositeArabic)) {
-          return fullTrim(expression, false);
+          return String.valueOf(fullTrim(expression, false));
 
       } else if (expression.matches(regexCompositeLatin)) {
-          return resultToLatin(fullTrim(expression, true));
+          return resultToLatin(String.valueOf(fullTrim(expression, true)));
 
       }
       return INPUT_ERROR;
     }
 
     //    Порезать выражение и распределить на арабскую и латинскую ветки вычислений
-    private static String fullTrim(String workExpression, boolean ifLatin) {
+    private static int fullTrim(String workExpression, boolean ifLatin) {
         String[] trimEx = new String[3];
         String trimS = workExpression.trim();                         //Отбросить боковые пробелы и Tabs
         int lengthT = trimS.length();
@@ -72,7 +72,7 @@ public class CalcLatinArabic {
         trimEx[0] = operator;                                         //Чистый оператор на экспорт
         trimEx[1] = trimS.substring(0, locOperator).trim();           //1-й строковый операнд
         trimEx[2] = trimS.substring(locOperator + 1, lengthT).trim(); //2-й строковый операнд
-        return (!ifLatin) ? calculator(trimEx) : calculator(latinToArabic(trimEx));
+        return (!ifLatin) ? calculator(trimEx) : calculator(latinToArabicS(trimEx));
     }
 
     private static String detectOperator(String operator) {
@@ -82,7 +82,7 @@ public class CalcLatinArabic {
         else return "/";
     }
 
-    private static String calculator(String[] operand) {
+    private static int calculator(String[] operand) {
         String operator = operand[0];
         return switch (operator) {
             case "+" -> Arithmetic.sAdd(operand[1], operand[2]);
@@ -92,9 +92,9 @@ public class CalcLatinArabic {
         };
     }
 
-    private static String[] latinToArabic(String[] latinOperandS) {
-        String[] latinToArab = new String[3];
-        latinToArab[0] = latinOperandS[0];
+    private static String[] latinToArabicS(String[] latinOperandS) {
+        String[] latinToArabS = new String[3];
+        latinToArabS[0] = latinOperandS[0];
         for (int i = 1; i <= 2; i++) {
             try {
                 LatinEnum.valueOf(latinOperandS[i]);
@@ -103,15 +103,16 @@ public class CalcLatinArabic {
                     latinOperandS[i] + " !!!\n");
                 exit(0);
             }
-            latinToArab[i] = String.valueOf(LatinEnum.valueOf(latinOperandS[i]).ordinal() + 1);
+            int latinToArabInt = LatinEnum.valueOf(latinOperandS[i]).ordinal() + 1;
+            latinToArabS[i] = String.valueOf(latinToArabInt);
 
-            if (Integer.parseInt(latinToArab[i]) > 10) {
+            if (latinToArabInt > 10) {
                 err.println("\n!!! Ошибка, вводимые операнды должны быть <= 10. " +
                         "А латинская: " + latinOperandS[i] + " больше 10 !!!\n");
                 exit(0);
             }
         }
-        return latinToArab;
+        return latinToArabS;
     }
 
     private static String resultToLatin(String resultInArabicS) {
