@@ -1,8 +1,9 @@
 package academy.kata.calc_test1;
 
 /**
-*                                      Калькулятор целых и латинский чисел <= 10
- */
+*                                 Калькулятор (+-/*) целых арабских  и латинский чисел <= 10
+*/
+
 
 import java.util.Scanner;
 
@@ -40,7 +41,7 @@ public class CalcLatinArabic {
     }
 
             //Входная проверка выражения и подготовка к распределению на арабскую и латинскую ветки вычислений
-    static String isValidate(String expression) {            //Проверка корректности ввода
+    static String isValidate(String expression) {            //Проверить корректности ввода
 
       final String startRegex = "^";
       final String reOperandAr = "[ \t]*(?:[1-9]|10)[ \t]*"; //Цифра [1-10], а вокруг пробелы и Tabs
@@ -63,10 +64,10 @@ public class CalcLatinArabic {
     //    Порезать выражение и распределить на арабскую и латинскую ветки вычислений
     private static String fullTrim(String workExpression, boolean ifLatin) {
         String[] trimEx = new String[3];
-        String trimS = workExpression.trim();                         //Отбрасываем боковые пробелы и Tabs
+        String trimS = workExpression.trim();                         //Отбросить боковые пробелы и Tabs
         int lengthT = trimS.length();
         String operator = detectOperator(trimS);
-        int locOperator = trimS.indexOf(operator);                    //Вырезаем поле с пробелами и оператором
+        int locOperator = trimS.indexOf(operator);                    //Вырезать поле с пробелами и оператором
         operator = trimS.substring(locOperator, locOperator + 1);     //Чистый оператор внутри поля
         trimEx[0] = operator;                                         //Чистый оператор на экспорт
         trimEx[1] = trimS.substring(0, locOperator).trim();           //1-й строковый операнд
@@ -113,13 +114,13 @@ public class CalcLatinArabic {
         return latinToArab;
     }
 
-    private static String resultToLatin(String resultInLatinS) {
-        int resultInLatinInt = Integer.parseInt(resultInLatinS);
-        if (resultInLatinInt < 1) {
+    private static String resultToLatin(String resultInArabicS) {
+        int resultInArabicInt = Integer.parseInt(resultInArabicS);
+        if (resultInArabicInt < 1) {
                 err.println("\n!!! Результат операций с латиницей не может быть меньше 1 !!!\n");
                 exit(0);
         }
         LatinEnum[] arrayLatinFromEnum = LatinEnum.values();
-        return String.valueOf(arrayLatinFromEnum[resultInLatinInt - 1]);
+        return String.valueOf(arrayLatinFromEnum[resultInArabicInt - 1]);   //Конвертировать в латиницу
     }
 }
