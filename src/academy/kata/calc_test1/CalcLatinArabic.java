@@ -1,9 +1,8 @@
 package academy.kata.calc_test1;
 
 /**
- *              Калькулятор целых и латинский чисел <= 10
+*                                      Калькулятор целых и латинский чисел <= 10
  */
-
 
 import java.util.Scanner;
 
@@ -53,6 +52,7 @@ public class CalcLatinArabic {
 
       if (expression.matches(regexCompositeArabic)) {
           return fullTrim(expression, false);
+
       } else if (expression.matches(regexCompositeLatin)) {
           return resultToLatin(fullTrim(expression, true));
 
