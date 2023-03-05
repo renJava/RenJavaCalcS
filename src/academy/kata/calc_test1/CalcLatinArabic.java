@@ -4,7 +4,6 @@ package academy.kata.calc_test1;
 *                                 Калькулятор (+-/*) целых арабских  и латинских чисел <= 10
 */
 
-
 import java.util.Scanner;
 
 import static java.lang.System.*;
@@ -52,17 +51,17 @@ public class CalcLatinArabic {
       final String regexCompositeLatin = startRegex + reOperandL + reOperators + reOperandL;    //Регулярка лат.<= 4 зн.
 
       if (expression.matches(regexCompositeArabic)) {
-          return String.valueOf(fullTrim(expression, false));
+          return fullTrim(expression, false);
 
       } else if (expression.matches(regexCompositeLatin)) {
-          return resultToLatin(String.valueOf(fullTrim(expression, true)));
+          return resultToLatin(fullTrim(expression, true));
 
       }
       return INPUT_ERROR;
     }
 
     //    Порезать выражение и распределить на арабскую и латинскую ветки вычислений
-    private static int fullTrim(String workExpression, boolean ifLatin) {
+    private static String fullTrim(String workExpression, boolean ifLatin) {
         String[] trimEx = new String[3];
         String trimS = workExpression.trim();                         //Отбросить боковые пробелы и Tabs
         int lengthT = trimS.length();
@@ -72,7 +71,7 @@ public class CalcLatinArabic {
         trimEx[0] = operator;                                         //Чистый оператор на экспорт
         trimEx[1] = trimS.substring(0, locOperator).trim();           //1-й строковый операнд
         trimEx[2] = trimS.substring(locOperator + 1, lengthT).trim(); //2-й строковый операнд
-        return (!ifLatin) ? calculator(trimEx) : calculator(latinToArabicS(trimEx));
+        return (!ifLatin) ? String.valueOf(calculator(trimEx)) : String.valueOf(calculator(latinToArabicS(trimEx)));
     }
 
     private static String detectOperator(String operator) {
@@ -104,13 +103,13 @@ public class CalcLatinArabic {
                 exit(0);
             }
             int latinToArabInt = LatinEnum.valueOf(latinOperandS[i]).ordinal() + 1;
-            latinToArabS[i] = String.valueOf(latinToArabInt);
 
             if (latinToArabInt > 10) {
                 err.println("\n!!! Ошибка, вводимые операнды должны быть <= 10. " +
                         "А латинская: " + latinOperandS[i] + " больше 10 !!!\n");
                 exit(0);
             }
+            latinToArabS[i] = String.valueOf(latinToArabInt);
         }
         return latinToArabS;
     }
