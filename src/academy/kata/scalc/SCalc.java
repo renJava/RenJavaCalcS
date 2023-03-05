@@ -1,5 +1,9 @@
 package academy.kata.scalc;
 
+/**
+*             Строковый калькулятор до 10 символов, принимающий числа только в качестве 2-го операнда (<= 10)
+ */
+
 import java.util.Scanner;
 
 import static java.lang.System.*;

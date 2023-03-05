@@ -1,5 +1,10 @@
 package academy.kata.calc_test1;
 
+/**
+ *              Калькулятор целых и латинский чисел <= 10
+ */
+
+
 import java.util.Scanner;
 
 import static java.lang.System.*;
