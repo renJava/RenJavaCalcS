@@ -108,13 +108,13 @@ public class CalcLatinArabic {
         return latinToArab;
     }
 
-    private static String resultToLatin(String resultInLatinS) {
-        int resultInLatinInt = Integer.parseInt(resultInLatinS);
-        if (resultInLatinInt < 1) {
+    private static String resultToLatin(String resultInArabicS) {
+        int resultInArabicToLatinFromEnumInt = Integer.parseInt(resultInArabicS);
+        if (resultInArabicToLatinFromEnumInt < 1) {
                 err.println("\n!!! Результат операций с латиницей не может быть меньше 1 !!!\n");
                 exit(0);
         }
         LatinEnum[] arrayLatinFromEnum = LatinEnum.values();
-        return String.valueOf(arrayLatinFromEnum[resultInLatinInt - 1]);
+        return String.valueOf(arrayLatinFromEnum[resultInArabicToLatinFromEnumInt - 1]);
     }
 }
