@@ -76,13 +76,13 @@ public class CalcLatinArabic {
         else return "/";
     }
 
-    private static String calculator(String[] operandToCalc) {
-        String operator = operandToCalc[0];
+    private static String calculator(String[] operand) {
+        String operator = operand[0];
         return switch (operator) {
-            case "+" -> Arithmetic.sAdd(operandToCalc[1], operandToCalc[2]);
-            case "-" -> Arithmetic.sSubtract(operandToCalc[1], operandToCalc[2]);
-            case "*" -> Arithmetic.sMultiply(operandToCalc[1], operandToCalc[2]);
-            default -> Arithmetic.sDivide(operandToCalc[1], operandToCalc[2]);
+            case "+" -> Arithmetic.sAdd(operand[1], operand[2]);
+            case "-" -> Arithmetic.sSubtract(operand[1], operand[2]);
+            case "*" -> Arithmetic.sMultiply(operand[1], operand[2]);
+            default -> Arithmetic.sDivide(operand[1], operand[2]);
         };
     }
 
@@ -109,12 +109,12 @@ public class CalcLatinArabic {
     }
 
     private static String resultToLatin(String resultInLatinS) {
-        int latinResultInt = Integer.parseInt(resultInLatinS);
-        if (latinResultInt < 1) {
+        int resultInLatinInt = Integer.parseInt(resultInLatinS);
+        if (resultInLatinInt < 1) {
                 err.println("\n!!! Результат операций с латиницей не может быть меньше 1 !!!\n");
                 exit(0);
         }
         LatinEnum[] arrayLatinFromEnum = LatinEnum.values();
-        return String.valueOf(arrayLatinFromEnum[latinResultInt - 1]);
+        return String.valueOf(arrayLatinFromEnum[resultInLatinInt - 1]);
     }
 }
