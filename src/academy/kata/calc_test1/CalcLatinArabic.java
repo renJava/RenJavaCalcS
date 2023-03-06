@@ -1,8 +1,7 @@
 package academy.kata.calc_test1;
 
 /**
-*                                 Калькулятор (+-/*) целых арабских  и латинских чисел <= 10
-*/
+*                                 Калькулятор (+-/*) целых арабских  и латинских чисел <= 10                        */
 
 import java.util.Scanner;
 
@@ -82,12 +81,10 @@ public class CalcLatinArabic {
     }
 
     private static String calculator(String[] operand) {
-        String operator = operand[0];
-        return String.valueOf(switch (operator) {
-            case "+" -> Arithmetic.sAdd(operand[1], operand[2]);
-            case "-" -> Arithmetic.sSubtract(operand[1], operand[2]);
-            case "*" -> Arithmetic.sMultiply(operand[1], operand[2]);
-            default -> Arithmetic.sDivide(operand[1], operand[2]);
+      String operator = operand[0];
+      return String.valueOf(switch (operator) {
+        case "+" -> Arithmetic.sAdd(operand[1], operand[2]);   case "-" -> Arithmetic.sSubtract(operand[1], operand[2]);
+        case "*" -> Arithmetic.sMultiply(operand[1], operand[2]); default -> Arithmetic.sDivide(operand[1], operand[2]);
         });
     }
 
@@ -109,6 +106,7 @@ public class CalcLatinArabic {
                         "А латинская: " + latinOperandS[i] + " больше 10 !!!\n");
                 exit(0);
             }
+
             latinToArabS[i] = String.valueOf(latinToArabInt);
         }
         return latinToArabS;
