@@ -118,7 +118,7 @@ public class CalcLatinArabic {
                 err.println("\n!!! Результат операций с латиницей не может быть меньше 1 !!!\n");
                 exit(0);
         }
-        LatinEnum[] arrayLatinFromEnum = LatinEnum.values(); //Слив Enum в массив для последующей выдачи рез-та латынью
-        return String.valueOf(arrayLatinFromEnum[resultInArabicInt - 1]);   //Приведение результата к строковой латыни
+        LatinEnum[] arrLatinFromEnum = LatinEnum.values();   //Слив Enum в массив для последующей выдачи рез-та латынью
+        return String.valueOf(arrLatinFromEnum[resultInArabicInt - 1]);      //Приведение результата к строковой латыни
     }
 }
