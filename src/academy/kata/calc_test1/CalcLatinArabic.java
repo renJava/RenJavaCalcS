@@ -95,15 +95,13 @@ public class CalcLatinArabic {
             try {
                 LatinEnum.valueOf(latinOperandS[i]);
             } catch (IllegalArgumentException e) {
-                err.println("!!! Ошибка ввода или латинской цифры нет в заданном диапазоне: " +
-                    latinOperandS[i] + " !!!\n");
+                err.println("!!! Неправильный ввод: " + latinOperandS[i] + " !!!\n");
                 exit(0);
             }
-            int latinToArabInt = LatinEnum.valueOf(latinOperandS[i]).ordinal() + 1;
-
-            if (latinToArabInt > 10) {
-                err.println("\n!!! Ошибка, вводимые операнды должны быть <= 10. " +
-                        "А латинская: " + latinOperandS[i] + " больше 10 !!!\n");
+            int latinToArabInt = LatinEnum.valueOf(latinOperandS[i]).ordinal() + 1;   //Конвертация латинских операндов
+                                                                                      //по индексу Enum в арабский
+           if (latinToArabInt > 10) {
+             err.println("\n!!! Ошибка, вводимые операнды должны быть <= 10. " + latinOperandS[i] + " больше 10 !!!\n");
                 exit(0);
             }
 
@@ -118,7 +116,7 @@ public class CalcLatinArabic {
                 err.println("\n!!! Результат операций с латиницей не может быть меньше 1 !!!\n");
                 exit(0);
         }
-        LatinEnum[] arrayLatinFromEnum = LatinEnum.values();
-        return String.valueOf(arrayLatinFromEnum[resultInArabicInt - 1]);  //Конвертировать в латиницу и в строковый вид
+        LatinEnum[] arrayLatinFromEnum = LatinEnum.values(); //Слив Enum в массив для послед. выдачи результата в латыни
+        return String.valueOf(arrayLatinFromEnum[resultInArabicInt - 1]);   //Приведение результата к строковой латинице
     }
 }
