@@ -66,12 +66,12 @@ public class CalcLatinArabic {
         String trimS = workExpression.trim();                         //Отбросить боковые пробелы и Tabs
         int lengthT = trimS.length();
         String operatorS = detectOperatorS(trimS);
-        int intOperatorPos = trimS.indexOf(operatorS);                       //Вырезать поле с пробелами и оператором
-        operatorS = trimS.substring(intOperatorPos, intOperatorPos + 1);     //Чистый оператор внутри поля
-        trimExpS[0] = operatorS;                                             //Чистый оператор на экспорт
-        trimExpS[1] = trimS.substring(0, intOperatorPos).trim();            //1-й строковый операнд
-        trimExpS[2] = trimS.substring(intOperatorPos + 1, lengthT).trim();  //2-й строковый операнд
-        return (!ifLatin) ? String.valueOf(calculator(trimExpS)) : String.valueOf(calculator(latinToArabicS(trimExpS)));
+        int intOperatorPos = trimS.indexOf(operatorS);                        //Вырезать поле с пробелами и оператором
+        operatorS = trimS.substring(intOperatorPos, intOperatorPos + 1);      //Чистый оператор внутри поля
+        trimExpS[0] = operatorS;                                              //Чистый оператор на экспорт
+        trimExpS[1] = trimS.substring(0, intOperatorPos).trim();              //1-й строковый операнд
+        trimExpS[2] = trimS.substring(intOperatorPos + 1, lengthT).trim();    //2-й строковый операнд
+        return (!ifLatin) ? calculator(trimExpS) : calculator(latinToArabicS(trimExpS));
     }
 
     private static String detectOperatorS(String operator) {
@@ -81,14 +81,14 @@ public class CalcLatinArabic {
         else return "/";
     }
 
-    private static int calculator(String[] operand) {
+    private static String calculator(String[] operand) {
         String operator = operand[0];
-        return switch (operator) {
+        return String.valueOf(switch (operator) {
             case "+" -> Arithmetic.sAdd(operand[1], operand[2]);
             case "-" -> Arithmetic.sSubtract(operand[1], operand[2]);
             case "*" -> Arithmetic.sMultiply(operand[1], operand[2]);
             default -> Arithmetic.sDivide(operand[1], operand[2]);
-        };
+        });
     }
 
     private static String[] latinToArabicS(String[] latinOperandS) {
