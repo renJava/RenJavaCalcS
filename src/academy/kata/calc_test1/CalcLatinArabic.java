@@ -89,8 +89,8 @@ public class CalcLatinArabic {
     }
 
     private static String[] latinToArabicS(String[] latinOperandS) {
-        String[] latinToArabS = new String[3];
-        latinToArabS[0] = latinOperandS[0];
+        String[] arrLatinToArabicS = new String[3];
+        arrLatinToArabicS[0] = latinOperandS[0];
         for (int i = 1; i <= 2; i++) {
             try {
                 LatinEnum.valueOf(latinOperandS[i]);
@@ -98,16 +98,16 @@ public class CalcLatinArabic {
                 err.println("!!! Неправильный ввод: " + latinOperandS[i] + " !!!\n");
                 exit(0);
             }
-            int latinToArabInt = LatinEnum.valueOf(latinOperandS[i]).ordinal() + 1;   //Конвертация латинских операндов
+            int latinToArabicInt = LatinEnum.valueOf(latinOperandS[i]).ordinal() + 1; //Конвертация латинских операндов
                                                                                       //по индексу Enum в арабский
-           if (latinToArabInt > 10) {
+           if (latinToArabicInt > 10) {
              err.println("\n!!! Ошибка, вводимые операнды должны быть <= 10. " + latinOperandS[i] + " больше 10 !!!\n");
                 exit(0);
             }
 
-            latinToArabS[i] = String.valueOf(latinToArabInt);
+            arrLatinToArabicS[i] = String.valueOf(latinToArabicInt);
         }
-        return latinToArabS;
+        return arrLatinToArabicS;
     }
 
     private static String resultToLatinS(String resultInArabicS) {
@@ -116,7 +116,7 @@ public class CalcLatinArabic {
                 err.println("\n!!! Результат операций с латиницей не может быть меньше 1 !!!\n");
                 exit(0);
         }
-        LatinEnum[] arrayLatinFromEnum = LatinEnum.values(); //Слив Enum в массив для послед. выдачи результата в латыни
-        return String.valueOf(arrayLatinFromEnum[resultInArabicInt - 1]);   //Приведение результата к строковой латинице
+        LatinEnum[] arrayLatinFromEnum = LatinEnum.values(); //Слив Enum в массив для последующей выдачи рез-та латынью
+        return String.valueOf(arrayLatinFromEnum[resultInArabicInt - 1]);   //Приведение результата к строковой латыни
     }
 }
