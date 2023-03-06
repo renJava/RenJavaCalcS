@@ -1,7 +1,7 @@
 package academy.kata.calc_test1;
 
 /**
-*                                 Калькулятор (+-/*) целых арабских  и латинских чисел <= 10                        */
+*                                 Калькулятор (+-/*) целых арабских  и латинских чисел <= 10                         */
 
 import java.util.Scanner;
 
@@ -50,17 +50,17 @@ public class CalcLatinArabic {
       final String regexCompositeLatin = startRegex + reOperandL + reOperators + reOperandL;    //Регулярка лат.<= 4 зн.
 
       if (expression.matches(regexCompositeArabic)) {
-          return fullTrimS(expression, false);
+          return fullTrimAndCutS(expression, false);
 
       } else if (expression.matches(regexCompositeLatin)) {
-          return resultToLatinS(fullTrimS(expression, true));
+          return resultLatinFromArabicS(fullTrimAndCutS(expression, true));
 
       }
       return INPUT_ERROR;
     }
 
     //    Порезать выражение и распределить на арабскую и латинскую ветки вычислений
-    private static String fullTrimS(String workExpression, boolean ifLatin) {
+    private static String fullTrimAndCutS(String workExpression, boolean ifLatin) {
         String[] trimExpS = new String[3];
         String trimS = workExpression.trim();                         //Отбросить боковые пробелы и Tabs
         int lengthT = trimS.length();
@@ -112,7 +112,7 @@ public class CalcLatinArabic {
         return arrLatinToArabicS;
     }
 
-    private static String resultToLatinS(String resultInArabicS) {
+    private static String resultLatinFromArabicS(String resultInArabicS) {
         int resultInArabicInt = Integer.parseInt(resultInArabicS);
         if (resultInArabicInt < 1) {
                 err.println("\n!!! Результат операций с латиницей не может быть меньше 1 !!!\n");
