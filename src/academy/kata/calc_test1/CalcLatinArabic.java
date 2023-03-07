@@ -1,19 +1,14 @@
 package academy.kata.calc_test1;
-
 /**
-*                                 Калькулятор (+-/*) целых арабских  и латинских чисел <= 10                         */
-
+*                                 Калькулятор (+-/*) целых арабских  и латинских чисел <= 10
+*/
 import java.util.Scanner;
-
 import static java.lang.System.*;
 
 public class CalcLatinArabic {
     static final String INPUT_ERROR = "!!!Некорректный ввод!!!";
-
     public static void main(String[] args) {
-        String expression;
-        String validateIn;
-        boolean isValidateInput;
+        boolean inputValidation;
         do {
             Scanner scanner = new Scanner(in);
             String announcement = """
@@ -26,33 +21,32 @@ public class CalcLatinArabic {
                                         
                                           """;
             out.println(announcement);
-            expression = scanner.nextLine();
+            String expression = scanner.nextLine();
             out.println();
-            validateIn = isValidate(expression);
-            out.println("\nРезультат: " + validateIn);
-            isValidateInput = validateIn.equals(INPUT_ERROR);
-            if (isValidateInput) {
-                out.println("\nПовторите, пожалуйста, ввод.");
-            }
+            String validationIn = isValidate(expression);
+            out.println("\nРезультат: " + validationIn);
+            inputValidation = validationIn.equals(INPUT_ERROR);
+            if (inputValidation) out.println("\nПовторите, пожалуйста, ввод.");
         }
-        while (isValidateInput);
+        while (inputValidation);
     }
 
-            //Входная проверка выражения и подготовка к распределению на арабскую и латинскую ветки вычислений
+    //Входная проверка выражения и подготовка к распределению на арабскую и латинскую ветки вычислений
+
     static String isValidate(String expression) {            //Проверить корректности ввода
 
       final String startRegex = "^";
-      final String reOperandAr = "[ \t]*(?:[1-9]|10)[ \t]*"; //Цифра [1-10], а вокруг пробелы и Tabs
-      final String reOperandL = "[ \t]*[IVX]{1,4}[ \t]*";    //Набор для латыни <=10, в пробелах и Tabs
+      final String reOperandArabic = "[ \t]*(?:[1-9]|10)[ \t]*"; //Цифра [1-10], а вокруг пробелы и Tabs
+      final String reOperandLatin = "[ \t]*[IVX]{1,4}[ \t]*";    //Набор для латыни <=10, в пробелах и Tabs
       final String reOperators = "[-+*/]";
 
-      final String regexCompositeArabic = startRegex + reOperandAr + reOperators + reOperandAr; //Регулярка араб.<= 10
-      final String regexCompositeLatin = startRegex + reOperandL + reOperators + reOperandL;    //Регулярка лат.<= 4 зн.
+      final String regexArabicEx = startRegex + reOperandArabic + reOperators + reOperandArabic;//Регулярка араб. <= 10
+      final String regexLatinEx = startRegex + reOperandLatin + reOperators + reOperandLatin;  //Регулярка лат. <= 4 зн.
 
-      if (expression.matches(regexCompositeArabic)) {
+      if (expression.matches(regexArabicEx)) {
           return fullTrimAndCutS(expression, false);
 
-      } else if (expression.matches(regexCompositeLatin)) {
+      } else if (expression.matches(regexLatinEx)) {
           return resultLatinFromArabicS(fullTrimAndCutS(expression, true));
 
       }
@@ -100,9 +94,9 @@ public class CalcLatinArabic {
                 err.println("!!! Неправильный ввод: " + latinOperandS[i] + " !!!\n");
                 exit(0);
             }
-            int latinToArabicInt = LatinEnum.valueOf(latinOperandS[i]).ordinal() + 1; //Конвертация латинских операндов
-                                                                                      //по индексу Enum в арабский
-           if (latinToArabicInt > 10) {
+            int latinToArabicInt = LatinEnum.valueOf(latinOperandS[i]).ordinal() + 1;//Индекс латинского операнда в Enum
+                                                                                    //равен арабскому значению из латыни
+            if (latinToArabicInt > 10) {
              err.println("\n!!! Ошибка, вводимые операнды должны быть <= 10. " + latinOperandS[i] + " больше 10 !!!\n");
                 exit(0);
             }
