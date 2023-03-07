@@ -23,7 +23,7 @@ public class CalcLatinArabic {
             out.println(announcement);
             String expression = scanner.nextLine();
             out.println();
-            String validationIn = isValidate(expression);
+            String validationIn = isValidateS(expression);
             out.println("\nРезультат: " + validationIn);
             inputValidation = validationIn.equals(INPUT_ERROR);
             if (inputValidation) out.println("\nПовторите, пожалуйста, ввод.");
@@ -33,7 +33,7 @@ public class CalcLatinArabic {
 
     //Входная проверка выражения и подготовка к распределению на арабскую и латинскую ветки вычислений
 
-    static String isValidate(String expression) {            //Проверить корректности ввода
+    static String isValidateS(String expression) {            //Проверить корректности ввода
 
       final String startRegex = "^";
       final String reOperandArabic = "[ \t]*(?:[1-9]|10)[ \t]*"; //Цифра [1-10], а вокруг пробелы и Tabs
@@ -64,7 +64,7 @@ public class CalcLatinArabic {
         trimExpS[0] = operatorS;                                              //Чистый оператор на экспорт
         trimExpS[1] = trimS.substring(0, intOperatorPos).trim();              //1-й строковый операнд
         trimExpS[2] = trimS.substring(intOperatorPos + 1, lengthT).trim();    //2-й строковый операнд
-        return (!ifLatin) ? calculator(trimExpS) : calculator(latinToArabicS(trimExpS));
+        return (!ifLatin) ? calculatorS(trimExpS) : calculatorS(latinToArabicS(trimExpS));
     }
 
     private static String detectOperatorS(String operator) {
@@ -74,9 +74,9 @@ public class CalcLatinArabic {
         else return "/";
     }
 
-    private static String calculator(String[] operand) {
+    private static String calculatorS(String[] operand) {
       String operator = operand[0];
-      return String.valueOf(switch (operator) {
+      return String.valueOf(switch (operator) {                         //К строковому виду
         case "+" -> Arithmetic.sAdd(operand[1], operand[2]);
         case "-" -> Arithmetic.sSubtract(operand[1], operand[2]);
         case "*" -> Arithmetic.sMultiply(operand[1], operand[2]);
@@ -85,7 +85,7 @@ public class CalcLatinArabic {
     }
 
     private static String[] latinToArabicS(String[] latinOperandS) {
-        String[] arrLatinToArabicS = new String[3];
+        String[] arrLatinToArabicS = new String[3];                     //Новый массив в арабском виде
         arrLatinToArabicS[0] = latinOperandS[0];
         for (int i = 1; i <= 2; i++) {
             try {
@@ -95,7 +95,7 @@ public class CalcLatinArabic {
                 exit(0);
             }
             int latinToArabicInt = LatinEnum.valueOf(latinOperandS[i]).ordinal() + 1;//Индекс латинского операнда в Enum
-                                                                                    //равен арабскому значению из латыни
+                                                                                     //соответствует арабскому значению
             if (latinToArabicInt > 10) {
              err.println("\n!!! Ошибка, вводимые операнды должны быть <= 10. " + latinOperandS[i] + " больше 10 !!!\n");
                 exit(0);
