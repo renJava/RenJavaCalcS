@@ -43,13 +43,9 @@ public class CalcLatinArabic {
       final String regexArabicEx = startRegex + reOperandArabic + reOperators + reOperandArabic;//Регулярка араб. <= 10
       final String regexLatinEx = startRegex + reOperandLatin + reOperators + reOperandLatin;  //Регулярка лат. <= 4 зн.
 
-      if (expression.matches(regexArabicEx)) {
-          return fullTrimAndCutS(expression, false);
+      if (expression.matches(regexArabicEx))    return fullTrimAndCutS(expression, false);
+      if (expression.matches(regexLatinEx))     return resultLatinFromArabicS(fullTrimAndCutS(expression, true));
 
-      } else if (expression.matches(regexLatinEx)) {
-          return resultLatinFromArabicS(fullTrimAndCutS(expression, true));
-
-      }
       return INPUT_ERROR;
     }
 
@@ -69,9 +65,9 @@ public class CalcLatinArabic {
 
     private static String detectOperatorS(String operator) {
         if (operator.contains("+")) return "+";
-        else if (operator.contains("-")) return "-";
-        else if (operator.contains("*")) return "*";
-        else return "/";
+        if (operator.contains("-")) return "-";
+        if (operator.contains("*")) return "*";
+        return "/";
     }
 
     private static String calculatorS(String[] operand) {
