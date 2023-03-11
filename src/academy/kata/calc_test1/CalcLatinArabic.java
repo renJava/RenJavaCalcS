@@ -1,11 +1,12 @@
 package academy.kata.calc_test1;
+
 /**
 *                                 Калькулятор (+-/*) целых арабских  и латинских чисел <= 10
 */
 import java.util.Scanner;
 import static java.lang.System.*;
 
-public class CalcLatinArabic {
+class CalcLatinArabic {
     static final String INPUT_ERROR = "!!!Некорректный ввод!!!";
     public static void main(String[] args) {
         boolean inputValidation;
@@ -43,8 +44,13 @@ public class CalcLatinArabic {
       final String regexArabicEx = startRegex + reOperandArabic + reOperators + reOperandArabic;//Регулярка араб. <= 10
       final String regexLatinEx = startRegex + reOperandLatin + reOperators + reOperandLatin;  //Регулярка лат. <= 4 зн.
 
-      if (expression.matches(regexArabicEx))    return fullTrimAndCutS(expression, false);
-      if (expression.matches(regexLatinEx))     return resultLatinFromArabicS(fullTrimAndCutS(expression, true));
+      if (expression.matches(regexArabicEx)) {
+          return fullTrimAndCutS(expression, false);
+      }
+
+      if (expression.matches(regexLatinEx)) {
+          return resultLatinFromArabicS(fullTrimAndCutS(expression, true));
+      }
 
       return INPUT_ERROR;
     }
@@ -52,7 +58,7 @@ public class CalcLatinArabic {
     //    Порезать выражение и распределить на арабскую и латинскую ветки вычислений
     private static String fullTrimAndCutS(String workExpression, boolean ifLatin) {
         String[] trimExpS = new String[3];
-        String trimS = workExpression.trim();                         //Отбросить боковые пробелы и Tabs
+        String trimS = workExpression.trim();                                 //Отбросить боковые пробелы и Tabs
         int lengthT = trimS.length();
         String operatorS = detectOperatorS(trimS);
         int intOperatorPos = trimS.indexOf(operatorS);                        //Вырезать поле с пробелами и оператором
@@ -60,7 +66,8 @@ public class CalcLatinArabic {
         trimExpS[0] = operatorS;                                              //Чистый оператор на экспорт
         trimExpS[1] = trimS.substring(0, intOperatorPos).trim();              //1-й строковый операнд
         trimExpS[2] = trimS.substring(intOperatorPos + 1, lengthT).trim();    //2-й строковый операнд
-        return (!ifLatin) ? calculatorS(trimExpS) : calculatorS(latinToArabicS(trimExpS));
+        return (!ifLatin) ? calculatorS(trimExpS)
+                : calculatorS(latinToArabicS(trimExpS));
     }
 
     private static String detectOperatorS(String operator) {
@@ -84,7 +91,7 @@ public class CalcLatinArabic {
         String[] arrLatinToArabicS = new String[3];                     //Новый массив в арабском виде
         arrLatinToArabicS[0] = latinOperandS[0];
         for (int i = 1; i <= 2; i++) {
-            try {
+                    try {
                 LatinEnum.valueOf(latinOperandS[i]);
             } catch (IllegalArgumentException e) {
                 err.println("!!! Неправильный ввод: " + latinOperandS[i] + " !!!\n");
