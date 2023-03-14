@@ -7,17 +7,14 @@ import java.util.Scanner;
  * Список дней недели: "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday".
  * Если строка не соответствует ни одному дню недели отправлять false.
  */
-public class IsWeekend_1_4_10 {
+public class isWeekend_1_4_11 {
     public static boolean isWeekend(String weekday) {
-        //Твой код здесь
-
-        switch (weekday) {
-            case "Saturday": return true;
-            case "Sunday": return true;
-            default: return false;
-            }
+        //Твой код тут
+        if (weekday.equals("Saturday") || weekday.equals("Sunday")) {
+            return true;
         }
-
+        return false;
+    }
     public static void main(String[] args) {
         System.out.print("\nВведите день недели по-английски с большой буквы: ");
         Scanner scanner = new Scanner(System.in);
