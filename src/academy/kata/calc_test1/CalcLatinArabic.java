@@ -97,8 +97,8 @@ class CalcLatinArabic {
                 err.println("!!! Неправильный ввод: " + latinOperandS[i] + " !!!\n");
                 exit(0);
             }
-            int latinToArabicInt = LatinEnum.valueOf(latinOperandS[i]).ordinal() + 1;//Индекс латинского операнда в Enum
-                                                                                     //соответствует арабскому значению
+            int latinToArabicInt = (LatinEnum.valueOf(latinOperandS[i]).ordinal()) + 1;//Индекс каждого латинского
+                                                                     //операнда в Enum соответствует арабскому значению
             if (latinToArabicInt > 10) {
              err.println("\n!!! Ошибка, вводимые операнды должны быть <= 10. " + latinOperandS[i] + " больше 10 !!!\n");
                 exit(0);
