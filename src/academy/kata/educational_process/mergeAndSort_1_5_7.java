@@ -11,9 +11,8 @@ public class mergeAndSort_1_5_7 {
         //твой код тут
         int firstArrayL = firstArray.length;
         int secondArrayL = secondArray.length;
-        int resultArrL = firstArrayL + secondArrayL;
 
-        int[] resultUnsortAr = new int[resultArrL];
+        int[] resultUnsortAr = new int[firstArrayL + secondArrayL];
 
         if (firstArrayL == 0 && secondArrayL == 0) {
             return new int[0];
