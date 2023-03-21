@@ -11,11 +11,10 @@ public class IsWeekend_1_4_10 {
     public static boolean isWeekend(String weekday) {
         //Твой код здесь
 
-        switch (weekday) {
-            case "Saturday": return true;
-            case "Sunday": return true;
-            default: return false;
-            }
+        return switch (weekday) {
+            case "Saturday", "Sunday" -> true;
+            default ->  false;
+            };
         }
 
     public static void main(String[] args) {

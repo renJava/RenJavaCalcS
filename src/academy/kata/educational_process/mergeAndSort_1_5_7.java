@@ -18,12 +18,9 @@ public class mergeAndSort_1_5_7 {
             return new int[0];
         }
 
-        int totalCounter = 0;
+        int totalCounter = firstArrayL;
 
-        for (int i = 0; i < firstArrayL; i++) {
-            resultUnsortAr[i] = firstArray[i];
-            totalCounter++;
-        }
+        System.arraycopy(firstArray, 0, resultUnsortAr, 0, firstArrayL);
 
         for (int j : secondArray) {
             resultUnsortAr[totalCounter++] = j;                   //Добавляем правее по возрастанию индекса

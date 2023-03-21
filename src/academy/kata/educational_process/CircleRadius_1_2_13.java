@@ -1,5 +1,6 @@
 package academy.kata.educational_process;
 
+
 /**
  * Реализовать метод calcCircleRaduis(double area), который вычисляет радиус окружности по заданной площади и выводит его
  * на экран. Точность - 3 знака после запятой.
@@ -11,10 +12,17 @@ package academy.kata.educational_process;
 public class CircleRadius_1_2_13 {
     public static void calcCircleRadius(double area) {
         //Твой код тут
-        final double Pi = 3.1415926536;
-        area = 6;
-        double r = Math.sqrt(area / Pi);
-        System.out.printf("\nРадиус круга: %s" + "%-5.3f", r);
+//        double r = Math.sqrt(area / Math.PI);
+        System.out.printf("%10.3f", Math.sqrt(area / Math.PI));
+    }
+    public static void main(String[] args) {
+//        System.out.print("\n\nВведите площадь круга: ");
+//        Scanner scanner = new Scanner(System.in);
+//        double s = scanner.nextDouble();
+        System.out.println();
+        System.out.print("Радиус круга: ");
+        calcCircleRadius(6);
+        System.out.println();
     }
 
 }

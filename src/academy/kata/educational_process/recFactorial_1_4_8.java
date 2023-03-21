@@ -7,16 +7,14 @@ public class recFactorial_1_4_8 {
 
     public static BigInteger factorial(int value) {
 //Твой код здесь
-        if (value < 0) {
-                System.err.println("\nОшибка!!! Аргумент факториала должен быть >= 0\n");
-        }
 
+//        if (value < 0) {
+//            System.err.println("\nОшибка!!! Аргумент факториала: " + value + " < 0\n");
+//            return BigInteger.valueOf(value);
+//        }
+//
         if (value == 0) {
             return BigInteger.valueOf(1);
-        }
-
-        if (value <= 1) {
-            return BigInteger.valueOf(value);
         } else {
             return BigInteger.valueOf(value).multiply(factorial(value - 1));
         }

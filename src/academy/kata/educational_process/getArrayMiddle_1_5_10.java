@@ -23,7 +23,7 @@ public class getArrayMiddle_1_5_10 {
     }
 
     public static void main(String[] args) {
-        int[] range = {1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27, 29, 31};      // 15 - 16 элементов
+        int[] range = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29};      // 15 - 16 элементов
         System.out.println("\n\nИтоговый диапазон: ");
         System.out.println(Arrays.toString(getArrayMiddle(range)));
     }

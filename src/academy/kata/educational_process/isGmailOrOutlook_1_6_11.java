@@ -11,14 +11,8 @@ public class isGmailOrOutlook_1_6_11 {
         //Твой код тут
         String regexBegin = "^";
         String regexLocAndDomain = "[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$";
-//        String regexDomain = "+[@[a-zA-Z0-9.-]+$]";
-//        String regexDomain = "[@((gmail.com)|(outlook.com))]";
-//        String regexZone = "[(.com)$]";
 
         String regexEMail = regexBegin + regexLocAndDomain;
-//        String regexEMail = regexBegin + regexLoc + regexDomain + regexZone;
-//        String regexEMail = regexDomain + regexZone;
-//        String regexEMail = regexDomain + regexZone;
 
         return (email.matches(regexEMail));
     }
@@ -30,3 +24,10 @@ public class isGmailOrOutlook_1_6_11 {
         System.out.println(isGmailOrOutlook(emailInput));
     }
 }
+//        String regexDomain = "+[@[a-zA-Z0-9.-]+$]";
+//        String regexDomain = "[@((gmail.com)|(outlook.com))]";
+//        String regexZone = "[(.com)$]";
+
+//        String regexEMail = regexBegin + regexLoc + regexDomain + regexZone;
+//        String regexEMail = regexDomain + regexZone;
+//        String regexEMail = regexDomain + regexZone;

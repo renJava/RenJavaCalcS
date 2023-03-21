@@ -14,21 +14,20 @@ import java.util.Scanner;
 public class DetermineGroup_1_4_9 {
     public static int determineGroup(int age) {
         //Твой код здесь
-        int numberGroup;
 
         if (age >= 7 && age <= 13) {
-            return numberGroup = 1;
+            return 1;
         }
 
         if (age >= 14 && age <= 17) {
-            return numberGroup = 2;
+            return 2;
         }
 
         if (age >= 18 && age <= 65) {
-            return numberGroup = 3;
+            return 3;
         }
 
-        return numberGroup = -1;
+        return -1;
     }
     public static void main(String[] args) {
 //        determineGroup object = new determineGroup();

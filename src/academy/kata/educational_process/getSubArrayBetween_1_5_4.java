@@ -32,16 +32,16 @@ public class getSubArrayBetween_1_5_4 {
                 if (numbers[toEnd] == end) {                        //Если end внутри массива
                     lastCell = toEnd;                               //Номер последней ячейки в исходном массиве
                 } else if (numbers[toEnd] > end) {
-                    lastCell = toEnd - 1;
+                    lastCell = toEnd - 1;                           //Перелёт на ячейку - откат на 1
                     break;
                 }
-                if (end > numbers[arrInputLength - 1]) {            //Если end за пределами массива
+                if (end > numbers[arrInputLength - 1]) {            //Если end за пределами массива (справа)
                     lastCell = arrInputLength - 1;
                 }
             }
 
-            int arResLength = lastCell - firstCell + 1;             // + 1 - Длина результирующего массива
-            int originCell = firstCell;
+            int arResLength = lastCell - firstCell + 1;             //Длина результирующего массива
+            int originCell = firstCell;                             //Начальный индекс в оригинальном массиве
             int[] arRes = new int[arResLength];                     //Объявляем результирующий массив
 
             if (lastCell != firstCell) {
@@ -49,13 +49,13 @@ public class getSubArrayBetween_1_5_4 {
                     arRes[iResult] = numbers[originCell];
                     originCell++;
                 }
-            } else if ((numbers[firstCell] == start) || (end > start)) {
+            } else if ((numbers[firstCell] == start) || (end != start)) {
                 arRes = new int[1];                                        //Объявляем единичный массив
                 arRes[0] = numbers[firstCell];
                 return arRes;
-            } else {
-                arRes = new int[0];                                        //Объявляем нулевой массив
-            }
+            } //else {
+//                arRes = new int[0];                                        //Объявляем нулевой массив
+//            }
             return arRes;
         }
         return new int[]{};

@@ -10,4 +10,8 @@ public class CharExpression_1_3_2 {
         return (char) ('\\' + a);
     }
 
+    public static void main(String[] args) {
+        char a = 'a';
+        System.out.println("Буква: " + charExpression(a));
+    }
 }
