@@ -26,7 +26,3 @@ public class catchCat_2_1_6 {
         dog.catchCat(cat);
     }
 }
-
-//            catchCat.sayHello();
-//                Dog dog = new Dog();
-//                Cat cat = new Cat();

@@ -3,7 +3,9 @@ package academy.kata.educational_process;
 import java.math.BigInteger;
 
 import static java.lang.Long.*;
-//import static java.lang.Math.pow;
+
+
+import static java.lang.Math.pow;
 
 /**
  * Реализовать метод, который выведет на экран квадрат максимального значения, которое может содержаться в переменной long.
@@ -12,18 +14,18 @@ import static java.lang.Long.*;
 public class MaxLongSqr_1_2_14 {
     public static void maxLongSqr() {
         //Твой код тут
-//    long maxLong = MAX_VALUE;
-//    BigInteger result = BigInteger.valueOf(Long.MAX_VALUE);
-//    BigInteger resultS = BigInteger.valueOf(MAX_VALUE);
 
-//    BigInteger result = BigInteger.valueOf(Long.MAX_VALUE);
-
-
-//    System.out.println("\nМаксимальный положительный long: " + maxLong);
         System.out.println("\nКвадрат от  maxLong: ");
 
-        BigInteger result = BigInteger.valueOf(Long.MAX_VALUE).multiply(BigInteger.valueOf(Long.MAX_VALUE));
-        System.out.print(result);
+        BigInteger resultE = BigInteger.valueOf(Long.MAX_VALUE).pow(2);
+        BigInteger result2 = BigInteger.valueOf(Long.MAX_VALUE).multiply(BigInteger.valueOf(Long.MAX_VALUE));
+
+
+        System.out.println(BigInteger.valueOf(Long.MAX_VALUE).pow(2));
+
+
+        System.out.println("Квадрат:    " + resultE);
+        System.out.println("Умножение:  " + result2);
 
 //    System.out.print(result);
     }

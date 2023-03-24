@@ -10,10 +10,7 @@ import java.util.Scanner;
 public class isWeekend_1_4_11 {
     public static boolean isWeekend(String weekday) {
         //Твой код тут
-        if (weekday.equals("Saturday") || weekday.equals("Sunday")) {
-            return true;
-        }
-        return false;
+        return weekday.equals("Saturday") || weekday.equals("Sunday");
     }
     public static void main(String[] args) {
         System.out.print("\nВведите день недели по-английски с большой буквы: ");
