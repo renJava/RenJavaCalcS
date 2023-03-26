@@ -5,11 +5,8 @@ package academy.kata.educational_process.mod2;
  * ComplexNumber по содержимому полей re и im, а hashCode() был бы согласованным с реализацией equals().
  *
  * Реализация hashCode(), возвращающая константу или не учитывающая дробную часть re и im, засчитана не будет
- * Класс ComplexNumber должен переопределять public boolean equals(Object o) и public int hashCode()
- *
- * Подсказка 1. Поищите в классе java.lang.Double статический метод, который поможет в решении задачи.
  */
-public class ComplexNumber_2_1_10 {
+public class Solution_2_1_10 {
     public static class ComplexNumber {
         private double re;
         private double im;
@@ -30,6 +27,33 @@ public class ComplexNumber_2_1_10 {
             return im;
         }
 
-    }
 
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) {
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
+
+            ComplexNumber thereIs = (ComplexNumber) o;
+
+            if (Double.compare(thereIs.re, re) != 0) {
+                return false;
+            }
+            return Double.compare(thereIs.im, im) == 0;
+        }
+
+        @Override
+        public int hashCode() {
+            int result;
+            long temp;
+            temp = Double.doubleToLongBits(re);
+            result = (int) (temp ^ (temp >>> 32));
+            temp = Double.doubleToLongBits(im);
+            result = 31 * result + (int) (temp ^ (temp >>> 32));
+            return result;
+        }
+    }
 }

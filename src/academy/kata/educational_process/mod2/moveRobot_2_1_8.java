@@ -113,7 +113,7 @@ public class moveRobot_2_1_8 {
 
             while (robot.getY() != toY) {
                 robot.stepForward();
-//                System.out.println("Робот шагает по оси Y: " + robot.getY()); // TODO: 024 24.03.2023
+                System.out.println("Робот шагает по оси Y: " + robot.getY()); // TODO: 024 24.03.2023
             }
             System.out.println();
         }
