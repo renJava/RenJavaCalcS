@@ -25,6 +25,22 @@ public class Human_2_3_11 {
         }
 
         // Твой код здесь
+
+        private String getSecret() {
+            return secret;
+        }
+
+        String getGossip() {
+            return gossip;
+        }
+
+        protected String getExperience() {
+            return experience;
+        }
+
+        public String getNews() {
+            return news;
+        }
     }
 
 }
