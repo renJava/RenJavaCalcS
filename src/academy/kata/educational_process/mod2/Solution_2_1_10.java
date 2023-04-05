@@ -47,10 +47,8 @@ public class Solution_2_1_10 {
 
         @Override
         public int hashCode() {
-            int result;
-            long temp;
-            temp = Double.doubleToLongBits(re);
-            result = (int) (temp ^ (temp >>> 32));
+            long temp = Double.doubleToLongBits(re);
+            int result = (int) (temp ^ (temp >>> 32));
             temp = Double.doubleToLongBits(im);
             result = 31 * result + (int) (temp ^ (temp >>> 32));
             return result;

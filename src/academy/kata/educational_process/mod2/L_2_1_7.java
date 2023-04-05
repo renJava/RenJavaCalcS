@@ -23,33 +23,19 @@ import java.util.Scanner;
 public class L_2_1_7 {
 
     public static void main(String[] args) {
-        System.out.println("\nВведите день недели по-русски: ");
-//        Scanner scanner = new Scanner(System.in);
-        String dayWeek = "понедельник";
+        System.out.println("\nВведите день недели по-русски маленькими буквами: ");
+        String today = new Scanner(System.in).nextLine();
 
-//        for (Day day: Day.values()) {
-//            if (dayWeek == Day.ge) {
-//
-//            }
-//        }
-
-        System.out.print("\nПонедельник? ");
-        System.out.print(Day.MONDAY.getRusName() == dayWeek);
-
-        System.out.println("\n\nДень недели: " + dayWeek);
-
-/*
-        System.out.println(Day.TUESDAY.getRusName());
-        System.out.println(Day.WEDNESDAY.getRusName());
-        System.out.println(Day.THURSDAY.getRusName());
-        System.out.println(Day.FRIDAY.getRusName());
-        System.out.println(Day.SATURDAY.getRusName());
-        System.out.println(Day.SUNDAY.getRusName());
-*/
+        System.out.println("\n\nДень недели: " + today);
+        if (today.equals(Day1.SATURDAY.getRusName()) || (today.equals(Day1.SUNDAY.getRusName()))) {
+            System.out.println("Сегодня выходной!" + today);
+        } else {
+            System.out.println("Сегодня рабочий день: " + today);
+        }
     }
 }
 
-        enum Day {
+        enum Day1 {
             //Твой код здесь
             MONDAY("понедельник", false),
             TUESDAY("вторник", false),
@@ -60,11 +46,11 @@ public class L_2_1_7 {
             SUNDAY("воскресенье", true);
 
             private final String russianDayName;
-            private final boolean weekEndBooleanCons;
+            private final boolean weekendBoolean;
 
-            Day(String russianDayName, boolean weekEndBooleanCons) {
+            Day1(String russianDayName, boolean weekendBoolean) {
                 this.russianDayName = russianDayName;
-                this.weekEndBooleanCons = weekEndBooleanCons;
+                this.weekendBoolean = weekendBoolean;
 
             }
 
@@ -73,9 +59,6 @@ public class L_2_1_7 {
             }
 
             public boolean isWeekend() {
-                String dayWeek;
-                System.out.print("Сегодня выходной? ");
-                System.out.print(weekEndBooleanCons);
-                return weekEndBooleanCons;
+                return weekendBoolean;
             }
         }
