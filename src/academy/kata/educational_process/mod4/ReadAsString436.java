@@ -12,14 +12,15 @@ import java.nio.charset.StandardCharsets;
  * InputStream последовательно возвращает четыре байта: 48 49 50 51.
  * Метод, вызванный для такого InputStream и кодировки ASCII, должен вернуть строку: "0123".
  */
-public class readAsString436 {
+public class ReadAsString436 {
     public static String readAsString(InputStream inputStream, Charset charset) throws IOException {
         //Твой код здесь
+//        InputStreamReader inReader = new InputStreamReader(inputStream, charset);
+        BufferedReader bReader = new BufferedReader(new InputStreamReader(inputStream, charset));
         StringBuilder sb = new StringBuilder();
-        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, charset));
 
         int c;
-        while ((c = reader.read()) != -1) {
+        while ((c = bReader.read()) != -1) {
             sb.append((char) c);
         }
 

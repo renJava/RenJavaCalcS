@@ -1,5 +1,7 @@
 package academy.kata.educational_process.mod4;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.Scanner;
 
 /**
@@ -16,13 +18,13 @@ public class ParseDouble437 {
         double sum = 0.0;
 
         while (scanner.hasNext()) {
-            try {
-                sum += Double.parseDouble(scanner.next());
-            } catch (NumberFormatException e) {
-                // пропускаем несимвольный ввод
+            if (scanner.hasNextDouble()) {
+                sum += scanner.nextDouble();
+//                sum += Double.parseDouble(scanner.next());
+            } else {
+                scanner.next();
             }
         }
-
         System.out.printf("%.6f", sum);
     }
 }

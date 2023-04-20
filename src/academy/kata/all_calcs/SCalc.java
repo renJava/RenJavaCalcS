@@ -51,7 +51,7 @@ public class SCalc {
 
     static String isValidate(String expression) {          //Проверка корректности ввода
 
-        final String reOperandS = "[ \t]*\"[^\"]{0,10}\"[ \t]*"; //Любой набор до 10-ти сим. в "", в пробелах и Tab
+        final String reOperandS = "[ \t]*\"[^\"]{0,10}\"[ \t]*"; //Любой набор до 10 сим. в "", в пробелах и Tab
         final String reOperatorGroupPm = "[+-]";
         final String reOperatorGroupMd = "[*/]";
         final String reOperandInt = "[ \t]*(?:[1-9]|10)[ \t]*$"; //Цифра [1-10] вокруг пробелы и Tabs

@@ -17,8 +17,7 @@ public class Print426 {
                 outputStream.write(intByte);
             }
         }
-        inputStream.close();
-        outputStream.close();
+        outputStream.flush();
     }
 
 }

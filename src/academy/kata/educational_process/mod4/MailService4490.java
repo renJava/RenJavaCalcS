@@ -3,8 +3,6 @@ package academy.kata.educational_process.mod4;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static java.util.logging.Level.*;
-
 /**
  * Вам необходимо описать набор классов, каждый из которых является MailService:
  * 1) UntrustworthyMailWorker – класс, моделирующий ненадежного работника почты, который вместо того, чтобы передать
@@ -40,7 +38,7 @@ import static java.util.logging.Level.*;
  * несколько удобных констант и импортировано все содержимое пакета java.util.logging. Для определения, посылкой или
  * письмом является Sendable объект воспользуйтесь оператором instanceof.
  */
-public class MailService449 {
+public class MailService4490 {
     /*
     Интерфейс: сущность, которую можно отправить по почте.
     У такой сущности можно получить от кого и кому направляется письмо.
@@ -210,17 +208,16 @@ public class MailService449 {
 
 
     // твой код здесь
-
-    //Моделируем ненадежного работника почты:
+//Моделируем ненадежного работника почты:
     public static class UntrustworthyMailWorker implements MailService {
         private final RealMailService realMailService = new RealMailService();
         private final MailService[] mailServices;
 
-        UntrustworthyMailWorker(MailService[] mailServices) {
+        public UntrustworthyMailWorker(MailService[] mailServices) {
             this.mailServices = mailServices;
         }
 
-        RealMailService getRealMailService() {
+        public RealMailService getRealMailService() {
             return realMailService;
         }
 
@@ -244,39 +241,48 @@ public class MailService449 {
 
         @Override
         public Sendable processMail(Sendable mail) {
-            if (mail instanceof MailMessage) {
-                MailMessage mailMessage = (MailMessage) mail;
-                Object[] postInfo = {"Detected target mail correspondence: from ", mailMessage.getFrom(), " to ",
-                mailMessage.getTo(), " \"", mailMessage.getMessage(), "\"", "Usual correspondence: from "};
-                if (mailMessage.getFrom().equals(AUSTIN_POWERS) || mailMessage.getTo().equals(AUSTIN_POWERS)) {
-                    StringBuilder spyLogSbLong = new StringBuilder();
-                    for (int i = 0; i < postInfo.length - 1; i++) {
-                        spyLogSbLong.append(i);
-                    }
-                    logger.warning(String.valueOf(spyLogSbLong));
-                } else {
-                    StringBuilder spyLogSbShort = new StringBuilder();
-                    spyLogSbShort.append(postInfo[7]).append(postInfo[1]).append(postInfo[2]).append(postInfo[3]);
 
-                    logger.warning(String.valueOf(spyLogSbShort));
+            try {
+                MailMessage mailMessage = (MailMessage) mail;
+                if (mailMessage.getFrom().equals(AUSTIN_POWERS) || (mailMessage.getTo().equals(AUSTIN_POWERS))) {
+                    logger.log(Level.WARNING, "Detected target mail correspondence: from {0} to {1} \"{2}\"",
+                            new Object[]{mailMessage.getFrom(), mailMessage.getTo(), mailMessage.getMessage()});
+                } else {
+                    logger.log(Level.INFO, "Usual correspondence: from {0} to {1}",
+                            new Object[]{mailMessage.getFrom(), mailMessage.getTo()});
                 }
+                return mail;
+            } catch (ClassCastException e) {
             }
             return mail;
+
+
+/*        if (mail instanceof MailMessage) {
+            MailMessage mailMessage = (MailMessage) mail;
+            if (mailMessage.getFrom().equals(AUSTIN_POWERS) || mailMessage.getTo().equals(AUSTIN_POWERS)) {
+                logger.warning("Detected target mail correspondence: from " + mailMessage.getFrom() +
+                        " to " + mailMessage.getTo() + " \"" + mailMessage.getMessage() + "\"");
+            } else {
+                logger.info("Usual correspondence: from " + mailMessage.getFrom() +
+                        " to " + mailMessage.getTo());
+            }
+        }
+        return mail;
+*/
         }
     }
 
 
     //Моделируем Ворюгу:
-
     public static class Thief implements MailService {
         private int minPrice;
         private int stolenValue;
 
-        Thief(int minPrice) {
+        public Thief(int minPrice) {
             this.minPrice = minPrice;
         }
 
-        int getStolenValue() {
+        public int getStolenValue() {
             return stolenValue;
         }
 
@@ -293,6 +299,7 @@ public class MailService449 {
             return mail;
         }
     }
+
 
     //Моделируем Инспектора:
     public static class Inspector implements MailService {
