@@ -241,7 +241,23 @@ public class MailService4490 {
 
         @Override
         public Sendable processMail(Sendable mail) {
+            try {
+                MailMessage mailMessage = (MailMessage) mail;
 
+                String[] postInfo = new String[]{mailMessage.getFrom(), mailMessage.getTo(), mailMessage.getMessage()};
+
+                if (mailMessage.getFrom().equals(AUSTIN_POWERS) || (mailMessage.getTo().equals(AUSTIN_POWERS))) {
+                    logger.log(Level.WARNING, "Detected target mail correspondence: from {0} to {1} \"{2}\"", postInfo);
+                } else {
+                    logger.log(Level.INFO, "Usual correspondence: from {0} to {1}", postInfo);
+                }
+                return mail;
+            } catch (ClassCastException e) {
+            }
+            return mail;
+
+
+/*
             try {
                 MailMessage mailMessage = (MailMessage) mail;
                 if (mailMessage.getFrom().equals(AUSTIN_POWERS) || (mailMessage.getTo().equals(AUSTIN_POWERS))) {
@@ -255,6 +271,7 @@ public class MailService4490 {
             } catch (ClassCastException e) {
             }
             return mail;
+*/
 
 
 /*        if (mail instanceof MailMessage) {

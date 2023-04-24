@@ -25,10 +25,6 @@ public class Box5113 {
             return object;
         }
 
-        public void setObject(T object) {
-            this.object = object;
-        }
-
         public static <T> Box <T> getBox() {
             return new Box<>(null);
         }

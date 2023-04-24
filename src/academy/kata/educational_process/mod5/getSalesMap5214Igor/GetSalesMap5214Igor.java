@@ -1,10 +1,9 @@
-package academy.kata.educational_process.mod5.getSalesMap5214;
+package academy.kata.educational_process.mod5.getSalesMap5214Igor;
 
-import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.Reader;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Scanner;
 
 /**
  * Магазину нужно сохранять информацию о продажах для каждого сотрудника. Напишите метод Map getSalesMap(Reader reader)
@@ -32,26 +31,14 @@ import java.util.Map;
  * 1. Должен быть метод public static Map<String, Long> getSalesMap(Reader reader)
  * 2. Работа метода getSalesMap должна удовлетворять условию
  */
-public class GetSalesMap5214 {
 
+public class GetSalesMap5214Igor {
     public static Map<String, Long> getSalesMap(Reader reader) {
-        Map<String, Long> salesMap = new HashMap<>();
-        try (BufferedReader bufferedReader = new BufferedReader(reader)) {
-            String line;
-            while ((line = bufferedReader.readLine()) != null) {
-                String[] parts = line.split(" ");
-                String name = parts[0];
-                long sales = Long.parseLong(parts[1]);
-
-                if (salesMap.containsKey(name)) {
-                    salesMap.put(name, salesMap.get(name) + sales);
-                } else {
-                    salesMap.put(name, sales);
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+        Map<String, Long> map = new HashMap<>();
+        Scanner scanner = new Scanner(reader);
+        while (scanner.hasNext()) {
+            map.merge(scanner.next(),scanner.nextLong(),(oldVal, newVal) -> oldVal + newVal);
         }
-        return salesMap;
+        return map;
     }
 }

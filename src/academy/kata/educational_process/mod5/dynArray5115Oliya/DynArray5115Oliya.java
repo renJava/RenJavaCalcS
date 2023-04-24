@@ -1,5 +1,4 @@
-
-package academy.kata.educational_process.mod5.DynamicArray5115;
+package academy.kata.educational_process.mod5.dynArray5115Oliya;
 
 import java.util.Arrays;
 
@@ -19,51 +18,23 @@ import java.util.Arrays;
  * 4. класс DynamicArray должен  иметь публичный конструктор по умолчанию
  * 5. работа методов должна соответствовать условию
  */
-public class DynamicArray5115 {
-    public static class DynamicArray<T> {
-        private static final int DEFAULT_CAPACITY = 10;
-        private Object[] elements;
-        private int size;
 
-        public DynamicArray() {
-            elements = new Object[DEFAULT_CAPACITY];
-        }
+public class DynArray5115Oliya {
+    public static class DynamicArray<T> {
+        private Object[] array = {};
 
         public void add(T el) {
-            stepCapacity(size + 1);
-            elements[size++] = el;
-        }
-
-        @SuppressWarnings("Подавляем непроверяемое исключение")
-//        @SuppressWarnings("unchecked")
-        public T get(int index) {
-            if (index < 0 || index >= size) {
-                throw new ArrayIndexOutOfBoundsException("Индекс " + index + " не лызе...");
-            }
-            return (T) elements[index];
+            array = Arrays.copyOf(array, array.length + 1);
+            array[array.length - 1] = el;
         }
 
         public void remove(int index) {
-            if (index < 0 || index >= size) {
-                throw new ArrayIndexOutOfBoundsException("Индекс " + index + " не лызе...");
-            }
-            int numMoved = size - index - 1;
-            if (numMoved > 0) {
-                System.arraycopy(elements, index + 1, elements, index, numMoved);
-            }
-            elements[--size] = null;
+            System.arraycopy(array, index + 1, array, index, array.length - index - 1);
+            array = Arrays.copyOf(array, array.length - 1);
         }
 
-        private void stepCapacity(int minCapacity) {
-            if (minCapacity - elements.length > 0) {
-                int oldCapacity = elements.length;
-                int newCapacity = oldCapacity + (oldCapacity >> 1);
-                if (newCapacity - minCapacity < 0) {
-                    newCapacity = minCapacity;
-                }
-                elements = Arrays.copyOf(elements, newCapacity);
-            }
+        public T get(int index) {
+            return (T) this.array[index];
         }
-
     }
 }
