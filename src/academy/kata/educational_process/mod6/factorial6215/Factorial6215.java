@@ -2,6 +2,7 @@ package academy.kata.educational_process.mod6.factorial6215;
 
 import java.math.BigInteger;
 import java.util.Scanner;
+import java.util.function.UnaryOperator;
 import java.util.stream.IntStream;
 
 /**

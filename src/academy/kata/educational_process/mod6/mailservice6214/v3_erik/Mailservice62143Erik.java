@@ -1,4 +1,4 @@
-package academy.kata.educational_process.mod6.mailservice6214_3_erik;
+package academy.kata.educational_process.mod6.mailservice6214.v3_erik;
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -87,6 +87,7 @@ public class Mailservice62143Erik {
 
         T getContent();
     }
+
 
     public static void main(String[] args) {
 // Random variables
