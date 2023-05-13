@@ -102,7 +102,7 @@ public class Mailservice62144Stepik {
                 ts = new ArrayList<>();
             }
             ts.add(sendable.getContent());
-            messagesMap.put(sendable.getTo(), ts);
+            messagesMap.put(sendable.getTo(), ts)
         }
 
         public Map<String, List<T>> getMailBox() {
