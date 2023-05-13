@@ -1,6 +1,4 @@
-package academy.kata.educational_process.mod6.mailservice6214.v4_stepik;
-
-import academy.kata.educational_process.mod6.mailservice6214.v3_erik.Mailservice62143Erik;
+package academy.kata.educational_process.mod6.mailservice6214.v6214_4_stepik;
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -119,34 +117,36 @@ public class Mailservice62144Stepik {
         int randomSalary = 100;  // Некоторое случайное целое положительное число. Можете выбрать его самостоятельно.
 
 // Создание списка из трех почтовых сообщений.
-        Mailservice62143Erik.MailMessage firstMessage = new Mailservice62143Erik.MailMessage(
+        final String toChrNolan = "Christopher Nolan";
+        final String toLovecraft = "H.P. Lovecraft";
+        Mailservice62144Stepik.MailMessage firstMessage = new Mailservice62144Stepik.MailMessage(
                 "Robert Howard",
-                "H.P. Lovecraft",
+                toLovecraft,
                 "This \"The Shadow over Innsmouth\" story is real masterpiece, Howard!"
         );
 
         assert firstMessage.getFrom().equals("Robert Howard"): "Wrong firstMessage from address";
-        assert firstMessage.getTo().equals("H.P. Lovecraft"): "Wrong firstMessage to address";
+        assert firstMessage.getTo().equals(toLovecraft): "Wrong firstMessage to address";
         assert firstMessage.getContent().endsWith("Howard!"): "Wrong firstMessage content ending";
 
-        Mailservice62143Erik.MailMessage secondMessage = new Mailservice62143Erik.MailMessage(
+        Mailservice62144Stepik.MailMessage secondMessage = new Mailservice62144Stepik.MailMessage(
                 "Jonathan Nolan",
-                "Christopher Nolan",
+                toChrNolan,
                 "Брат, почему все так хвалят только тебя, когда практически все сценарии написал я. Так не честно!"
         );
 
-        Mailservice62143Erik.MailMessage thirdMessage = new Mailservice62143Erik.MailMessage(
+        Mailservice62144Stepik.MailMessage thirdMessage = new Mailservice62144Stepik.MailMessage(
                 "Stephen Hawking",
-                "Christopher Nolan",
+                toChrNolan,
                 "Я так и не понял Интерстеллар."
         );
 
-        List<Mailservice62143Erik.MailMessage> messages = Arrays.asList(
+        List<Mailservice62144Stepik.MailMessage> messages = Arrays.asList(
                 firstMessage, secondMessage, thirdMessage
         );
 
 // Создание почтового сервиса.
-        Mailservice62143Erik.MailService<String> mailService = new Mailservice62143Erik.MailService<>();
+        Mailservice62144Stepik.MailService<String> mailService = new Mailservice62144Stepik.MailService<>();
 
 // Обработка списка писем почтовым сервисом
         messages.forEach(mailService);
@@ -155,13 +155,13 @@ public class Mailservice62144Stepik {
 //   где по получателю можно получить список сообщений, которые были ему отправлены
         Map<String, List<String>> mailBox = mailService.getMailBox();
 
-        assert mailBox.get("H.P. Lovecraft").equals(
+        assert mailBox.get(toLovecraft).equals(
                 List.of(
                         "This \"The Shadow over Innsmouth\" story is real masterpiece, Howard!"
                 )
         ): "wrong mailService mailbox content (1)";
 
-        assert mailBox.get("Christopher Nolan").equals(
+        assert mailBox.get(toChrNolan).equals(
                 Arrays.asList(
                         "Брат, почему все так хвалят только тебя, когда практически все сценарии написал я. Так не честно!",
                         "Я так и не понял Интерстеллар."
@@ -172,12 +172,12 @@ public class Mailservice62144Stepik {
 
 
 // Создание списка из трех зарплат.
-        Mailservice62143Erik.Salary salary1 = new Mailservice62143Erik.Salary("Facebook", "Mark Zuckerberg", 1);
-        Mailservice62143Erik.Salary salary2 = new Mailservice62143Erik.Salary("FC Barcelona", "Lionel Messi", Integer.MAX_VALUE);
-        Mailservice62143Erik.Salary salary3 = new Mailservice62143Erik.Salary(randomFrom, randomTo, randomSalary);
+        Mailservice62144Stepik.Salary salary1 = new Mailservice62144Stepik.Salary("Facebook", "Mark Zuckerberg", 1);
+        Mailservice62144Stepik.Salary salary2 = new Mailservice62144Stepik.Salary("FC Barcelona", "Lionel Messi", Integer.MAX_VALUE);
+        Mailservice62144Stepik.Salary salary3 = new Mailservice62144Stepik.Salary(randomFrom, randomTo, randomSalary);
 
 // Создание почтового сервиса, обрабатывающего зарплаты.
-        Mailservice62143Erik.MailService<Integer> salaryService = new Mailservice62143Erik.MailService<>();
+        Mailservice62144Stepik.MailService<Integer> salaryService = new Mailservice62144Stepik.MailService<>();
 
 // Обработка списка зарплат почтовым сервисом
         Arrays.asList(salary1, salary2, salary3).forEach(salaryService);

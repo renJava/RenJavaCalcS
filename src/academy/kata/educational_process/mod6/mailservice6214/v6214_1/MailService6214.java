@@ -1,4 +1,4 @@
-package academy.kata.educational_process.mod6.mailservice6214.v1;
+package academy.kata.educational_process.mod6.mailservice6214.v6214_1;
 
 import java.util.*;
 import java.util.function.Consumer;
